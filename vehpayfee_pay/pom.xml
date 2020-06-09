@@ -140,11 +140,6 @@
 		</dependency>
 
 		<!--  用于rsa非对称加密jar包-->
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk14</artifactId>
-			<version>1.45</version>
-		</dependency>
 
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
