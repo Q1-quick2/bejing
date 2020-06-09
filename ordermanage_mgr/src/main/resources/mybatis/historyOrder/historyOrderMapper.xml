@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sutong.historyOrder.mapper.HistoryOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.sutong.bjstjh.entity.AuditWorkOrderHistoryTable">
+        <id column="SERIAL_ID" property="serialId" jdbcType="VARCHAR"/>
+        <result column="PAST_WORKORDER_ID" property="pastWorkOrderId" jdbcType="VARCHAR"/>
+        <result column="EXTERNAL_ORDERNO_YEAR" property="externalOrderNoYear" jdbcType="VARCHAR"/>
+        <result column="EXTERNAL_ORDERNO" property="externalOrderNo" jdbcType="VARCHAR"/>
+        <result column="EVENT_TYPECODE" property="eventTypeCode" jdbcType="VARCHAR"/>
+        <result column="FEEDBACK_PARTY" property="feedbackParty" jdbcType="VARCHAR"/>
+        <result column="ISSUING_AGENT" property="issuingAgent" jdbcType="VARCHAR"/>
+        <result column="CUSTOMER_NO" property="customerNo" jdbcType="VARCHAR"/>
+        <result column="CUSTOMER_NAME" property="customerName" jdbcType="VARCHAR"/>
+        <result column="PROXYMERC_NAME" property="proxymercName" jdbcType="VARCHAR"/>
+        <result column="CERTIFICATENO" property="certificateNo" jdbcType="VARCHAR"/>
+        <result column="CONTACT_TELEPHONENO" property="contactTelePhoneNo" jdbcType="VARCHAR"/>
+        <result column="DRIVINGLIC_ADDRESS" property="drivingLicAddress" jdbcType="VARCHAR"/>
+        <result column="DRIVINGLIC_SYSTEM_ADDRESS" property="drivingLicSystemAddress" jdbcType="VARCHAR"/>
+        <result column="OBUNO" property="obuno" jdbcType="VARCHAR"/>
+        <result column="ETCNO" property="etcno" jdbcType="VARCHAR"/>
+        <result column="VEHPLATENO" property="vehplateNo" jdbcType="VARCHAR"/>
+        <result column="VEHPLATE_COLORCODE" property="vehplateColorCode" jdbcType="INTEGER"/>
+        <result column="ACTUAL_TRAFFIC_TYPE" property="actualTrafficType" jdbcType="INTEGER"/>
+        <result column="SIGN_DATE" property="signDate" jdbcType="VARCHAR"/>
+        <result column="SIGN_EXPIRE_DATE" property="signExpireDate" jdbcType="VARCHAR"/>
+        <result column="ISSUE_START_TIME" property="issueEndTime" jdbcType="VARCHAR"/>
+        <result column="ISSUE_END_TIME" property="issueEndTime" jdbcType="VARCHAR"/>
+        <result column="ETC_DISABLE_DATE" property="etcDisableDate" jdbcType="VARCHAR"/>
+        <result column="OBU_DISABLE_DATE" property="obuDisableDate" jdbcType="VARCHAR"/>
+        <result column="FIRST_PASS_TIME" property="firstPassTime" jdbcType="VARCHAR"/>
+        <result column="LAST_PASS_TIME" property="lastPassTime" jdbcType="VARCHAR"/>
+        <result column="DUTY_BELONG" property="dutyBelong" jdbcType="INTEGER"/>
+        <result column="INFORM_CUSTOMERS_FLAG" property="informCustomersFlag" jdbcType="INTEGER"/>
+        <result column="NOTIFICATION_BOOK_FLAG" property="notificationBookFlag" jdbcType="INTEGER"/>
+        <result column="CUSTOMER_INFO_FLAG" property="customerInfoFlag" jdbcType="INTEGER"/>
+        <result column="PROOF" property="proof" jdbcType="VARCHAR"/>
+        <result column="SUM_PAY" property="sumPay" jdbcType="DECIMAL"/>
+        <result column="SUM_TIME" property="sumTime" jdbcType="TIMESTAMP"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="OBU_ACCOUNT_STATUS" property="obuAccountStatus" jdbcType="INTEGER"/>
+        <result column="ETC_STATUS_LIST" property="etcStatusList" jdbcType="INTEGER"/>
+        <result column="VEH_STATUS_LIST" property="vehStatusList" jdbcType="INTEGER"/>
+        <result column="ACTUAL_PAYMENT_TYPE" property="actualPaymentType" jdbcType="INTEGER"/>
+        <result column="ACCOUNT_PASSAGE" property="accountPassAge" jdbcType="VARCHAR"/>
+        <result column="RM_FLAG" property="rmFlag" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR"/>
+        <result column="REMARK_STATUS" property="remarkStatus" jdbcType="VARCHAR"/>
+        <result column="VEH_OWNER" property="vehOwner" jdbcType="VARCHAR"/>
+        <result column="CUSTOMER_ADDRESS" property="customerAddress" jdbcType="VARCHAR"/>
+        <result column="REPEAT_NUMBER" property="repeatNumber" jdbcType="INTEGER"/>
+        <result column="SMS_SEND_TIME" property="smsSendTime" jdbcType="VARCHAR"/>
+        <result column="CUSTOMER_TRACK" property="customerTrack" jdbcType="VARCHAR"/>
+        <result column="CHANGE_STATUS" property="changeStatus" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        SERIAL_ID,PAST_WORKORDER_ID,EXTERNAL_ORDERNO_YEAR,EXTERNAL_ORDERNO,FEEDBACK_PARTY,EVENT_TYPECODE,ISSUING_AGENT,CUSTOMER_NO,CUSTOMER_NAME,PROXYMERC_NAME,CERTIFICATENO,
+CONTACT_TELEPHONENO,DRIVINGLIC_ADDRESS,DRIVINGLIC_SYSTEM_ADDRESS,OBUNO,ETCNO,VEHPLATENO,VEHPLATE_COLORCODE,ACTUAL_TRAFFIC_TYPE,SIGN_DATE,SIGN_EXPIRE_DATE,
+ISSUE_START_TIME,ISSUE_END_TIME,ETC_DISABLE_DATE,OBU_DISABLE_DATE,FIRST_PASS_TIME,LAST_PASS_TIME,DUTY_BELONG,INFORM_CUSTOMERS_FLAG,NOTIFICATION_BOOK_FLAG,CUSTOMER_INFO_FLAG,PROOF,
+SUM_PAY,SUM_TIME,STATUS,OBU_ACCOUNT_STATUS,ETC_STATUS_LIST,VEH_STATUS_LIST,ACTUAL_PAYMENT_TYPE,ACCOUNT_PASSAGE,RM_FLAG,CREATE_TIME,UPDATE_TIME,REMARK_STATUS,
+VEH_OWNER,CUSTOMER_ADDRESS,REPEAT_NUMBER,SMS_SEND_TIME,CUSTOMER_TRACK,CHANGE_STATUS
+    </sql>
+    <!--条件查询常规外查工单w 添加删除标识-->
+    <select id="doFindOrder" resultType="com.sutong.bjstjh.entity.AuditWorkOrderHistoryTable"
+            parameterType="com.sutong.historyOrder.model.ParameterHistoryOrder">
+        select
+        SERIAL_ID serialId,
+        PAST_WORKORDER_ID pastWorkOrderId,
+        EXTERNAL_ORDERNO_YEAR externalOrderNoYear,
+        EXTERNAL_ORDERNO externalOrderNo,
+        EVENT_TYPECODE eventTypeCode,
+        FEEDBACK_PARTY feedbackParty,
+        ISSUING_AGENT issuingAgent,
+        CUSTOMER_NO customerNo,
+        CUSTOMER_NAME customerName,
+        PROXYMERC_NAME proxymercName,
+        CERTIFICATENO certificateNo,
+        CONTACT_TELEPHONENO contactTelePhoneNo,
+        DRIVINGLIC_ADDRESS drivingLicAddress,
+        DRIVINGLIC_SYSTEM_ADDRESS drivingLicSystemAddress,
+        OBUNO,
+        ETCNO,
+        VEHPLATENO,
+        VEHPLATE_COLORCODE vehplateColorCode,
+        ACTUAL_PAYMENT_TYPE actualPaymentType,
+        ACTUAL_TRAFFIC_TYPE actualTrafficType,
+        SIGN_DATE signDate,
+        SIGN_EXPIRE_DATE signExpireDate,
+        ISSUE_START_TIME issueStartTime,
+        ISSUE_END_TIME issueEndTime,
+        ETC_DISABLE_DATE etcDisableDate,
+        OBU_DISABLE_DATE obuDisableDate,
+        FIRST_PASS_TIME firstPassTime,
+        LAST_PASS_TIME lastPassTime,
+        DUTY_BELONG dutyBelong,
+        INFORM_CUSTOMERS_FLAG informCustomersFlag,
+        NOTIFICATION_BOOK_FLAG notificationBookFlag,
+        CUSTOMER_INFO_FLAG customerInfoFlag,
+        PROOF,
+        SUM_PAY sumPay,
+        SUM_TIME sumTime,
+        STATUS,
+        OBU_ACCOUNT_STATUS obuAccountStatus,
+        ETC_STATUS_LIST etcStatusList,
+        VEH_STATUS_LIST vehStatusList,
+        RM_FLAG rmFlag,
+        CREATE_TIME createTime,
+        UPDATE_TIME updateTime,
+        REMARK_STATUS remarkStatus,
+        ACCOUNT_PASSAGE accountPassAge,
+        VEH_OWNER vehOwner,
+        CUSTOMER_ADDRESS customerAddress,
+        REPEAT_NUMBER repeatNumber,
+        SMS_SEND_TIME smsSendTime,
+        CUSTOMER_TRACK customerTrack,
+        CHANGE_STATUS changeStatus
+        from
+        AUDIT_WORKORDER_HISTORY_TABLE
+        where
+        RM_FLAG = 0
+
+        <if test="eventTypeCode !=null and eventTypeCode !='' ">
+            and EVENT_TYPECODE = #{eventTypeCode}
+        </if>
+        <if test="dutyBelong !=null and dutyBelong !='' ">
+            and DUTY_BELONG = #{dutyBelong}
+        </if>
+        <if test="obuno !=null and obuno !='' ">
+            and OBUNO LIKE '%'|| #{obuno} ||'%'
+        </if>
+        <if test="vehplateColorCode !=null and vehplateColorCode !='' ">
+            and VEHPLATE_COLORCODE = #{vehplateColorCode}
+        </if>
+        <if test="vehplateNo !=null and vehplateNo !='' ">
+            and VEHPLATENO LIKE '%'|| #{vehplateNo} ||'%'
+        </if>
+        <if test="customerName !=null and customerName !='' ">
+            and CUSTOMER_NAME= #{customerName}
+        </if>
+        <if test="issuingAgent !=null and issuingAgent !='' ">
+            and ISSUING_AGENT= #{issuingAgent}
+        </if>
+        <if test="externalOrderNo !=null and externalOrderNo !=''">
+            and EXTERNAL_ORDERNO LIKE '%'|| #{externalOrderNo} ||'%'
+        </if>
+        <if test="etcno !=null and etcno !='' ">
+            and ETCNO= #{etcno}
+        </if>
+        <if test="changeStatus !=null and changeStatus !=''or changeStatus == 0  ">
+            and CHANGE_STATUS= #{changeStatus,jdbcType=INTEGER}
+        </if>
+        <if test="status !=null and status !=''or status == 0  ">
+            and STATUS= #{status,jdbcType=INTEGER}
+        </if>
+        <if test="etcStatusList !=null and etcStatusList !=''or etcStatusList == 0  ">
+            and ETC_STATUS_LIST= #{etcStatusList,jdbcType=INTEGER}
+        </if>
+        <if test="informCustomersFlag !=null and informCustomersFlag !=''or informCustomersFlag == 0  ">
+            and INFORM_CUSTOMERS_FLAG= #{informCustomersFlag,jdbcType=INTEGER}
+        </if>
+
+
+    </select>
+
+    <!--创建常规外查工单w添加删除标识创建时间更新时间-->
+    <insert id="doInsertOrder" parameterType="com.sutong.bjstjh.entity.AuditWorkOrderHistoryTable">
+        insert into
+        AUDIT_WORKORDER_HISTORY_TABLE
+         (
+         SERIAL_ID, PAST_WORKORDER_ID, EXTERNAL_ORDERNO_YEAR, EXTERNAL_ORDERNO, EVENT_TYPECODE, FEEDBACK_PARTY,           ISSUING_AGENT, CUSTOMER_NO, CUSTOMER_NAME, PROXYMERC_NAME, CERTIFICATENO, CONTACT_TELEPHONENO,                    DRIVINGLIC_ADDRESS, DRIVINGLIC_SYSTEM_ADDRESS, OBUNO, ETCNO, VEHPLATENO, VEHPLATE_COLORCODE,                      ACTUAL_PAYMENT_TYPE, ACTUAL_TRAFFIC_TYPE, SIGN_DATE, SIGN_EXPIRE_DATE, ISSUE_START_TIME, ISSUE_END_TIME,          ETC_DISABLE_DATE, OBU_DISABLE_DATE, FIRST_PASS_TIME, LAST_PASS_TIME, DUTY_BELONG,
+       INFORM_CUSTOMERS_FLAG, NOTIFICATION_BOOK_FLAG, CUSTOMER_INFO_FLAG, PROOF, SUM_PAY, SUM_TIME, STATUS,              OBU_ACCOUNT_STATUS, ETC_STATUS_LIST, VEH_STATUS_LIST, RM_FLAG, CREATE_TIME, UPDATE_TIME,
+       ACCOUNT_PASSAGE ,REMARK_STATUS,VEH_OWNER, CUSTOMER_ADDRESS,REPEAT_NUMBER,SMS_SEND_TIME,CUSTOMER_TRACK,
+         CHANGE_STATUS
+        )
+        values
+        (
+                #{serialId,jdbcType=VARCHAR},
+                #{pastWorkOrderId,jdbcType=VARCHAR},
+                #{externalOrderNoYear,jdbcType=VARCHAR},
+                #{externalOrderNo,jdbcType=VARCHAR},
+                #{eventTypeCode,jdbcType=VARCHAR},
+                #{feedbackParty,jdbcType=VARCHAR},
+                #{issuingAgent,jdbcType=VARCHAR},
+                #{customerNo,jdbcType=VARCHAR},
+                #{customerName,jdbcType=VARCHAR},
+                #{proxymercName,jdbcType=VARCHAR},
+                #{certificateNo,jdbcType=VARCHAR},
+                #{contactTelePhoneNo,jdbcType=VARCHAR},
+                #{drivingLicAddress,jdbcType=VARCHAR},
+                #{drivingLicSystemAddress,jdbcType=VARCHAR},
+                #{obuno,jdbcType=VARCHAR},
+                #{etcno,jdbcType=VARCHAR},
+                #{vehplateNo,jdbcType=VARCHAR},
+                #{vehplateColorCode,jdbcType=INTEGER},
+                #{actualPaymentType,jdbcType=INTEGER},
+                #{actualTrafficType,jdbcType=INTEGER},
+                #{signDate,jdbcType=VARCHAR,javaType=String},
+                #{signExpireDate,jdbcType=VARCHAR,javaType=String},
+                #{issueStartTime,jdbcType=VARCHAR,javaType=String},
+                #{issueEndTime,jdbcType=VARCHAR,javaType=String},
+                #{etcDisableDate,jdbcType=VARCHAR,javaType=String},
+                #{obuDisableDate,jdbcType=VARCHAR,javaType=String},
+                #{firstPassTime,jdbcType=VARCHAR,javaType=String},
+                #{lastPassTime,jdbcType=VARCHAR,javaType=String},
+                #{dutyBelong,jdbcType=INTEGER},
+                0,
+                #{notificationBookFlag,jdbcType=INTEGER},
+                #{customerInfoFlag,jdbcType=INTEGER},
+                #{proof,jdbcType=VARCHAR},
+                #{sumPay,jdbcType=DOUBLE,javaType=Double},
+                #{sumTime,jdbcType=VARCHAR,javaType=String},
+                0,
+                #{obuAccountStatus,jdbcType=INTEGER},
+                0,
+                #{vehStatusList,jdbcType=INTEGER},
+                0,
+                TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+                TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+
+                #{accountPassAge,jdbcType=VARCHAR},
+                #{remarkStatus,jdbcType=INTEGER},
+                #{vehOwner,jdbcType=VARCHAR},
+                #{customerAddress,jdbcType=VARCHAR},
+                #{repeatNumber,jdbcType=INTEGER},
+                #{smsSendTime,jdbcType=VARCHAR},
+                #{customerTrack,jdbcType=VARCHAR},
+                0
+                )
+    </insert>
+
+
+    <!-- 导入常规外查工单 添加删除标识创建时间更新时间w-->
+    <insert id="doInsertTable" parameterType="com.sutong.bjstjh.entity.AuditWorkOrderHistoryTable">
+        insert into
+        AUDIT_WORKORDER_HISTORY_TABLE
+        (SERIAL_ID, PAST_WORKORDER_ID, EXTERNAL_ORDERNO_YEAR, EXTERNAL_ORDERNO, EVENT_TYPECODE, FEEDBACK_PARTY,
+        ISSUING_AGENT, CUSTOMER_NO, CUSTOMER_NAME, PROXYMERC_NAME, CERTIFICATENO, CONTACT_TELEPHONENO,
+        DRIVINGLIC_ADDRESS, DRIVINGLIC_SYSTEM_ADDRESS,
+        OBUNO, ETCNO, VEHPLATENO, VEHPLATE_COLORCODE, ACTUAL_PAYMENT_TYPE, ACTUAL_TRAFFIC_TYPE, SIGN_DATE,
+        SIGN_EXPIRE_DATE, ISSUE_START_TIME, ISSUE_END_TIME, ETC_DISABLE_DATE, OBU_DISABLE_DATE, FIRST_PASS_TIME,
+        LAST_PASS_TIME, DUTY_BELONG,
+        INFORM_CUSTOMERS_FLAG, NOTIFICATION_BOOK_FLAG, CUSTOMER_INFO_FLAG, PROOF, SUM_PAY, SUM_TIME, STATUS,
+        OBU_ACCOUNT_STATUS, ETC_STATUS_LIST, VEH_STATUS_LIST, RM_FLAG, CREATE_TIME, UPDATE_TIME, ACCOUNT_PASSAGE
+        ,REMARK_STATUS, VEH_OWNER, CUSTOMER_ADDRESS,REPEAT_NUMBER,SMS_SEND_TIME,CUSTOMER_TRACK,CHANGE_STATUS
+        )
+        values
+        <foreach collection="list" item="date" separator=",">
+            (#{date.serialId,jdbcType=VARCHAR},
+            #{date.pastWorkOrderId,jdbcType=VARCHAR},
+            #{date.externalOrderNoYear,jdbcType=VARCHAR},
+            #{date.externalOrderNo,jdbcType=VARCHAR},
+            #{date.eventTypeCode,jdbcType=VARCHAR},
+            #{date.feedbackParty,jdbcType=VARCHAR},
+            #{date.issuingAgent,jdbcType=VARCHAR},
+            #{date.customerNo,jdbcType=VARCHAR},
+            #{date.customerName,jdbcType=VARCHAR},
+            #{date.proxymercName,jdbcType=VARCHAR},
+            #{date.certificateNo,jdbcType=VARCHAR},
+            #{date.contactTelePhoneNo,jdbcType=VARCHAR},
+            #{date.drivingLicAddress,jdbcType=VARCHAR},
+            #{date.drivingLicSystemAddress,jdbcType=VARCHAR},
+            #{date.obuno,jdbcType=VARCHAR},
+            #{date.etcno,jdbcType=VARCHAR},
+            #{date.vehplateNo,jdbcType=VARCHAR},
+            #{date.vehplateColorCode,jdbcType=INTEGER},
+            #{date.actualPaymentType,jdbcType=INTEGER},
+            #{date.actualTrafficType,jdbcType=INTEGER},
+            #{date.signDate,jdbcType=VARCHAR},
+            #{date.signExpireDate,jdbcType=VARCHAR},
+            #{date.issueStartTime,jdbcType=VARCHAR},
+            #{date.issueEndTime,jdbcType=VARCHAR},
+            #{date.etcDisableDate,jdbcType=VARCHAR},
+            #{date.obuDisableDate,jdbcType=VARCHAR},
+            #{date.firstPassTime,jdbcType=VARCHAR},
+            #{date.lastPassTime,jdbcType=VARCHAR},
+            #{date.dutyBelong,jdbcType=INTEGER},
+            #{date.informCustomersFlag,jdbcType=INTEGER},
+            #{date.notificationBookFlag,jdbcType=INTEGER},
+            #{date.customerInfoFlag,jdbcType=INTEGER},
+            #{date.proof,jdbcType=VARCHAR},
+            #{date.sumPay,jdbcType=DECIMAL},
+            #{date.sumTime,jdbcType=VARCHAR},
+            #{date.status,jdbcType=INTEGER},
+            #{date.obuAccountStatus,jdbcType=INTEGER},
+            #{date.etcStatusList,jdbcType=INTEGER},
+            #{date.vehStatusList,jdbcType=INTEGER},
+            0,
+            TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+            TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+            #{date.accountPassAge,jdbcType=VARCHAR},
+            #{date.remarkStatus,jdbcType=VARCHAR},
+            #{date.vehOwner,jdbcType=VARCHAR},
+            #{date.customerAddress,jdbcType=VARCHAR},
+            #{date.repeatNumber,jdbcType=INTEGER},
+            #{date.smsSendTime,jdbcType=VARCHAR},
+            #{date.customerTrack,jdbcType=VARCHAR},
+            #{date.changeStatus,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+
+    <!--        #{date.rmFlag,jdbcType=INTEGER},
+                #{date.createTime,jdbcType=VARCHAR},
+                #{date.updateTime,jdbcType=VARCHAR},-->
+    <!--  0,
+        TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+        TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),-->
+    <select id="selectBatchById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_WORKORDER_HISTORY_TABLE
+        where SERIAL_ID in
+        <foreach collection="list" item="dramaId" open="(" close=")" separator=",">
+            #{dramaId}
+        </foreach>
+    </select>
+
+    <!-- 根据外查单号批量查询常规外查工单信息 -->
+    <select id="doFindBatchById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_WORKORDER_HISTORY_TABLE
+        where EXTERNAL_ORDERNO in
+        <foreach collection="list" item="ids" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </select>
+    
+	 <!-- 根据OBU号批量查询车标不符工单信息 -->
+    <select id="doFindBatchByObuId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM AUDIT_WORKORDER_HISTORY_TABLE
+        WHERE OBUNO IN
+        <foreach collection="list" item="ids" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </select>
+    
+    <select id="getCardLiftingWorkOrder" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_WORKORDER_HISTORY_TABLE
+        where ETC_STATUS_LIST = 0 and RM_FLAG = 0
+    </select>
+
+    <select id="getAllList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_WORKORDER_HISTORY_TABLE
+        <where>
+            RM_FLAG = 0
+        </where>
+    </select>
+
+    <update id="updateInFormCustomersFlagById">
+        update AUDIT_WORKORDER_HISTORY_TABLE
+        <set>
+            INFORM_CUSTOMERS_FLAG = 0,UPDATE_TIME = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
+        </set>
+        where SERIAL_ID in
+        <foreach collection="list" item="dramaId" open="(" close=")" separator=",">
+            #{dramaId}
+        </foreach>
+    </update>
+
+    <update id="updateEtcStatus">
+        update AUDIT_WORKORDER_HISTORY_TABLE
+        <set>
+            ETC_STATUS_LIST = 1,UPDATE_TIME = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
+        </set>
+        where SERIAL_ID in
+        <foreach collection="list" item="dramaId" open="(" close=")" separator=",">
+            #{dramaId}
+        </foreach>
+    </update>
+
+
+    <select id="selectByInFormCustomersFlag" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_WORKORDER_HISTORY_TABLE
+        where INFORM_CUSTOMERS_FLAG = 1 and RM_FLAG = 0
+    </select>
+
+
+    <!-- 查询常规外查工单详情w-->
+    <!--AuditWorkOrderHistoryTable doFindHistoryResultInfoSerialId(String serialId);-->
+
+    <select id="doFindHistoryResultInfoSerialId" parameterType="java.lang.String"
+            resultType="com.sutong.bjstjh.entity.AuditWorkOrderHistoryTable">
+        select
+        SERIAL_ID serialId,
+        PAST_WORKORDER_ID pastWorkOrderId,
+        EXTERNAL_ORDERNO_YEAR externalOrderNoYear,
+        EXTERNAL_ORDERNO externalOrderNo,
+        EVENT_TYPECODE eventTypeCode,
+        FEEDBACK_PARTY feedbackParty,
+        ISSUING_AGENT issuingAgent,
+        CUSTOMER_NO customerNo,
+        CUSTOMER_NAME customerName,
+        PROXYMERC_NAME proxymercName,
+        CERTIFICATENO certificateNo,
+        CONTACT_TELEPHONENO contactTelePhoneNo,
+        DRIVINGLIC_ADDRESS drivingLicAddress,
+        DRIVINGLIC_SYSTEM_ADDRESS drivingLicSystemAddress,
+        OBUNO,
+        ETCNO,
+        VEHPLATENO,
+        VEHPLATE_COLORCODE vehplateColorCode,
+        ACTUAL_PAYMENT_TYPE actualPaymentType,
+        ACTUAL_TRAFFIC_TYPE actualTrafficType,
+        SIGN_DATE signDate,
+        SIGN_EXPIRE_DATE signExpireDate,
+        ISSUE_START_TIME issueStartTime,
+        ISSUE_END_TIME issueEndTime,
+        ETC_DISABLE_DATE etcDisableDate,
+        OBU_DISABLE_DATE obuDisableDate,
+        FIRST_PASS_TIME firstPassTime,
+        LAST_PASS_TIME lastPassTime,
+        DUTY_BELONG dutyBelong,
+        INFORM_CUSTOMERS_FLAG informCustomersFlag,
+        NOTIFICATION_BOOK_FLAG notificationBookFlag,
+        CUSTOMER_INFO_FLAG customerInfoFlag,
+        PROOF,
+        SUM_PAY sumPay,
+        SUM_TIME sumTime,
+        STATUS,
+        OBU_ACCOUNT_STATUS obuAccountStatus,
+        ETC_STATUS_LIST etcStatusList,
+        VEH_STATUS_LIST vehStatusList,
+        RM_FLAG rmFlag,
+        CREATE_TIME createTime,
+        UPDATE_TIME updateTime,
+        ACCOUNT_PASSAGE accountPassAge,
+        REMARK_STATUS remarkStatus,
+        VEH_OWNER vehOwner,
+        CUSTOMER_ADDRESS customerAddress,
+        REPEAT_NUMBER repeatNumber,
+        SMS_SEND_TIME smsSendTime,
+        CUSTOMER_TRACK customerTrack,
+        CHANGE_STATUS changeStatus
+        from
+        AUDIT_WORKORDER_HISTORY_TABLE
+        <where>
+            <if test="serialId!= null and serialId !=''">
+                and SERIAL_ID = #{serialId}
+            </if>
+            and RM_FLAG = 0
+        </where>
+    </select>
+    <!--&#45;&#45; SERIAL_ID = #{serialId,jdbcType=VARCHAR}-->
+
+    <!--修改常规外查补费状态-->
+    <update id="doUpdate1" parameterType="Map">
+
+        update AUDIT_WORKORDER_HISTORY_TABLE
+        set STATUS=#{status1},SUM_TIME=sysdate
+        where SERIAL_ID = #{serialId}
+
+
+    </update>
+
+    <!--修改常规外查变更状态-->
+    <update id="doUpdate2" parameterType="Map">
+
+        update AUDIT_WORKORDER_HISTORY_TABLE
+        set CHANGE_STATUS=#{status2}
+        where SERIAL_ID = #{serialId}
+
+
+    </update>
+
+    <!--查询追缴常规外查工单w 添加删除标识-->
+
+    <select id="doFindHistoryRecovered" resultType="com.sutong.bjstjh.entity.AuditWorkOrderHistoryTable"
+            parameterType="com.sutong.bjstjh.entity.AuditWorkOrderHistoryTable">
+        select
+        SERIAL_ID serialId,
+        PAST_WORKORDER_ID pastWorkOrderId,
+        EXTERNAL_ORDERNO_YEAR externalOrderNoYear,
+        EXTERNAL_ORDERNO externalOrderNo,
+        EVENT_TYPECODE eventTypeCode,
+        FEEDBACK_PARTY feedbackParty,
+        ISSUING_AGENT issuingAgent,
+        CUSTOMER_NO customerNo,
+        CUSTOMER_NAME customerName,
+        PROXYMERC_NAME proxymercName,
+        CERTIFICATENO certificateNo,
+        CONTACT_TELEPHONENO contactTelePhoneNo,
+        DRIVINGLIC_ADDRESS drivingLicAddress,
+        DRIVINGLIC_SYSTEM_ADDRESS drivingLicSystemAddress,
+        OBUNO,
+        ETCNO,
+        VEHPLATENO,
+        VEHPLATE_COLORCODE vehplateColorCode,
+        ACTUAL_PAYMENT_TYPE actualPaymentType,
+        ACTUAL_TRAFFIC_TYPE actualTrafficType,
+        SIGN_DATE signDate,
+        SIGN_EXPIRE_DATE signExpireDate,
+        ISSUE_START_TIME issueStartTime,
+        ISSUE_END_TIME issueEndTime,
+        ETC_DISABLE_DATE etcDisableDate,
+        OBU_DISABLE_DATE obuDisableDate,
+        FIRST_PASS_TIME firstPassTime,
+        LAST_PASS_TIME lastPassTime,
+        DUTY_BELONG dutyBelong,
+        INFORM_CUSTOMERS_FLAG informCustomersFlag,
+        NOTIFICATION_BOOK_FLAG notificationBookFlag,
+        CUSTOMER_INFO_FLAG customerInfoFlag,
+        PROOF,
+        SUM_PAY sumPay,
+        SUM_TIME sumTime,
+        STATUS,
+        OBU_ACCOUNT_STATUS obuAccountStatus,
+        ETC_STATUS_LIST etcStatusList,
+        VEH_STATUS_LIST vehStatusList,
+        RM_FLAG rmFlag,
+        CREATE_TIME createTime,
+        UPDATE_TIME updateTime,
+        ACCOUNT_PASSAGE accountPassAge,
+        REMARK_STATUS remarkStatus,
+
+        VEH_OWNER vehOwner,
+        CUSTOMER_ADDRESS customerAddress,
+        REPEAT_NUMBER repeatNumber,
+        SMS_SEND_TIME smsSendTime,
+        CUSTOMER_TRACK customerTrack,
+        CHANGE_STATUS changeStatus
+        from
+        AUDIT_WORKORDER_HISTORY_TABLE
+        <where>
+            (sum_time is null or sum_time = '')
+            <if test="eventTypeCode !=null and eventTypeCode !='' ">
+                and EVENT_TYPECODE = #{eventTypeCode}
+            </if>
+            <if test="dutyBelong !=null and dutyBelong !='' ">
+                and DUTY_BELONG = #{dutyBelong}
+            </if>
+            <if test="obuno !=null and obuno !='' ">
+                and OBUNO LIKE '%'|| #{obuno}||'%'
+            </if>
+            <if test="vehplateColorCode !=null and vehplateColorCode !='' ">
+                and VEHPLATE_COLORCODE = #{vehplateColorCode}
+            </if>
+            <if test="vehplateNo !=null and vehplateNo !='' ">
+                and VEHPLATENO LIKE '%'|| #{vehplateNo} ||'%'
+            </if>
+            <if test="buffer!=null and buffer!='' and buffer =='缓冲期' ">
+                and( <![CDATA[
+              (ETCNO is not null) AND (days(sysdate)-days(to_date( CREATE_TIME ,'YYYYMMDD')))<=  7  ]]>)
+            </if>
+            <if test="buffer!=null and buffer !='' and buffer =='非缓冲期' ">
+                and(
+                ( ETCNO is null ) or (days(sysdate)-days(to_date( CREATE_TIME ,'YYYYMMDD')))> 7
+                )
+            </if>
+            <if test="changeStatus !=null and changeStatus !=''or changeStatus == 0 ">
+                and CHANGE_STATUS = #{changeStatus}
+            </if>
+            <if test="status !=null and status !=''or status == 0 ">
+                and STATUS= #{status}
+            </if>
+            <if test="etcStatusList !=null and etcStatusList !=''or etcStatusList == 0 ">
+                and ETC_STATUS_LIST= #{etcStatusList}
+            </if>
+
+            <if test="informCustomersFlag !=null and informCustomersFlag !=''or informCustomersFlag == 0 ">
+                and INFORM_CUSTOMERS_FLAG= #{informCustomersFlag}
+            </if>
+            <if test="customerName !=null and customerName !='' ">
+                and CUSTOMER_NAME= #{customerName}
+            </if>
+            <if test="issuingAgent !=null and issuingAgent !='' ">
+                and ISSUING_AGENT= #{issuingAgent}
+            </if>
+            <if test="externalOrderNo !=null and externalOrderNo !=''">
+                and EXTERNAL_ORDERNO LIKE '%'|| #{externalOrderNo} ||'%'
+            </if>
+            <if test="etcno !=null and etcno !='' ">
+                and ETCNO= #{etcno}
+            </if>
+            and RM_FLAG = 0
+        </where>
+    </select>
+
+
+    <!--  常规外查工单责任归属统计-->
+    <select id="doFindHistoryTotal" resultType="com.sutong.bjstjh.entity.StatisticalInfo">
+		(SELECT
+			DICT_NUMBER as dictNumber,
+			COUNTNUM
+		FROM
+			AUDIT_DICTIONARY_INFO_TABLE tablea
+		LEFT JOIN (
+			SELECT
+				DUTY_BELONG,
+				COUNT(1) AS countnum
+			FROM
+				AUDIT_WORKORDER_HISTORY_TABLE
+			GROUP BY
+				DUTY_BELONG ) tableb ON
+			tablea.DICT_NUMBER = tableb.DUTY_BELONG
+		WHERE
+			tablea.dict_type = 'DICT_DUTY_BELONG' )
+		UNION ALL (
+		SELECT
+		0 AS DICT_NUMBER,
+		COUNT(*) countnum
+		FROM
+		AUDIT_WORKORDER_HISTORY_TABLE )
+	</select>
+
+    <!--常规外查工单导出查询-->
+    <select id="doFindHistoryExcel" resultMap="BaseResultMap"
+            parameterType="com.sutong.workorder.model.AuditHistoryExcelDTO">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_WORKORDER_HISTORY_TABLE
+        <where>
+            <if test="eventTypeCode != null and eventTypeCode != ''">
+                and EVENT_TYPECODE = #{eventTypeCode}
+            </if>
+            <if test="dutyBelong != null and dutyBelong != ''">
+                and DUTY_BELONG = #{dutyBelong}
+            </if>
+            <if test="obuNo != null and obuNo != ''">
+                and OBUNO LIKE '%'||#{obuNo}||'%'
+            </if>
+            <if test="vehplateNo != null and vehplateNo != ''">
+                and VEHPLATENO LIKE '%'||#{vehplateNo}||'%'
+            </if>
+            <if test="vehplateColorCode != null and vehplateColorCode != ''">
+                and VEHPLATE_COLORCODE = #{vehplateColorCode}
+            </if>
+            <if test="differentFlag != null and differentFlag !='' and differentFlag == 1">
+                and EXTERNAL_ORDERNO is not null
+            </if>
+            <if test="differentFlag != null and differentFlag !='' and differentFlag == 2">
+                and EXTERNAL_ORDERNO is null
+            </if>
+            <if test="changeStatus !=null and changeStatus !=''or changeStatus == 0  ">
+                and CHANGE_STATUS= #{changeStatus,jdbcType=INTEGER}
+            </if>
+            <if test="status !=null and status !=''or status == 0  ">
+                and STATUS= #{status,jdbcType=INTEGER}
+            </if>
+            <if test="etcStatusList !=null and etcStatusList !=''or etcStatusList == 0  ">
+                and ETC_STATUS_LIST= #{etcStatusList,jdbcType=INTEGER}
+            </if>
+            <if test="informCustomersFlag !=null and informCustomersFlag !=''or informCustomersFlag == 0  ">
+                and INFORM_CUSTOMERS_FLAG= #{informCustomersFlag,jdbcType=INTEGER}
+            </if>
+            <if test="customerName !=null and customerName !='' ">
+                and CUSTOMER_NAME= #{customerName}
+            </if>
+            <if test="issuingAgent !=null and issuingAgent !='' ">
+                and ISSUING_AGENT= #{issuingAgent}
+            </if>
+            <if test="externalOrderNo !=null and externalOrderNo !=''">
+                and EXTERNAL_ORDERNO LIKE '%'|| #{externalOrderNo} ||'%'
+            </if>
+            <if test="etcno !=null and etcno !='' ">
+                and ETCNO= #{etcno}
+            </if>
+            and RM_FLAG = 0
+        </where>
+    </select>
+
+</mapper>
+
+
+
+
+
+

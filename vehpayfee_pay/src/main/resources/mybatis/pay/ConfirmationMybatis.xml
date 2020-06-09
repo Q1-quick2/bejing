@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.pay.mapper.ConfirmationMapper" >
+    <resultMap id="BaseResultMap" type="com.sutong.bjstjh.entity.ConfirmationEntity">
+      <id column="PAY_ID" jdbcType="VARCHAR" property="payId" />
+      <result column="PAY_dispose_Time" jdbcType="VARCHAR" property="payDisposeTime" />
+      <result column="PAY_dispose_Site" jdbcType="VARCHAR" property="payDisposeSite" />
+      <result column="PAY_plate_Number" jdbcType="VARCHAR" property="payPlateNumber" />
+      <result column="PAY_Car_type" jdbcType="VARCHAR" property="payCarType" />
+      <result column="PAY_Car_category" jdbcType="VARCHAR" property="payCarCategory" />
+      <result column="Pay_plate_number_color" jdbcType="VARCHAR" property="payPlateNumberColor" />
+      <result column="PAY_Vehicle_owner" jdbcType="VARCHAR" property="payVehicleOwner" />
+      <result column="pay_driver_Name" jdbcType="VARCHAR" property="payDriverName" />
+      <result column="PAY_RFID" jdbcType="VARCHAR" property="payRfid" />
+      <result column="pay_driver_Number" jdbcType="VARCHAR" property="payDriverNumber" />
+      <result column="pay_card_Number" jdbcType="VARCHAR" property="payCardNumber" />
+      <result column="Pay_count" jdbcType="VARCHAR" property="payCount" />
+      <result column="Pay_info" jdbcType="VARCHAR" property="payInfo" />
+      <result column="pay_name" jdbcType="VARCHAR" property="payName" />
+      <result column="pay_phone" jdbcType="VARCHAR" property="payPhone" />
+      <result column="pay_date" jdbcType="VARCHAR" property="payDate" />
+      <result column="pay_total" jdbcType="VARCHAR" property="payTotal" />
+      <result column="pay_conductor" jdbcType="VARCHAR" property="payConductor" />
+      <result column="pay_processing_unit" jdbcType="VARCHAR" property="payProcessingUnit" />
+      <result column="pay_payPike" jdbcType="VARCHAR" property="payPike" />
+      <result column="PAY_END_TIME" jdbcType="VARCHAR" property="payEndTime" />
+      <result column="pay_engine_Number" jdbcType="VARCHAR" property="payEngineNumber" />
+      <result column="PAY_card_Number" jdbcType="VARCHAR" property="payCardNumber" />
+      <result column="PAY_Site" jdbcType="VARCHAR" property="paySite" />
+      <result column="PAY_Time" jdbcType="VARCHAR" property="payTime" />
+      <result column="AUDIT_PAY_CONFIRMATION" jdbcType="VARCHAR" property="auditPayConfirmation" />
+    </resultMap>
+
+
+
+
+    <!--高速公路通行费补费确认单   保存-->
+    <insert id="doUpdateConfirmationInfo">
+        INSERT INTO AUDIT_PAY_CONFIRMATION
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+        PAY_ID,
+        PAY_dispose_Time,
+        PAY_dispose_Site,
+        PAY_plate_Number,
+        PAY_Car_type,
+        PAY_Car_category,
+        Pay_plate_number_color,
+        PAY_Vehicle_owner,
+        pay_driver_Name,
+        PAY_RFID,
+        pay_engine_Number,
+        pay_driver_Number,
+        PAY_card_Number,
+        PAY_Site,
+        PAY_Time,
+        Pay_count,
+        Pay_info,
+        pay_name,
+        pay_phone,
+        pay_date,
+        pay_total,
+        pay_conductor,
+        pay_processing_unit,
+        pay_payPike,
+        PAY_END_TIME,
+        AUDIT_PAY_CONFIRMATION
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+        #{payId},
+        #{payDisposeTime},
+        #{payDisposeSite},
+        #{payPlateNumber},
+        #{payCarType},
+        #{payCarCategory},
+        #{payPlateNumberColor},
+        #{payVehicleOwner},
+        #{payDriverName},
+        #{payRfid},
+        #{payEngineNumber},
+        #{payDriverNumber},
+        #{payCardNumber},
+        #{paySite},
+        #{payTime},
+        #{payCount},
+        #{payInfo},
+        #{payName},
+        #{payPhone},
+        #{payDate},
+        #{payTotal},
+        #{payConductor},
+        #{payProcessingUnit},
+        #{payPike},
+        #{payEndTime},
+        #{auditPayConfirmation}
+        </trim>
+    </insert>
+
+
+
+
+
+    <!--查询是否存在-->
+    <select id="doConfirmationInfo" resultMap="BaseResultMap" parameterType="com.sutong.bjstjh.entity.ConfirmationEntity">
+     SELECT * FROM AUDIT_PAY_CONFIRMATION WHERE PAY_RFID = #{obu}
+    </select>
+
+
+    <!--高速公路通行费补费确认单   修改-->
+    <update id="doUpdateConfirmat">
+        UPDATE AUDIT_PAY_CONFIRMATION SET
+        PAY_ID = #{payId},
+        PAY_dispose_Time= #{payDisposeTime},
+        PAY_dispose_Site= #{payDisposeSite},
+        PAY_plate_Number= #{payPlateNumber},
+        PAY_Car_type= #{payCarType},
+        PAY_Car_category= #{payCarCategory},
+        Pay_plate_number_color= #{payPlateNumberColor},
+        PAY_Vehicle_owner= #{payVehicleOwner},
+        pay_driver_Name= #{payDriverName},
+        pay_engine_Number= #{payEngineNumber},
+        pay_driver_Number= #{payDriverNumber},
+        PAY_card_Number= #{payCardNumber},
+        PAY_Site= #{paySite},
+        PAY_Time= #{payTime},
+        Pay_count= #{payCount},
+        Pay_info= #{payInfo},
+        pay_name= #{payName},
+        pay_phone= #{payPhone},
+        pay_date= #{payDate},
+        pay_total= #{payTotal},
+        pay_conductor= #{payConductor},
+        pay_processing_unit= #{payProcessingUnit},
+        pay_payPike= #{payPike},
+        PAY_END_TIME= #{payEndTime},
+        AUDIT_PAY_CONFIRMATION= #{auditPayConfirmation}
+        WHERE PAY_RFID = #{payRfid}
+    </update>
+
+
+
+
+
+
+
+
+
+</mapper>
+
+
+
+

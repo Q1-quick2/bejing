@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.workorder.mapper.AuditTransTableEntityMapper">
+    <resultMap id="BaseResultMap" type="com.sutong.workorder.entity.AuditTransTableEntity">
+        <id column="TRANSID" property="transId" jdbcType="VARCHAR"/>
+        <result column="WORKORDERID" property="workOrderId" jdbcType="VARCHAR"/>
+        <result column="TRANS_CODE" property="transCode" jdbcType="VARCHAR"/>
+        <result column="ROAD_ID" property="roadId" jdbcType="INTEGER"/>
+        <result column="ROAD_NAME" property="roadName" jdbcType="VARCHAR"/>
+        <result column="COLLECTFEE_MODUEL_CODE" property="collectFeeModuelCode" jdbcType="VARCHAR"/>
+        <result column="COLLECTFEE_MODUEL_NAME" property="collectFeeModuelName" jdbcType="VARCHAR"/>
+        <result column="REAL_VEHPLATENO" property="realVehplateNo" jdbcType="VARCHAR"/>
+        <result column="REAL_VEH_COLOR" property="realVehColor" jdbcType="INTEGER"/>
+        <result column="IDENT_VEHPLATENO" property="identVehplateNo" jdbcType="VARCHAR"/>
+        <result column="IDENT_VEH_COLOR" property="identVehColor" jdbcType="INTEGER"/>
+        <result column="TRANSTIME" property="transTime" jdbcType="VARCHAR"/>
+        <result column="VEHICLE_TYPE" property="vehicleType" jdbcType="INTEGER"/>
+        <result column="IDENT_VEH_TYPE" property="identVehType" jdbcType="INTEGER"/>
+        <result column="PASS_MEDIA_TYPE" property="passMediaType" jdbcType="INTEGER"/>
+        <result column="PASS_MEDIA_CODE" property="passMediaCode" jdbcType="VARCHAR"/>
+        <result column="OBUNO" property="obuNo" jdbcType="VARCHAR"/>
+        <result column="ETCNO_CPCNO" property="etcNoCpcNo" jdbcType="VARCHAR"/>
+        <result column="VEH_DENTIFICATION_CODE" property="vehDentificationCode" jdbcType="VARCHAR"/>
+        <result column="IMG_ADDRSS" property="imgAddress" jdbcType="VARCHAR"/>
+        <result column="PREVAILING_PROVINCES" property="prevailingProvinces" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        TRANSID,WORKORDERID,TRANS_CODE,ROAD_ID,ROAD_NAME,COLLECTFEE_MODUEL_CODE,COLLECTFEE_MODUEL_NAME,
+        REAL_VEHPLATENO,REAL_VEH_COLOR,IDENT_VEHPLATENO,IDENT_VEH_COLOR,TRANSTIME,VEHICLE_TYPE,IDENT_VEH_TYPE,
+        PASS_MEDIA_TYPE,PASS_MEDIA_CODE,OBUNO,ETCNO_CPCNO,VEH_DENTIFICATION_CODE,IMG_ADDRSS
+    </sql>
+
+    <select id="selectByQuery" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_TRANS_TABLE
+        <where>
+            <if test="prevailingProvinces !=null and prevailingProvinces != ''">
+                and PREVAILING_PROVINCES = #{prevailingProvinces}
+            </if>
+            <if test="roadName != null and roadName != ''">
+                and ROAD_NAME = #{roadName}
+            </if>
+            <if test="transStartTime !=null and transStartTime !='' and transEndTime !=null and transEndTime !=''">
+                and TRANSTIME &gt;= #{transStartTime} and TRANSTIME &lt;= #{transEndTime}
+            </if>
+        </where>
+    </select>
+
+</mapper>

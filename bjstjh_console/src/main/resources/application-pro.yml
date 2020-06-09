@@ -1,0 +1,52 @@
+server:
+  port: 8334
+
+#dubbo配置
+dubbo:
+    application:
+      name: web_console
+    registry:
+      address: zookeeper://127.0.0.1:2181 # 默认127.0.0.1
+    metadata-report:
+      address: zookeeper://127.0.0.1:2181 # 默认127.0.0.1
+    protocol:
+      name: dubbo
+      port: "20870"
+    version: 1.0.0
+
+#spring配置
+spring:
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+
+#短信接口
+sms:
+  ip: "http://192.168.1.31:8305/"
+  mothed: "sms_Send"
+  SOAPActionURI: "http://tempuri.org/sms_Send"
+  Namespace: "http://tempuri.org/"
+  ChannelID: "40"
+
+#发行接口（测试环境）
+issue:
+  clientIp: "172.20.53.103"
+  url: "http://172.20.53.136:38080/"
+  #登陆名
+  operatorNo: "000000"
+  #密码
+  operatorPassWord: "000000qaz"
+  sessionKey: 0b9486484d6c9aaf2f737a6cfc4e9be2
+
+#稽查补缴交易同步接口（B20100173）
+#开票申请接口（B20100023）
+#根据交易编号查询交易信息（B20100174）
+invoice:
+  #ip地址
+  url: "http://172.20.53.134:38080/"
+
+#swagger配置
+swagger:
+  base-package: com.sutong

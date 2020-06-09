@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditRealVehInfo.mapper.AuditRealVehInfoMapper" >
+
+
+    <resultMap id="BaseResultMap" type="com.sutong.bjstjh.entity.AuditRealVehInfo">
+        <id column="REAL_VEHINFO_ID" property="realVehInfoId" jdbcType="VARCHAR"/>
+        <result column="OBUNO" property="obuNo" jdbcType="VARCHAR"/>
+        <result column="ETCNO" property="etcNo" jdbcType="VARCHAR"/>
+        <result column="VEHTYPE" property="vehType" jdbcType="SMALLINT"/>
+        <result column="VEH_CLASS_TYPECODE" property="vehClassTypeCode" jdbcType="SMALLINT"/>
+        <result column="VEHPLATENO" property="vehPlateNo" jdbcType="VARCHAR"/>
+        <result column="VEH_COLORCODE" property="vehColorCode" jdbcType="SMALLINT"/>
+        <result column="MINISTRY_WORKORDER_FOREIGN_ID" property="ministryWorkOrderForeignId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <insert id="doInsertAuditRealVehInfo" parameterType="com.sutong.bjstjh.entity.AuditRealVehInfo">
+        insert into AUDIT_REAL_VEHINFO_TABLE(REAL_VEHINFO_ID,OBUNO,ETCNO,VEHTYPE,VEH_CLASS_TYPECODE,VEHPLATENO,VEH_COLORCODE,MINISTRY_WORKORDER_FOREIGN_ID)
+        values(#{realVehInfoId,jdbcType=VARCHAR},#{obuNo,jdbcType=VARCHAR},#{etcNo,jdbcType=VARCHAR},#{vehType,jdbcType=SMALLINT},
+        #{vehClassTypeCode,jdbcType=SMALLINT},#{vehPlateNo,jdbcType=VARCHAR},#{vehColorCode,jdbcType=SMALLINT},#{ministryWorkOrderForeignId,jdbcType=VARCHAR})
+    </insert>
+<!--实际车辆信息查询-->
+    <select id="doFindAuditRealVehInfo" parameterType="String" resultMap="BaseResultMap">
+        select REAL_VEHINFO_ID,OBUNO,ETCNO,VEHTYPE,VEH_CLASS_TYPECODE,VEHPLATENO,VEH_COLORCODE,MINISTRY_WORKORDER_FOREIGN_ID from AUDIT_REAL_VEHINFO_TABLE where MINISTRY_WORKORDER_FOREIGN_ID = #{ministryWorkOrderForeignId}
+    </select>
+<!--实际车辆信息删除-->
+    <delete id="doDeleteAuditRealVehInfoById" parameterType="String">
+
+        delete from AUDIT_REAL_VEHINFO_TABLE where MINISTRY_WORKORDER_FOREIGN_ID = #{ministryWorkOrderForeignId}
+    </delete>
+</mapper>

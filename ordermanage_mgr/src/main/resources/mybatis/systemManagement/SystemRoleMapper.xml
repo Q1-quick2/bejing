@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sutong.systemManagement.mapper.SystemRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.sutong.systemManagement.model.entity.AuditSystemRoleManage">
+        <id column="ROLE_ID" property="roleId" jdbcType="VARCHAR"/>
+        <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR"/>
+        <result column="SUBSIDIARY_ORGAN" property="subsidiaryOrgan" jdbcType="VARCHAR"/>
+        <result column="ROLE_POWER" property="rolePower" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+       ROLE_ID,ROLE_NAME,SUBSIDIARY_ORGAN,ROLE_POWER
+    </sql>
+    <!--查询角色管理-->
+    <select id="doFindRoleManage" resultMap="BaseResultMap"
+            parameterType="com.sutong.systemManagement.model.entity.AuditSystemRoleManage">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_SYSTEM_ROLE_MANAGE_TABLE
+        <where>
+            <if test="roleName !=null and roleName !=''">
+                and ROLE_NAME= #{roleName}
+            </if>
+            <if test="subsidiaryOrgan !=null and subsidiaryOrgan != ''">
+                and SUBSIDIARY_ORGAN = #{subsidiaryOrgan}
+            </if>
+        </where>
+    </select>
+
+    <!--创建角色管理-->
+    <insert id="doInsertRoleManage"
+            parameterType="com.sutong.systemManagement.model.entity.AuditSystemRoleManage">
+        insert into AUDIT_SYSTEM_ROLE_MANAGE_TABLE
+        (
+        <include refid="Base_Column_List"/>
+        )
+        values
+        (
+        #{roleId,jdbcType=VARCHAR},
+        #{roleName,jdbcType=VARCHAR},
+        #{subsidiaryOrgan,jdbcType=VARCHAR},
+        #{rolePower,jdbcType=VARCHAR}
+        )
+
+    </insert>
+
+    <!--查询角色管理详情-->
+    <select id="doFindRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_SYSTEM_ROLE_MANAGE_TABLE
+        <where>
+            <if test="roleId !=null and roleId !=''">
+                and ROLE_ID = #{roleId}
+            </if>
+        </where>
+    </select>
+    <!--修改角色管理-->
+    <update id="doUpdateRoleId" parameterType="com.sutong.systemManagement.model.entity.AuditSystemRoleManage">
+        update AUDIT_SYSTEM_ROLE_MANAGE_TABLE
+        <set>
+            <if test="roleName !=null and roleName !=''">
+                ROLE_NAME= #{roleName},
+            </if>
+            <if test="subsidiaryOrgan !=null and subsidiaryOrgan != ''">
+                SUBSIDIARY_ORGAN = #{subsidiaryOrgan},
+            </if>
+            <if test="rolePower !=null and rolePower != ''">
+                ROLE_POWER = #{rolePower},
+            </if>
+        </set>
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </update>
+
+    <!--删除角色管理-->
+    <delete id="doDeleteRoleId" parameterType="java.lang.String">
+        delete AUDIT_SYSTEM_ROLE_MANAGE_TABLE
+        <where>
+            <if test="roleId !=null and roleId !=''">
+                and ROLE_ID = #{roleId}
+            </if>
+        </where>
+    </delete>
+
+    <!--根据用户id查询对应角色-->
+    <select id="doFindRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        *
+        from
+        AUDIT_SYSTEM_USER_ROLE_MANAGE_TABLE ur ,
+        AUDIT_SYSTEM_ROLE_MANAGE_TABLE r
+        <where>
+            <if test="userId !=null and userId !=''">
+                and ur.ROLE_ID=r.ROLE_ID and ur.USER_ID = #{userId}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

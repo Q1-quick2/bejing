@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.dodgingtoll.mapper.AuditPastOrderInfoMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.dodgingtoll.model.AuditPastOrderInfo" >
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="PAST_ORDER_ID" property="pastOrderId" jdbcType="VARCHAR" />
+        <result column="ENSTATION" property="enstation" jdbcType="VARCHAR" />
+        <result column="EXSTATION" property="exstation" jdbcType="VARCHAR" />
+        <result column="TRANS_VEHICLE_TYPE" property="transVehicleType" jdbcType="VARCHAR" />
+        <result column="DO_VEHICLE_TYPE" property="doVehicleType" jdbcType="VARCHAR" />
+        <result column="VEHICLE_TYPE" property="vehicleType" jdbcType="VARCHAR" />
+        <result column="TRANS_VEHICLE_ID" property="transVehicleId" jdbcType="VARCHAR" />
+        <result column="DO_VEHICLE_ID" property="doVehicleId" jdbcType="VARCHAR" />
+        <result column="TRANS_SUBTR_FEE" property="transSubtrFee" jdbcType="VARCHAR" />
+        <result column="oweFeeInfo" property="oweFeeInfo" jdbcType="VARCHAR" />
+        <result column="SUBTR_FEE" property="subtrFee" jdbcType="VARCHAR" />
+        <result column="TRANS_TIME" property="transTime" jdbcType="VARCHAR" />
+        <result column="TRANS_OBU_ID" property="transObuId" jdbcType="VARCHAR" />
+        <result column="TRANS_CARD_ID" property="transCardId" jdbcType="VARCHAR" />
+        <result column="orderStatusInfo" property="orderStatusInfo" jdbcType="VARCHAR" />
+        <result column="VEHICLE_COLOUR" property="vehicleColour" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        ID, PAST_ORDER_ID, ENSTATION, EXSTATION, TRANS_VEHICLE_TYPE, DO_VEHICLE_TYPE, VEHICLE_TYPE, 
+        TRANS_VEHICLE_ID, DO_VEHICLE_ID, TRANS_SUBTR_FEE, OWE_FEE as oweFeeInfo, SUBTR_FEE, TRANS_TIME,
+        TRANS_OBU_ID, TRANS_CARD_ID,ORDER_STATUS as orderStatusInfo,VEHICLE_COLOUR
+    </sql>
+    <select id="getPaetInfoListByObu" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_PAST_ORDER_INFO
+        where TRANS_OBU_ID = #{obuId,jdbcType=VARCHAR}
+
+    </select>
+
+    <select id="getByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select 
+        <include refid="Base_Column_List" />
+        from AUDIT_PAST_ORDER_INFO
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <update id="doUpdateColorById" parameterType="java.util.HashMap">
+        update AUDIT_PAST_ORDER_INFO
+        <set >
+            <if test="pastOrderId != null" >
+                PAST_ORDER_ID = #{pastOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="enstation != null" >
+                ENSTATION = #{enstation,jdbcType=VARCHAR},
+            </if>
+            <if test="exstation != null" >
+                EXSTATION = #{exstation,jdbcType=VARCHAR},
+            </if>
+            <if test="transVehicleType != null" >
+                TRANS_VEHICLE_TYPE = #{transVehicleType,jdbcType=VARCHAR},
+            </if>
+            <if test="doVehicleType != null" >
+                DO_VEHICLE_TYPE = #{doVehicleType,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleType != null" >
+                VEHICLE_TYPE = #{vehicleType,jdbcType=VARCHAR},
+            </if>
+            <if test="transVehicleId != null" >
+                TRANS_VEHICLE_ID = #{transVehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="doVehicleId != null" >
+                DO_VEHICLE_ID = #{doVehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="transSubtrFee != null" >
+                TRANS_SUBTR_FEE = #{transSubtrFee,jdbcType=VARCHAR},
+            </if>
+            <if test="oweFee != null" >
+                OWE_FEE = #{oweFee,jdbcType=VARCHAR},
+            </if>
+            <if test="subtrFee != null" >
+                SUBTR_FEE = #{subtrFee,jdbcType=VARCHAR},
+            </if>
+            <if test="transTime != null" >
+                TRANS_TIME = #{transTime,jdbcType=VARCHAR},
+            </if>
+            <if test="transObuId != null" >
+                TRANS_OBU_ID = #{transObuId,jdbcType=VARCHAR},
+            </if>
+            <if test="transCardId != null" >
+                TRANS_CARD_ID = #{transCardId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null" >
+                ORDER_STATUS = #{orderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="payBackFeeId != null" >
+                PAY_BACK_FEE_ID = #{payBackFeeId,jdbcType=VARCHAR},
+            </if>
+            <if test="payBackFeeReality != null" >
+                PAY_BACK_FEE_REALITY = #{payBackFeeReality,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleColour != null" >
+                VEHICLE_COLOUR = #{vehicleColour,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where
+        ID IN
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+
+    </update>
+
+
+</mapper>

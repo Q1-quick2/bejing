@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.workorder.mapper.AuditChargePathInfoEntityMapper">
+
+    <resultMap id="BaseResultMap" type="com.sutong.workorder.entity.AuditChargePathInfoEntity">
+        <id column="KEY_ID" property="keyId" jdbcType="VARCHAR"/>
+        <result column="WORKORDERID" property="workOrderId" jdbcType="VARCHAR"/>
+        <result column="CHARGE_UNIT_NUMBER" property="chargeUnitNumber" jdbcType="VARCHAR"/>
+        <result column="CHARGE_UNIT_NAME" property="chargeUnitName" jdbcType="VARCHAR"/>
+        <result column="PASSAGE_TIME" property="passageTime" jdbcType="VARCHAR"/>
+        <result column="TOLL_RECEIVABLE" property="tollReceivable" jdbcType="INTEGER"/>
+        <result column="FITTING_FLAG" property="fittingFlag" jdbcType="INTEGER"/>
+        <result column="CHARGE_AMOUNT" property="chargeAmount" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR"/>
+        <result column="RM_FLAG" property="rmFlag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        KEY_ID,WORKORDERID,CHARGE_UNIT_NUMBER,CHARGE_UNIT_NAME,PASSAGE_TIME,TOLL_RECEIVABLE,FITTING_FLAG,CHARGE_AMOUNT,CREATE_TIME,UPDATE_TIME,RM_FLAG
+    </sql>
+
+    <select id="selectListByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from AUDIT_CHARG_PATH_INFO
+        where WORKORDERID = #{workOrderId}
+    </select>
+
+</mapper>

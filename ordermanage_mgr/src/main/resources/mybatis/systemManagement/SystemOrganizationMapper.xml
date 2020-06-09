@@ -1,0 +1,92 @@
+    <?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sutong.systemManagement.mapper.SystemOrganizationMapper">
+
+    <resultMap id="BaseResultMap" type="com.sutong.systemManagement.model.entity.AuditSystemOrganizationManage">
+        <id column="ORGANIZATION_ID" property="organizationId" jdbcType="VARCHAR"/>
+        <result column="ORGANIZATION_NAME" property="organizationName" jdbcType="VARCHAR"/>
+        <result column="ORGANIZATION_TYPE" property="organizationType" jdbcType="VARCHAR"/>
+        <result column="ORGANIZATION_GRADE" property="organizationGrade" jdbcType="VARCHAR"/>
+        <result column="REMARKS" property="remarks" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+       ORGANIZATION_ID,ORGANIZATION_NAME,ORGANIZATION_TYPE,ORGANIZATION_GRADE,REMARKS
+    </sql>
+    <!--根据条件查询系统管理-->
+    <select id="doFindOrganizationManage" resultMap="BaseResultMap"
+            parameterType="com.sutong.systemManagement.model.entity.AuditSystemOrganizationManage">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_SYSTEM_ORGANIZATION_MANAGE_TABLE
+        <where>
+            <if test="organizationName !=null and organizationName !=''">
+                and ORGANIZATION_NAME like '%'||#{organizationName}||'%'
+            </if>
+            <if test="organizationType !=null and organizationType != ''">
+                and ORGANIZATION_TYPE like '%'||#{organizationType}||'%'
+            </if>
+        </where>
+    </select>
+
+    <!--创建机构管理-->
+    <insert id="doInsertOrganizationManage"
+            parameterType="com.sutong.systemManagement.model.entity.AuditSystemOrganizationManage">
+        insert into AUDIT_SYSTEM_ORGANIZATION_MANAGE_TABLE
+        (
+        <include refid="Base_Column_List"/>
+        )
+        values
+        (
+        #{organizationId,jdbcType=VARCHAR},
+        #{organizationName,jdbcType=VARCHAR},
+        #{organizationType,jdbcType=VARCHAR},
+        #{organizationGrade,jdbcType=VARCHAR},
+        #{remarks,jdbcType=VARCHAR}
+        )
+
+    </insert>
+
+    <!--查询机构管理详情-->
+    <select id="doFindOrganizationId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_SYSTEM_ORGANIZATION_MANAGE_TABLE
+        <where>
+            <if test="organizationId !=null and organizationId !=''">
+                and ORGANIZATION_ID = #{organizationId}
+            </if>
+        </where>
+    </select>
+    <!--修改机构管理-->
+    <update id="doUpdateOrganizationId"
+            parameterType="com.sutong.systemManagement.model.entity.AuditSystemOrganizationManage">
+        update AUDIT_SYSTEM_ORGANIZATION_MANAGE_TABLE
+        <set>
+            <if test="organizationName !=null and organizationName !=''">
+                ORGANIZATION_NAME= #{organizationName,jdbcType=VARCHAR},
+            </if>
+            <if test="organizationType !=null and organizationType != ''">
+                ORGANIZATION_TYPE = #{organizationType,jdbcType=VARCHAR},
+            </if>
+            <if test="organizationGrade !=null and organizationGrade != ''">
+                ORGANIZATION_GRADE = #{organizationGrade,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks !=null and remarks != ''">
+                REMARKS = #{remarks,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ORGANIZATION_ID = #{organizationId,jdbcType=VARCHAR}
+    </update>
+    <!--删除机构管理-->
+    <delete id="doDeleteOrganizationId" parameterType="java.lang.String">
+        delete AUDIT_SYSTEM_ORGANIZATION_MANAGE_TABLE
+        <where>
+            <if test="organizationId !=null and organizationId !=''">
+                and ORGANIZATION_ID = #{organizationId}
+            </if>
+        </where>
+    </delete>
+
+
+</mapper>

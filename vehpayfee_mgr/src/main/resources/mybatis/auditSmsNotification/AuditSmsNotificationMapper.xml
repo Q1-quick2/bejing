@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditSmsNotification.mapper.AuditSmsNotificationMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.auditSmsNotification.model.AuditSmsNotification" >
+        <id column="SMS_ID" property="smsId" jdbcType="VARCHAR" />
+        <result column="SMS_TYPE" property="smsType" jdbcType="VARCHAR" />
+        <result column="PAYER_NAME" property="payerName" jdbcType="VARCHAR" />
+        <result column="PAYER_PHONE" property="payerPhone" jdbcType="VARCHAR" />
+        <result column="PAY_RECORD" property="payRecord" jdbcType="VARCHAR" />
+        <result column="PAY_AMOUNT" property="payAmount" jdbcType="INTEGER" />
+        <result column="PAY_TIME" property="payTime" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="PAY_MODE" property="payMode" jdbcType="VARCHAR" />
+        <result column="EVASION_TIME" property="evasionTime" jdbcType="VARCHAR" />
+        <result column="EVASION_BEHAVIOR" property="evasionBehavior" jdbcType="VARCHAR" />
+        <result column="PAY_HISTORY" property="payHistory" jdbcType="VARCHAR" />
+        <result column="SEND_SMS_STATUS" property="sendSmsStatus" jdbcType="VARCHAR" />
+        <result column="VEHICLE_NUMBER" property="vehicleNumber" jdbcType="VARCHAR" />
+        <result column="VEHICLE_COLOUR" property="vehicleColour" jdbcType="VARCHAR" />
+        <result column="OBU_ID" property="obuId" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        AUDIT_SMS_NOTIFICATION.SMS_ID, AUDIT_SMS_NOTIFICATION.SMS_TYPE, AUDIT_SMS_NOTIFICATION.PAYER_NAME, AUDIT_SMS_NOTIFICATION.PAYER_PHONE, AUDIT_SMS_NOTIFICATION.PAY_RECORD, AUDIT_SMS_NOTIFICATION.PAY_AMOUNT, AUDIT_SMS_NOTIFICATION.PAY_TIME, AUDIT_SMS_NOTIFICATION.STATUS,
+        AUDIT_SMS_NOTIFICATION.PAY_MODE, AUDIT_SMS_NOTIFICATION.EVASION_TIME, AUDIT_SMS_NOTIFICATION.EVASION_BEHAVIOR, AUDIT_SMS_NOTIFICATION.PAY_HISTORY, AUDIT_SMS_NOTIFICATION.SEND_SMS_STATUS
+    </sql>
+
+    <select id="doFindAuditSmsNotificationPage" resultMap="BaseResultMap" parameterType="com.sutong.auditSmsNotification.model.AuditSmsNotification" >
+        select
+        <include refid="Base_Column_List"/>,
+        b.VEHICLE_NUMBER AS vehicleNumber,
+        b.VEHICLE_COLOUR AS  vehicleColour
+        from AUDIT_SMS_NOTIFICATION
+        LEFT JOIN  AUDIT_PAY_BACK_FEE_FLOW b ON b.PAY_BACK_FEE_ID=AUDIT_SMS_NOTIFICATION.PAY_RECORD
+        <where>
+            and AUDIT_SMS_NOTIFICATION.PAY_HISTORY='1'
+            <if test="status !=null and status !='' ">
+                and AUDIT_SMS_NOTIFICATION.STATUS = #{status}
+            </if>
+            <if test="sendSmsStatus !=null and sendSmsStatus !='' ">
+                and AUDIT_SMS_NOTIFICATION.SEND_SMS_STATUS = #{sendSmsStatus}
+            </if>
+            <if test="vehicleNumber !=null and vehicleNumber !='' ">
+                and b.VEHICLE_NUMBER = #{vehicleNumber}
+            </if>
+            <if test="vehicleColour !=null and vehicleColour !='' ">
+                and b.VEHICLE_COLOUR = #{vehicleColour}
+            </if>
+        </where>
+    </select>
+
+    <select id="doFindHistoryAuditSmsNotificationPage" resultMap="BaseResultMap" parameterType="com.sutong.auditSmsNotification.model.AuditSmsNotification" >
+        select
+        <include refid="Base_Column_List"/>,
+        b.OBU_ID AS obuId
+        from AUDIT_SMS_NOTIFICATION
+        LEFT JOIN  AUDIT_PAY_BACK_FEE_FLOW_PAST b ON b.PAY_BACK_FEE_ID=AUDIT_SMS_NOTIFICATION.PAY_RECORD
+        <where>
+            and AUDIT_SMS_NOTIFICATION.PAY_HISTORY='2'
+            <if test="status !=null and status !='' ">
+                and AUDIT_SMS_NOTIFICATION.STATUS = #{status}
+            </if>
+            <if test="sendSmsStatus !=null and sendSmsStatus !='' ">
+                and AUDIT_SMS_NOTIFICATION.SEND_SMS_STATUS = #{sendSmsStatus}
+            </if>
+            <if test="obuId !=null and obuId !='' ">
+                and b.OBU_ID = #{obuId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select 
+        <include refid="Base_Column_List" />
+        from AUDIT_SMS_NOTIFICATION
+        where SMS_ID = #{smsId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from AUDIT_SMS_NOTIFICATION
+        where SMS_ID = #{smsId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.sutong.auditSmsNotification.model.AuditSmsNotification" >
+        insert into AUDIT_SMS_NOTIFICATION (SMS_ID, SMS_TYPE, PAYER_NAME, 
+            PAYER_PHONE, PAY_RECORD, PAY_AMOUNT, 
+            PAY_TIME, STATUS, PAY_MODE, 
+            EVASION_TIME, EVASION_BEHAVIOR, PAY_HISTORY, 
+            SEND_SMS_STATUS)
+        values (#{smsId,jdbcType=VARCHAR}, #{smsType,jdbcType=VARCHAR}, #{payerName,jdbcType=VARCHAR}, 
+            #{payerPhone,jdbcType=VARCHAR}, #{payRecord,jdbcType=VARCHAR}, #{payAmount,jdbcType=INTEGER}, 
+            #{payTime,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{payMode,jdbcType=VARCHAR}, 
+            #{evasionTime,jdbcType=VARCHAR}, #{evasionBehavior,jdbcType=VARCHAR}, #{payHistory,jdbcType=VARCHAR}, 
+            #{sendSmsStatus,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.sutong.auditSmsNotification.model.AuditSmsNotification" >
+        insert into AUDIT_SMS_NOTIFICATION
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="smsId != null" >
+                SMS_ID,
+            </if>
+            <if test="smsType != null" >
+                SMS_TYPE,
+            </if>
+            <if test="payerName != null" >
+                PAYER_NAME,
+            </if>
+            <if test="payerPhone != null" >
+                PAYER_PHONE,
+            </if>
+            <if test="payRecord != null" >
+                PAY_RECORD,
+            </if>
+            <if test="payAmount != null" >
+                PAY_AMOUNT,
+            </if>
+            <if test="payTime != null" >
+                PAY_TIME,
+            </if>
+            <if test="status != null" >
+                STATUS,
+            </if>
+            <if test="payMode != null" >
+                PAY_MODE,
+            </if>
+            <if test="evasionTime != null" >
+                EVASION_TIME,
+            </if>
+            <if test="evasionBehavior != null" >
+                EVASION_BEHAVIOR,
+            </if>
+            <if test="payHistory != null" >
+                PAY_HISTORY,
+            </if>
+            <if test="sendSmsStatus != null" >
+                SEND_SMS_STATUS,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="smsId != null" >
+                #{smsId,jdbcType=VARCHAR},
+            </if>
+            <if test="smsType != null" >
+                #{smsType,jdbcType=VARCHAR},
+            </if>
+            <if test="payerName != null" >
+                #{payerName,jdbcType=VARCHAR},
+            </if>
+            <if test="payerPhone != null" >
+                #{payerPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="payRecord != null" >
+                #{payRecord,jdbcType=VARCHAR},
+            </if>
+            <if test="payAmount != null" >
+                #{payAmount,jdbcType=INTEGER},
+            </if>
+            <if test="payTime != null" >
+                #{payTime,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="payMode != null" >
+                #{payMode,jdbcType=VARCHAR},
+            </if>
+            <if test="evasionTime != null" >
+                #{evasionTime,jdbcType=VARCHAR},
+            </if>
+            <if test="evasionBehavior != null" >
+                #{evasionBehavior,jdbcType=VARCHAR},
+            </if>
+            <if test="payHistory != null" >
+                #{payHistory,jdbcType=VARCHAR},
+            </if>
+            <if test="sendSmsStatus != null" >
+                #{sendSmsStatus,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sutong.auditSmsNotification.model.AuditSmsNotification" >
+        update AUDIT_SMS_NOTIFICATION
+        <set >
+            <if test="smsType != null" >
+                SMS_TYPE = #{smsType,jdbcType=VARCHAR},
+            </if>
+            <if test="payerName != null" >
+                PAYER_NAME = #{payerName,jdbcType=VARCHAR},
+            </if>
+            <if test="payerPhone != null" >
+                PAYER_PHONE = #{payerPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="payRecord != null" >
+                PAY_RECORD = #{payRecord,jdbcType=VARCHAR},
+            </if>
+            <if test="payAmount != null" >
+                PAY_AMOUNT = #{payAmount,jdbcType=INTEGER},
+            </if>
+            <if test="payTime != null" >
+                PAY_TIME = #{payTime,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="payMode != null" >
+                PAY_MODE = #{payMode,jdbcType=VARCHAR},
+            </if>
+            <if test="evasionTime != null" >
+                EVASION_TIME = #{evasionTime,jdbcType=VARCHAR},
+            </if>
+            <if test="evasionBehavior != null" >
+                EVASION_BEHAVIOR = #{evasionBehavior,jdbcType=VARCHAR},
+            </if>
+            <if test="payHistory != null" >
+                PAY_HISTORY = #{payHistory,jdbcType=VARCHAR},
+            </if>
+            <if test="sendSmsStatus != null" >
+                SEND_SMS_STATUS = #{sendSmsStatus,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where SMS_ID = #{smsId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateSendSMSStatus" parameterType="java.lang.String" >
+        update AUDIT_SMS_NOTIFICATION
+        set SEND_SMS_STATUS ='1'
+        where SMS_ID = #{smsId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.sutong.auditSmsNotification.model.AuditSmsNotification" >
+        update AUDIT_SMS_NOTIFICATION
+        set SMS_TYPE = #{smsType,jdbcType=VARCHAR},
+            PAYER_NAME = #{payerName,jdbcType=VARCHAR},
+            PAYER_PHONE = #{payerPhone,jdbcType=VARCHAR},
+            PAY_RECORD = #{payRecord,jdbcType=VARCHAR},
+            PAY_AMOUNT = #{payAmount,jdbcType=INTEGER},
+            PAY_TIME = #{payTime,jdbcType=VARCHAR},
+            STATUS = #{status,jdbcType=VARCHAR},
+            PAY_MODE = #{payMode,jdbcType=VARCHAR},
+            EVASION_TIME = #{evasionTime,jdbcType=VARCHAR},
+            EVASION_BEHAVIOR = #{evasionBehavior,jdbcType=VARCHAR},
+            PAY_HISTORY = #{payHistory,jdbcType=VARCHAR},
+            SEND_SMS_STATUS = #{sendSmsStatus,jdbcType=VARCHAR}
+        where SMS_ID = #{smsId,jdbcType=VARCHAR}
+    </update>
+</mapper>

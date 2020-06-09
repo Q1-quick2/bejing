@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditIssueVeh.mapper.AuditIssueVehMapper" >
+
+
+    <resultMap id="BaseResultMap" type="com.sutong.bjstjh.entity.AuditIssueVeh">
+        <id column="ISSUE_VEH_ID" property="issueVehId" jdbcType="VARCHAR"/>
+        <result column="OBUNO" property="obuNo" jdbcType="VARCHAR"/>
+        <result column="ETCNO" property="etcNo" jdbcType="VARCHAR"/>
+        <result column="VEHTYPE" property="vehType" jdbcType="SMALLINT"/>
+        <result column="VEH_CLASS_TYPECODE" property="vehClassTypeCode" jdbcType="SMALLINT"/>
+        <result column="VEHPLATENO" property="vehPlateNo" jdbcType="VARCHAR"/>
+        <result column="VEH_COLORCODE" property="vehColorCode" jdbcType="SMALLINT"/>
+        <result column="VEH_IMG_ADDRESS" property="vehImgAddress" jdbcType="VARCHAR"/>
+        <result column="DRIV_IMG_ADDRESS" property="drivImgAddress" jdbcType="VARCHAR"/>
+        <result column="MINISTRY_WORKORDER_FOREIGN_ID" property="ministryWorkOrderForeignId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <insert id="doInsertAuditIssueVeh" parameterType="com.sutong.bjstjh.entity.AuditIssueVeh">
+        insert into AUDIT_ISSUE_VEH_TABLE(ISSUE_VEH_ID,OBUNO,ETCNO,VEHTYPE,VEH_CLASS_TYPECODE,VEHPLATENO,VEH_COLORCODE,VEH_IMG_ADDRESS,DRIV_IMG_ADDRESS,MINISTRY_WORKORDER_FOREIGN_ID)
+        values(#{issueVehId,jdbcType=VARCHAR},#{obuNo,jdbcType=VARCHAR},#{etcNo,jdbcType=VARCHAR},#{vehType,jdbcType=SMALLINT},#{vehClassTypeCode,jdbcType=SMALLINT},#{vehPlateNo,jdbcType=VARCHAR},#{vehColorCode,jdbcType=SMALLINT},#{vehImgAddress,jdbcType=VARCHAR},#{drivImgAddress,jdbcType=VARCHAR},#{ministryWorkOrderForeignId,jdbcType=VARCHAR})
+    </insert>
+<!--发行车辆信息查询-->
+    <select id="doFindAuditIssueVeh" parameterType="String" resultMap="BaseResultMap">
+        select ISSUE_VEH_ID,OBUNO,ETCNO,VEHTYPE,VEH_CLASS_TYPECODE,VEHPLATENO,VEH_COLORCODE,VEH_IMG_ADDRESS,DRIV_IMG_ADDRESS,MINISTRY_WORKORDER_FOREIGN_ID from AUDIT_ISSUE_VEH_TABLE where MINISTRY_WORKORDER_FOREIGN_ID = #{ministryWorkOrderForeignId}
+    </select>
+<!--发行车辆信息删除-->
+    <delete id="doDeleteAuditIssueVehById" parameterType="String">
+
+        delete from AUDIT_ISSUE_VEH_TABLE where MINISTRY_WORKORDER_FOREIGN_ID = #{ministryWorkOrderForeignId}
+    </delete>
+
+</mapper>

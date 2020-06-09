@@ -1,0 +1,53 @@
+server:
+  port: 8334
+
+#dubbo配置
+dubbo:
+    application:
+      name: web_console
+    registry:
+      address: zookeeper://172.20.53.245:2181?backup=172.20.53.245:2182,172.20.53.245:2183
+    metadata-report:
+      address: zookeeper://172.20.53.245:2181?backup=172.20.53.245:2182,172.20.53.245:2183
+    protocol:
+      name: dubbo
+      port: "20870"
+    version: 1.0.0
+
+
+#spring配置
+spring:
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+
+#短信接口
+sms:
+  ip: "http://192.168.1.31:8305/"
+  mothed: "sms_Send"
+  SOAPActionURI: "http://tempuri.org/sms_Send"
+  Namespace: "http://tempuri.org/"
+  ChannelID: "40"
+
+#发行接口（测试环境）
+issue:
+  clientIp: "172.20.53.103"
+  url: "http://172.20.53.136:38080/"
+  #登陆名
+  operatorNo: "000000"
+  #密码
+  operatorPassWord: "000000qaz"
+  sessionKey: 0b9486484d6c9aaf2f737a6cfc4e9be2
+
+#swagger配置
+swagger:
+  base-package: com.sutong
+
+#集成Curator实现Zookeeper分布式锁配置
+curator:
+  retryCount: 5  #重试次数
+  elapsedTimeMs: 5000   #重试间隔时间
+  connectString: 172.20.53.245:2181,172.20.53.245:2182,172.20.53.245:2183   # zookeeper 地址
+  sessionTimeoutMs: 60000  # session超时时间
+  connectionTimeoutMs: 5000  # 连接超时时间

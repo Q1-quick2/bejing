@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.common.mapper.ConfigMapper">
+    <resultMap id="BaseResultMap" type="com.sutong.common.model.ConfigModel">
+        <result column="ID" jdbcType="INTEGER" property="id"/>
+        <result column="CONFIG_VALUE" jdbcType="VARCHAR" property="configValue"/>
+        <result column="TYPE" jdbcType="SMALLINT" property="type"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      ID,CONFIG_VALUE, TYPE, CREATE_TIME
+    </sql>
+
+    <!-- 查询配置列表-->
+    <select id="doFindConfigList" parameterType="com.sutong.common.model.ConfigModel" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_CONFIG
+        <where>
+            <if test="id !=null and id !='' ">
+                and ID = #{id}
+            </if>
+            <if test="type != null and type != '' ">
+                and TYPE = #{type}
+            </if>
+        </where>
+
+    </select>
+    <insert id="doInsertConfig" parameterType="com.sutong.common.model.ConfigModel" >
+      insert into AUDIT_CONFIG (CONFIG_VALUE, TYPE, CREATE_TIME)
+      values (#{configValue},#{type},#{createTime})
+    </insert>
+
+
+</mapper>
+
+
+
+
+

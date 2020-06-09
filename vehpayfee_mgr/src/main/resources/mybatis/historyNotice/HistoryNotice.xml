@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sutong.historyNotice.mapper.HistoryNoticeMapper" >
+    <resultMap id="BaseResultMap" type="com.sutong.auditPastOrder.model.AuditPastOrder">
+        <result column="PAST_ORDER_ID" jdbcType="VARCHAR" property="pastOrderId" />
+        <result column="CUSTOMER_NAME" jdbcType="VARCHAR" property="customerName" />
+        <result column="CUSTOMER_PHONE" jdbcType="VARCHAR" property="customerPhone" />
+        <result column="OBU_ID" jdbcType="VARCHAR" property="obuId" />
+        <result column="TRANS_NUM" jdbcType="VARCHAR" property="transNum" />
+        <result column="TRANS_ALL_MONEY" jdbcType="VARCHAR" property="transAllMoney" />
+        <result column="OWE_FEE" jdbcType="VARCHAR" property="oweFee" />
+        <result column="TRANS_TIME" jdbcType="VARCHAR" property="transTime" />
+        <result column="ORDER_STATUS" jdbcType="VARCHAR" property="orderStatus" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    PAST_ORDER_ID, CUSTOMER_NAME, CUSTOMER_PHONE, OBU_ID, TRANS_NUM, TRANS_ALL_MONEY,
+    OWE_FEE,TRANS_TIME,ORDER_STATUS
+    </sql>
+
+    <insert id="doInsertHistoryNotice" parameterType="com.sutong.auditPastOrder.model.AuditPastOrder">
+        insert into audit_past_order (PAST_ORDER_ID, CUSTOMER_NAME, CUSTOMER_PHONE,
+        OBU_ID, TRANS_NUM, TRANS_ALL_MONEY,OWE_FEE,TRANS_TIME,ORDER_STATUS
+        )
+        values (#{pastOrderId,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR},
+        #{customerPhone,jdbcType=VARCHAR}, #{obuId,jdbcType=VARCHAR}, #{transNum,jdbcType=VARCHAR},
+        #{transAllMoney,jdbcType=VARCHAR}, #{owefee,jdbcType=VARCHAR},
+        #{transTime,jdbcType=VARCHAR},#{orderStatus,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="doInsertHistoryNoticeSelective" parameterType="com.sutong.auditPastOrder.model.AuditPastOrder">
+        insert into audit_past_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pastOrderId != null">
+                PAST_ORDER_ID,
+            </if>
+            <if test="customerName != null">
+                CUSTOMER_NAME,
+            </if>
+            <if test="customerPhone != null">
+                CUSTOMER_PHONE,
+            </if>
+            <if test="obuId != null">
+                OBU_ID,
+            </if>
+            <if test="transNum != null">
+                TRANS_NUM,
+            </if>
+            <if test="transAllMoney != null">
+                TRANS_ALL_MONEY,
+            </if>
+            <if test="owefee != null">
+                OWE_FEE,
+            </if>
+            <if test="transTime != null">
+                TRANS_TIME,
+            </if>
+            <if test="orderStatus != null">
+                ORDER_STATUS,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pastOrderId != null">
+                #{pastOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="customerName != null">
+                #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="customerPhone != null">
+                #{customerPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="obuId != null">
+                #{obuId,jdbcType=VARCHAR},
+            </if>
+            <if test="transNum != null">
+                #{transNum,jdbcType=VARCHAR},
+            </if>
+            <if test="transAllMoney != null">
+                #{transAllMoney,jdbcType=VARCHAR},
+            </if>
+            <if test="owefee != null">
+                #{owefee,jdbcType=VARCHAR},
+            </if>
+            <if test="transTime != null">
+                #{transTime,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null">
+                #{orderStatus,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 查询客户补费通知列表分页-->
+    <select id="doFindAuditPastOrderPage" parameterType="com.sutong.auditPastOrder.model.AuditPastOrder" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from audit_past_order
+        <where>
+            <if test="pastOrderId !=null and pastOrderId !='' ">
+                and audit_past_order.PAST_ORDER_ID = #{pastOrderId}
+            </if>
+            <if test="transTime !=null and transTime !='' ">
+                and audit_past_order.TRANS_TIME = #{transTime}
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询客户历史补费手动通知列表-->
+    <select id="doFindAuditPastOrderList" parameterType="com.sutong.auditPastOrder.model.AuditPastOrder" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from audit_past_order
+        <where>
+            <if test="pastOrderId !=null and pastOrderId !='' ">
+                and audit_past_order.PAST_ORDER_ID = #{pastOrderId}
+            </if>
+            <if test="transTime !=null and transTime !='' ">
+                and audit_past_order.TRANS_TIME = #{transTime}
+            </if>
+        </where>
+    </select>
+
+    <!--查询客户历史补费自动通知列表-->
+    <select id="doFindAuditPastOrderAutoList" parameterType="com.sutong.auditPastOrder.model.AuditPastOrder" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from audit_past_order
+        <where>
+            <if test="pastOrderId !=null and pastOrderId !='' ">
+                and audit_past_order.PAST_ORDER_ID = #{pastOrderId}
+            </if>
+            <if test="transTime !=null and transTime !='' ">
+                and audit_past_order.TRANS_TIME = #{transTime}
+            </if>
+        </where>
+    </select>
+</mapper>

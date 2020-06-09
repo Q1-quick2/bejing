@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.transflow.mapper.AuditCollectQueryMapper" >
+
+
+    <!--<insert id="doInsertPayEndInformModel" parameterType="com.sutong.bjstjh.entity.PayEndInformModel">
+        insert into audit_pay_end (END_CHARSET,END_VERSION,END_SERVERCERT,END_SERVERSIGN,
+        END_SIGNTYPE,END_SERVICE,END_MERCHANTID,
+        END_RESULTCODE, END_RESULTMSG,END_PAYSERIALNO,
+        END_TXNAMT,END_PAYORDERNO,END_PAYMENTTIME,
+        END_PAYTYPE,END_RMK,END_ACTPAYAMT,
+        END_DISCOUNTSAMT,END_DISCOUNTSINFOLISTNUM,END_DISCOUNTSINFOLIST
+        )
+        values (#{charset,jdbcType=INTEGER}, #{version,jdbcType=VARCHAR}, #{serverCert,jdbcType=VARCHAR},
+        #{serverSign,jdbcType=VARCHAR}, #{signType,jdbcType=VARCHAR},
+        #{service,jdbcType=VARCHAR}, #{merchantId,jdbcType=VARCHAR}, #{resultCode,jdbcType=VARCHAR},
+        #{resultMsg,jdbcType=INTEGER}, #{paySerialNo,jdbcType=VARCHAR}, #{txnAmt,jdbcType=VARCHAR},
+        #{payOrderNo,jdbcType=VARCHAR}, #{paymentTime,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR},
+        #{rmk,jdbcType=VARCHAR}, #{actPayAmt,jdbcType=VARCHAR}, #{discountsAmt,jdbcType=VARCHAR},
+        #{discountsInfoListNum,jdbcType=VARCHAR}, #{discountsInfoList,jdbcType=VARCHAR}
+        )
+    </insert>-->
+
+
+    <!-- 汇总查询补费结果分页-->
+    <select id="getMonthCount" parameterType="java.util.Map" resultType="java.util.Map">
+
+        SELECT substr(t1.END_PAYMENTTIME,1,8) AS PAYMENTTIME,
+        SUM(CASE WHEN t1.END_PAYTYPE = 'ALIPAY' THEN  t1.END_ACTPAYAMT else 0 end) AS ALIPAY,
+        SUM(CASE WHEN t1.END_PAYTYPE = 'WXPAY' THEN  t1.END_ACTPAYAMT else 0 end) AS WXPAY,
+        SUM(CASE WHEN t1.END_PAYTYPE = 'UPOPPAY' THEN  t1.END_ACTPAYAMT else 0 end) AS UPOPPAY
+        FROM AUDIT_PAY_END t1
+
+        <where>
+            <if test="payEndTime != null">
+                and substr(t1.END_PAYMENTTIME,1,6)=#{payEndTime}
+            </if>
+        </where>
+        GROUP BY substr(t1.END_PAYMENTTIME,1,8)
+
+
+    </select>
+
+    <select id="getYearCount" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT substr(t1.END_PAYMENTTIME,1,6) AS PAYMENTTIME,
+        SUM(CASE WHEN t1.END_PAYTYPE = 'ALIPAY' THEN  t1.END_ACTPAYAMT else 0 end) AS ALIPAY,
+        SUM(CASE WHEN t1.END_PAYTYPE = 'WXPAY' THEN  t1.END_ACTPAYAMT else 0 end) AS WXPAY,
+        SUM(CASE WHEN t1.END_PAYTYPE = 'UPOPPAY' THEN  t1.END_ACTPAYAMT else 0 end) AS UPOPPAY
+        FROM AUDIT_PAY_END t1
+
+        <where>
+            <if test="payEndTime != null">
+                and substr(t1.END_PAYMENTTIME,1,4)=#{payEndTime}
+            </if>
+        </where>
+        GROUP BY substr(t1.END_PAYMENTTIME,1,6)
+
+
+    </select>
+
+
+</mapper>
+
+
+
+
+

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditCodeTable.mapper.AuditCodeTableMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.auditCodeTable.model.AuditCodeTable" >
+        <id column="CODE_ID" property="codeId" jdbcType="VARCHAR" />
+        <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
+        <result column="GENERAL_NAME" property="generalName" jdbcType="VARCHAR" />
+        <result column="DES" property="des" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        CODE_ID, CODE, NAME, GENERAL_NAME, DES
+    </sql>
+
+    <select id="getNameByCodeAndGenName" resultMap="BaseResultMap" parameterType="com.sutong.auditCodeTable.model.AuditCodeTable" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_CODE_TABLE
+        where CODE=#{code,jdbcType=VARCHAR} AND GENERAL_NAME = #{generalName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="doFindAuditCodeTableList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_CODE_TABLE
+        where GENERAL_NAME = #{generalName,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getNameByCodeAndGen" parameterType="java.lang.String" resultType="java.lang.String">
+        select
+        AUDIT_CODE_TABLE.NAME
+        from
+        AUDIT_CODE_TABLE
+        <where>
+
+            <if test="code != null" >
+               AND AUDIT_CODE_TABLE.CODE=#{code}
+            </if>
+
+            <if test="generalName != null" >
+               and  AUDIT_CODE_TABLE.GENERAL_NAME=#{generalName}
+            </if>
+
+        </where>
+
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select 
+        <include refid="Base_Column_List" />
+        from AUDIT_CODE_TABLE
+        where CODE_ID = #{codeId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from AUDIT_CODE_TABLE
+        where CODE_ID = #{codeId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.sutong.auditCodeTable.model.AuditCodeTable" >
+        insert into AUDIT_CODE_TABLE (CODE_ID, CODE, NAME, 
+            GENERAL_NAME, DES)
+        values (#{codeId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+            #{generalName,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.sutong.auditCodeTable.model.AuditCodeTable" >
+        insert into AUDIT_CODE_TABLE
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="codeId != null" >
+                CODE_ID,
+            </if>
+            <if test="code != null" >
+                CODE,
+            </if>
+            <if test="name != null" >
+                NAME,
+            </if>
+            <if test="generalName != null" >
+                GENERAL_NAME,
+            </if>
+            <if test="des != null" >
+                DES,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="codeId != null" >
+                #{codeId,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null" >
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null" >
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="generalName != null" >
+                #{generalName,jdbcType=VARCHAR},
+            </if>
+            <if test="des != null" >
+                #{des,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sutong.auditCodeTable.model.AuditCodeTable" >
+        update AUDIT_CODE_TABLE
+        <set >
+            <if test="code != null" >
+                CODE = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null" >
+                NAME = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="generalName != null" >
+                GENERAL_NAME = #{generalName,jdbcType=VARCHAR},
+            </if>
+            <if test="des != null" >
+                DES = #{des,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where CODE_ID = #{codeId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.sutong.auditCodeTable.model.AuditCodeTable" >
+        update AUDIT_CODE_TABLE
+        set CODE = #{code,jdbcType=VARCHAR},
+            NAME = #{name,jdbcType=VARCHAR},
+            GENERAL_NAME = #{generalName,jdbcType=VARCHAR},
+            DES = #{des,jdbcType=VARCHAR}
+        where CODE_ID = #{codeId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.pay.mapper.VoucherMapper" >
+   <resultMap id="BaseResultMap" type="com.sutong.bjstjh.entity.VoucherModel">
+      <id column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+      <result column="VEHICLE_ID" jdbcType="VARCHAR" property="vehicleId" />
+      <result column="VEHICLE_COLOUR" jdbcType="VARCHAR" property="vehicleColour" />
+      <result column="PAY_FEE_ID" jdbcType="VARCHAR" property="payFeeId" />
+      <result column="PAYBACK_USER" jdbcType="VARCHAR" property="paybackUser" />
+      <result column="PAYBACK__USER_PHONE" jdbcType="VARCHAR" property="paybackUserPhone" />
+      <result column="PAYBACK_TYPE" jdbcType="VARCHAR" property="paybackType" />
+      <result column="PAYABLE_AMOUNT" jdbcType="VARCHAR" property="payableAmount" />
+      <result column="PAIDIN_AMOUNT" jdbcType="VARCHAR" property="paidinAmount" />
+      <result column="PAYABLE_TIME" jdbcType="VARCHAR" property="payableTime" />
+   </resultMap>
+
+   <!--客户补费凭证-->
+   <select id="doRepairfeeVoucher" resultMap="BaseResultMap" parameterType="com.sutong.bjstjh.entity.VoucherModel">
+      SELECT * FROM AUDIT_PAY_FEE_VOUCHER WHERE PAY_FEE_ID = #{orderId}
+   </select>
+
+
+
+
+
+
+
+</mapper>
+
+
+
+

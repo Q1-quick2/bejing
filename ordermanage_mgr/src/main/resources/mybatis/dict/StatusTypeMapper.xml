@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.mapper.StatusTypeMapper">
+    <resultMap id="BaseResultMap" type="com.sutong.bjstjh.entity.AuditStatusInfoTable">
+        <id column="KEY_ID" property="keyId" jdbcType="VARCHAR"/>
+        <result column="STATUS_TYPE" property="statusType" jdbcType="VARCHAR"/>
+        <result column="TYPE_SERIAL_NUMBER" property="typeSerialNumber" jdbcType="INTEGER"/>
+        <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR"/>
+        <result column="TYPE_FATHER_NUMBER" property="typeFatherNumber" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        KEY_ID,STATUS_TYPE,TYPE_SERIAL_NUMBER,TYPE_NAME,TYPE_FATHER_NUMBER
+    </sql>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_STATUS_INFO_TABLE
+    </select>
+
+    <select id="selectByStatusType" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_STATUS_INFO_TABLE
+        where STATUS_TYPE = #{statusType,jdbcType=VARCHAR}
+    </select>
+</mapper>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.history.mapper.UploadHistoryMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.history.model.PaidHistoryModel" >
+        <id column="ID" property="id" jdbcType="INTEGER" />
+        <result column="CAR_NUM" property="carNum" jdbcType="VARCHAR" />
+        <result column="LICENSE_PLATE_COLOR" property="licensePlateColor" jdbcType="VARCHAR" />
+        <result column="TO_BE_PAID_AMOUNT" property="toBePaidAmount" jdbcType="VARCHAR" />
+        <result column="CUSTOMER_NAME" property="customerName" jdbcType="CHAR" />
+        <result column="PAID_TIME" property="paidTime" jdbcType="VARCHAR" />
+        <result column="PAID_AMOUNT" property="paidAmount" jdbcType="VARCHAR" />
+        <result column="PAYMENT_FORMATION" property="paymentFormation" jdbcType="VARCHAR" />
+        <result column="PAID_STATUS" property="paidStatus" jdbcType="VARCHAR" />
+        <result column="INVOICE_NUM" property="invoiceNum" jdbcType="VARCHAR" />
+        <result column="SEND_SMS_STATUS" property="sendSMSStatus" jdbcType="VARCHAR" />
+        <result column="CUSTOMER_PHONE" property="customerPhone" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        ID, CAR_NUM, LICENSE_PLATE_COLOR, TO_BE_PAID_AMOUNT, CUSTOMER_NAME, PAID_TIME, PAID_AMOUNT,
+        PAYMENT_FORMATION, PAID_STATUS, INVOICE_NUM,SEND_SMS_STATUS,CUSTOMER_PHONE
+    </sql>
+
+    <!-- 查询历史补费详情-->
+    <select id="doFindPayHistoryInfoById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_PAID_HISTORY
+        where ID= #{id}
+    </select>
+
+    <!-- 查询历史补费分页-->
+    <select id="doFindPayHistoryPage" parameterType="com.sutong.history.model.PaidHistoryModel" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_PAID_HISTORY
+        <where>
+            <if test="carNum !=null and carNum !='' ">
+                and AUDIT_PAID_HISTORY.CAR_NUM = #{carNum}
+            </if>
+            <if test="licensePlateColor !=null and licensePlateColor !='' ">
+                and AUDIT_PAID_HISTORY.LICENSE_PLATE_COLOR = #{licensePlateColor}
+            </if>
+            <if test="sendSMSStatus !=null and sendSMSStatus !='' ">
+                and AUDIT_PAID_HISTORY.SEND_SMS_STATUS = #{sendSMSStatus}
+            </if>
+        </where>
+    </select>
+
+    <!-- 历史补费导入-->
+    <insert id="doInsertPaidList" parameterType="com.sutong.history.model.PaidHistoryModel" >
+        insert into AUDIT_PAID_HISTORY
+        (CAR_NUM, LICENSE_PLATE_COLOR, TO_BE_PAID_AMOUNT, CUSTOMER_NAME, PAID_TIME, PAID_AMOUNT,
+        PAYMENT_FORMATION,PAID_STATUS, INVOICE_NUM,SEND_SMS_STATUS)
+        values(#{carNum},#{licensePlateColor},#{toBePaidAmount},#{customerName},#{paidTime},#{paidAmount},
+        #{paymentFormation},#{paidStatus},#{invoiceNum},#{sendSMSStatus})
+    </insert>
+
+    <!-- 历史欠费主表导入-->
+    <insert id="doInsertPastList" parameterType="java.util.List" >
+        insert into AUDIT_PAST_ORDER
+        (PAST_ORDER_ID,CUSTOMER_NAME,CUSTOMER_PHONE,OBU_ID,TRANS_NUM,TRANS_ALL_MONEY,OWE_FEE,ORDER_STATUS)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.pastOrderId},
+            #{item.customerName},
+            #{item.customerPhone},
+            #{item.obuId},
+            #{item.transNum},
+            #{item.transAllMoney},
+            #{item.owFee},
+            #{item.orderStatus}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 历史欠费详情导入-->
+    <insert id="doInsertPastInfoList" parameterType="java.util.List" >
+        insert into AUDIT_PAST_ORDER_INFO
+        (ID,ENSTATION,EXSTATION,TRANS_VEHICLE_TYPE,DO_VEHICLE_TYPE,VEHICLE_TYPE,TRANS_VEHICLE_ID,DO_VEHICLE_ID,
+        TRANS_SUBTR_FEE,OWE_FEE,SUBTR_FEE,TRANS_TIME,TRANS_OBU_ID,TRANS_CARD_ID,ORDER_STATUS)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.id},
+            #{item.enstation},
+            #{item.exstation},
+            #{item.transVehicleType},
+            #{item.doVehicleType},
+            #{item.vehicleType},
+            #{item.transVehicleId},
+            #{item.doVehicleId},
+            #{item.transSubtrFee},
+            #{item.oweFee},
+            #{item.subtrFee},
+            #{item.transTime},
+            #{item.transObuId},
+            #{item.transCardId},
+            #{item.orderStatus}
+            )
+        </foreach>
+    </insert>
+
+   <!-- 根据OBU查询汇总表是否有数据 -->
+    <select id="doFindObuId" parameterType="java.lang.String" resultType="java.lang.Boolean">
+         select count(OBU_ID)
+         from AUDIT_PAST_ORDER where OBU_ID in #{obuId, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 一个obu号不能有重复的交易时间 -->
+    <select id="doFindTransTime" parameterType="java.lang.String" resultType="java.lang.Boolean">
+         select count(TRANS_OBU_ID)
+         from AUDIT_PAST_ORDER_INFO where TRANS_OBU_ID = #{obuId,jdbcType=VARCHAR} and TRANS_TIME = #{transTime,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateSendSMSStatus" parameterType="java.lang.Integer" >
+        update AUDIT_PAID_HISTORY
+        set SEND_SMS_STATUS=2
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

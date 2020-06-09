@@ -1,0 +1,45 @@
+server:
+  port: 8090
+
+dubbo:
+  application:            #应用配置，用于配置当前应用信息，不管该应用是提供者还是消费者。
+    name: mgr_provide
+  registry:                 #注册中心配置，用于配置连接注册中心相关信息。
+    address: zookeeper://172.20.53.245:2181?backup=172.20.53.245:2182,172.20.53.245:2183
+  metadata-report:
+    address: zookeeper://172.20.53.245:2181?backup=172.20.53.245:2182,172.20.53.245:2183
+  protocol:     #协议配置，用于配置提供服务的协议信息，协议由提供方指定，消费方被动接受。
+    name: dubbo
+    port: "20000"
+  scan:
+    base-packages: com.sutong.**.impl  #服务暴露与发现消费所在的package
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mybatis/**/*.xml
+
+
+
+spring:
+  datasource:
+    url: jdbc:db2://172.20.53.34:60000/BJCLEAR1
+    username: merchant
+    password: merchant@091411
+    driver-class-name: com.ibm.db2.jcc.DB2Driver
+    hikari: #连接池配置
+      minimum-idle: 5 #池中维护的最小空闲连接数
+      maximum-pool-size: 15 #池中最大连接数，包括闲置和使用中的连接
+      auto-commit: true #自动提交从池中返回的连接
+      idle-timeout: 30000 #连接允许在池中闲置的最长时间
+      pool-name: DatebookHikariCP #连接池的用户定义名称，主要出现在日志记录和JMX管理控制台中以识别池和池配置
+      max-lifetime: 1800000 #池中连接最长生命周期
+      connection-timeout: 30000 #等待来自池的连接的最大毫秒数
+
+
+# pagehelper
+pagehelper:
+  helperDialect: db2
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

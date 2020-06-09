@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.pay.mapper.AppAuditPastOrderMapper" >
+    <resultMap id="auditPastOrderMapper" type="com.sutong.bjstjh.entity.AppAuditPastOrderModel">
+
+        <!-- 通行费差额汇总单 ID-->
+        <id column="PAST_ORDER_ID" jdbcType="VARCHAR" property="pastOrderId"></id>
+        <!-- 通行费差额明细单 ID-->
+        <id column="ID" jdbcType="VARCHAR" property="id"></id>
+        <!-- 历史补费流水 ID-->
+        <id column="FLOW_ID" jdbcType="VARCHAR" property="flowId" />
+        <!-- 补费结果 ID-->
+        <!-- 通行费差额汇总单 -->
+        <result column="ORDER_CUSTOMER_NAME" jdbcType="VARCHAR" property="customerName"></result>
+        <result column="CUSTOMER_PHONE" jdbcType="VARCHAR" property="customerPhone"></result>
+        <result column="OBU_ID" jdbcType="VARCHAR" property="obuId"></result>
+        <result column="TRANS_NUM" jdbcType="VARCHAR" property="transNum"></result>
+        <result column="TRANS_ALL_MONEY" jdbcType="VARCHAR" property="transAllMoney"></result>
+        <result column="ORDER_OWE_FEE" jdbcType="VARCHAR" property="orderOweFee"></result>
+        <!-- 通行费差额明细单 -->
+        <!--<result column="PAST_ORDER_ID_INFO" jdbcType="VARCHAR" property="pastOrderIdInfo"></result>-->
+        <result column="ENSTATION" jdbcType="VARCHAR" property="enstation"></result>
+        <result column="EXSTATION" jdbcType="VARCHAR" property="exstation"></result>
+        <result column="TRANS_VEHICLE_TYPE" jdbcType="VARCHAR" property="transVehicleType"></result>
+        <result column="DO_VEHICLE_TYPE" jdbcType="VARCHAR" property="doVehicleType"></result>
+        <result column="VEHICLE_TYPE" jdbcType="VARCHAR" property="vehicleType"></result>
+        <result column="TRANS_VEHICLE_ID" jdbcType="VARCHAR" property="transVehicleId"></result>
+        <result column="DO_VEHICLE_ID" jdbcType="VARCHAR" property="doVehicleId"></result>
+        <result column="TRANS_SUBTR_FEE" jdbcType="VARCHAR" property="transSubtrFee"></result>
+        <result column="PAST_OWE_FEE" jdbcType="VARCHAR" property="oweFee"></result>
+        <result column="SUBTR_FEE" jdbcType="INTEGER" property="subtrFee"></result>
+        <result column="TRANS_TIME" jdbcType="VARCHAR" property="transTimeInfo"></result>
+        <result column="TRANS_OBU_ID" jdbcType="VARCHAR" property="transObuId"></result>
+        <result column="TRANS_CARD_ID" jdbcType="VARCHAR" property="transCardId"></result>
+        <result column="ORDER_STATUS" jdbcType="VARCHAR" property="orderStatusInfo"></result>
+        <result column="PAST_PAY_BACK_FEE_ID" jdbcType="VARCHAR" property="payBackFeeInfoId"></result>
+        <result column="PAY_BACK_FEE_REALITY" jdbcType="VARCHAR" property="payBackFeeReality"></result>
+        <result column="VEHICLE_COLOUR" jdbcType="VARCHAR" property="vehicleColour"></result>
+        <!-- 历史补费流水 -->
+        <result column="PAY_BACK_FEE_ID_PAST" jdbcType="VARCHAR" property="payBackFeeIdPast" />
+        <result column="USER_UID" jdbcType="VARCHAR" property="userUid" />
+        <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+        <result column="FLOW_CREATE_TIME" jdbcType="VARCHAR" property="flowCreateTime" />
+        <result column="CUSTOMER_NAME_PAST" jdbcType="VARCHAR" property="customer_Name" />
+        <result column="FLOW_CUSTOMER_PHONE" jdbcType="VARCHAR" property="customer_Phone" />
+        <!-- 补费结果 -->
+        <result column="END_PAYORDERNO" jdbcType="VARCHAR" property="endPayorderno" />
+        <result column="END_PAYMENTTIME" jdbcType="VARCHAR" property="endPaymenttime" />
+        <result column="END_ACTPAYAMT" jdbcType="BIGINT" property="endActpayamt" />
+    </resultMap>
+    <!---->
+    <sql id="pastOrderSql">
+    I.ID,I.ENSTATION,EXSTATION,I.TRANS_VEHICLE_TYPE,I.DO_VEHICLE_TYPE,I.VEHICLE_TYPE,I.TRANS_VEHICLE_ID,
+      I.DO_VEHICLE_ID,I.TRANS_SUBTR_FEE,I.OWE_FEE AS PAST_OWE_FEE,SUBTR_FEE,I.TRANS_TIME,I.TRANS_OBU_ID,
+        I.TRANS_CARD_ID,I.ORDER_STATUS,I.PAY_BACK_FEE_ID,I.PAY_BACK_FEE_REALITY,I.VEHICLE_COLOUR,
+          P.PAY_BACK_FEE_ID AS  PAY_BACK_FEE_ID_PAST,P.FLOW_CREATE_TIME,P.USER_NAME,P.CUSTOMER_NAME AS CUSTOMER_NAME_PAST,
+            P.CUSTOMER_PHONE AS FLOW_CUSTOMER_PHONE,P.FLOW_ID,P.UID AS USER_UID,
+              E.END_PAYMENTTIME,E.END_ACTPAYAMT,E.END_PAYORDERNO
+
+    </sql>
+
+    <!-- 查询历史补费列表-->
+    <select id="getAppAuditPastOrderModelList" resultMap="auditPastOrderMapper"
+            parameterType="com.sutong.bjstjh.entity.AppAuditPastOrderModel">
+        SELECT O.PAST_ORDER_ID,O.CUSTOMER_NAME AS ORDER_CUSTOMER_NAME,O.CUSTOMER_PHONE,O.OBU_ID,O.TRANS_NUM,O.TRANS_ALL_MONEY,O.OWE_FEE AS ORDER_OWE_FEE,
+        <include refid="pastOrderSql" /> FROM MERCHANT.AUDIT_PAST_ORDER O
+          INNER JOIN MERCHANT.AUDIT_PAST_ORDER_INFO I ON O.OBU_ID = I.TRANS_OBU_ID
+            INNER JOIN MERCHANT.AUDIT_PAY_BACK_FEE_FLOW_PAST P ON I.PAY_BACK_FEE_ID = P.PAY_BACK_FEE_ID
+              INNER JOIN MERCHANT.AUDIT_PAY_END E ON E.END_PAYSERIALNO = P.PAY_BACK_FEE_ID
+        <where>
+            E.END_RESULTCODE='BD'
+            <if test="obuId != null and obuId != '' ">
+                and O.OBU_ID = #{obuId}
+            </if>
+            <if test="customerName != null and customerName != '' ">
+                and O.CUSTOMER_NAME = #{customerName}
+            </if>
+            <if test="customerPhone != null and customerPhone != '' ">
+                and O.CUSTOMER_PHONE = #{customerPhone}
+            </if>
+            <if test="begintime != null and begintime != '' ">
+                AND ((substr(E.END_PAYMENTTIME,1,4) || '-' || substr(E.END_PAYMENTTIME,5,2) || '-' || substr(E.END_PAYMENTTIME,7,2)))
+                <![CDATA[ >= ]]> #{begintime}
+            </if>
+            <if test="endtime != null and endtime != ''">
+                AND ((substr(E.END_PAYMENTTIME,1,4) || '-' || substr(E.END_PAYMENTTIME,5,2) || '-' || substr(E.END_PAYMENTTIME,7,2)))
+                <![CDATA[ <= ]]> #{endtime}
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询历史补费详情 -->
+    <select id="getAppAuditPastOrderInfoModel" resultMap="auditPastOrderMapper"
+            parameterType="com.sutong.bjstjh.entity.AppAuditPastOrderModel">
+        SELECT <include refid="pastOrderSql" /> FROM MERCHANT.AUDIT_PAST_ORDER_INFO I
+          INNER JOIN MERCHANT.AUDIT_PAY_BACK_FEE_FLOW_PAST P ON I.PAY_BACK_FEE_ID = P.PAY_BACK_FEE_ID
+            INNER JOIN MERCHANT.AUDIT_PAY_END E ON P.PAY_BACK_FEE_ID = E.END_PAYSERIALNO
+              WHERE I.ID = #{id} AND E.END_RESULTCODE = 'BD'
+        <if test="flowId != null and flowId != '' ">
+            AND P.FLOW_ID = #{flowId}
+        </if>
+    </select>
+
+</mapper>

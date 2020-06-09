@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.workorder.mapper.AuditBlackListTableEntityMapper">
+
+    <resultMap id="BaseResultMap" type="com.sutong.workorder.entity.AuditBlackListTableEntity">
+        <id column="BLACKLISTID" property="blackListId" jdbcType="VARCHAR"/>
+        <result column="VEHPLATENO" property="vehPlateNo" jdbcType="VARCHAR"/>
+        <result column="VEH_COLOR" property="vehColor" jdbcType="INTEGER"/>
+        <result column="REASON" property="reason" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="TYPE" property="type" jdbcType="INTEGER"/>
+        <result column="VERSION" property="version" jdbcType="VARCHAR"/>
+        <result column="CREATION_TIME" property="creationTime" jdbcType="VARCHAR"/>
+        <result column="EFFECTIVE_TIME" property="effectiveTime" jdbcType="VARCHAR"/>
+        <result column="OWEFEE" property="oweFee" jdbcType="VARCHAR"/>
+        <result column="EVASION_COUNT" property="evasioCount" jdbcType="INTEGER"/>
+        <result column="VEHICLE_FEATURE_VERSION" property="vehicleFeatureVersion" jdbcType="VARCHAR"/>
+        <result column="VEHICLE_FEATURE_CODE" property="vehicleFeatureCode" jdbcType="VARCHAR"/>
+        <result column="PROOF" property="proof" jdbcType="VARCHAR"/>
+        <result column="RM_FLAG" property="rmFlag" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        BLACKLISTID,VEHPLATENO,VEH_COLOR,REASON,STATUS,TYPE,VERSION,CREATION_TIME,EFFECTIVE_TIME,OWEFEE,EVASION_COUNT,VEHICLE_FEATURE_VERSION,VEHICLE_FEATURE_CODE,PROOF,RM_FLAG,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+    <insert id="insert" parameterType="com.sutong.workorder.entity.AuditBlackListTableEntity">
+        insert into AUDIT_BLACKLIST_TABLE(BLACKLISTID, VEHPLATENO, VEH_COLOR, REASON, STATUS, TYPE, VERSION, CREATION_TIME, EFFECTIVE_TIME, OWEFEE, EVASION_COUNT, VEHICLE_FEATURE_VERSION, VEHICLE_FEATURE_CODE, PROOF, RM_FLAG, CREATE_TIME, UPDATE_TIME)
+        values (#{blackListId,jdbcType=VARCHAR}, #{vehPlateNo,jdbcType=VARCHAR}, #{vehColor,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR},
+                #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{creationTime,jdbcType=VARCHAR},
+                #{effectiveTime,jdbcType=VARCHAR}, #{oweFee,jdbcType=VARCHAR}, #{evasioCount,jdbcType=INTEGER}, #{vehicleFeatureVersion,jdbcType=VARCHAR},
+                #{vehicleFeatureCode,jdbcType=VARCHAR}, #{proof,jdbcType=VARCHAR}, 0, TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'))
+    </insert>
+
+    <select id="selectByQuery" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_BLACKLIST_TABLE
+        <where>
+            <if test="vehPlateNo !=null and vehPlateNo !='' ">
+                and VEHPLATENO like '%'||#{vehPlateNo}||'%'
+            </if>
+            <if test="vehColor !=null and vehColor !='' ">
+                and VEH_COLOR = #{vehColor}
+            </if>
+            <if test="reason !=null and reason !='' ">
+                and REASON like '%'||#{reason}||'%'
+            </if>
+            <if test="status !=null and status !='' ">
+                and STATUS = #{status}
+            </if>
+            <if test="version !=null and version !='' ">
+                and VERSION like '%'||#{version}||'%'
+            </if>
+            <if test="lowerLimitOweFee !=null and lowerLimitOweFee !='' and upperLimitOweFee !=null and upperLimitOweFee !=''">
+                and OWEFEE &gt;= #{lowerLimitOweFee} and OWEFEE &lt;= #{upperLimitOweFee}
+            </if>
+            <if test="effectiveStartTime !=null and effectiveStartTime !='' and effectiveEndTime !=null and effectiveEndTime !=''">
+                and CREATION_TIME &gt;= #{effectiveStartTime} and CREATION_TIME &lt;= #{effectiveEndTime}
+            </if>
+            and RM_FLAG = 0
+        </where>
+    </select>
+
+    <insert id="batchInsertBlackList" parameterType="com.sutong.workorder.entity.AuditBlackListTableEntity">
+        insert into
+        AUDIT_BLACKLIST_TABLE(BLACKLISTID,VEHPLATENO,VEH_COLOR,REASON,STATUS,TYPE,VERSION,CREATION_TIME,EFFECTIVE_TIME,OWEFEE,EVASION_COUNT,VEHICLE_FEATURE_VERSION,VEHICLE_FEATURE_CODE,PROOF,RM_FLAG,CREATE_TIME,UPDATE_TIME)
+        values
+        <foreach collection="list" item="blackList" separator=",">
+            ( #{blackList.blackListId,jdbcType=VARCHAR},#{blackList.vehPlateNo,jdbcType=VARCHAR},#{blackList.vehColor,jdbcType=INTEGER},#{blackList.reason,jdbcType=VARCHAR},
+            #{blackList.status,jdbcType=INTEGER},#{blackList.type,jdbcType=INTEGER},#{blackList.version,jdbcType=VARCHAR},#{blackList.creationTime,jdbcType=VARCHAR},
+            #{blackList.effectiveTime,jdbcType=VARCHAR},#{blackList.oweFee,jdbcType=VARCHAR},#{blackList.evasioCount,jdbcType=INTEGER},#{blackList.vehicleFeatureVersion,jdbcType=VARCHAR},
+            #{blackList.vehicleFeatureCode,jdbcType=VARCHAR},#{blackList.proof,jdbcType=VARCHAR},0,TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'))
+        </foreach>
+    </insert>
+
+    <update id="updateBlackListById" parameterType="java.util.Map">
+        update AUDIT_BLACKLIST_TABLE
+        <set>
+            <if test="vehPlateNo !=null and vehPlateNo !='' ">
+                VEHPLATENO = #{vehPlateNo,jdbcType=VARCHAR},
+            </if>
+            <if test="vehColor !=null and vehColor !='' ">
+                VEH_COLOR = #{vehColor,jdbcType=INTEGER},
+            </if>
+            <if test="reason !=null and reason !='' ">
+                REASON = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="status !=null and status !='' ">
+                STATUS = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="type !=null and type !='' ">
+                TYPE = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="version !=null and version !='' ">
+                VERSION = #{version,jdbcType=VARCHAR},
+            </if>
+            <if test="creationTime !=null and creationTime !='' ">
+                CREATION_TIME = #{creationTime,jdbcType=VARCHAR},
+            </if>
+            <if test="effectiveTime !=null and effectiveTime !='' ">
+                EFFECTIVE_TIME = #{effectiveTime,jdbcType=VARCHAR},
+            </if>
+            <if test="oweFee !=null and oweFee !='' ">
+                OWEFEE = #{oweFee,jdbcType=VARCHAR},
+            </if>
+            <if test="evasioCount !=null and evasioCount !='' ">
+                EVASION_COUNT = #{evasioCount,jdbcType=INTEGER},
+            </if>
+            <if test="vehicleFeatureVersion !=null and vehicleFeatureVersion !='' ">
+                VEHICLE_FEATURE_VERSION = #{vehicleFeatureVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleFeatureCode !=null and vehicleFeatureCode !='' ">
+                VEHICLE_FEATURE_CODE = #{vehicleFeatureCode,jdbcType=VARCHAR},
+            </if>
+            <if test="proof != null and proof != ''">
+                PROOF = #{proof,jdbcType=VARCHAR},
+            </if>
+            UPDATE_TIME = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
+        </set>
+        where BLACKLISTID = #{blackListId,jdbcType=VARCHAR} and RM_FLAG = 0
+    </update>
+
+    <update id="deleteBlackListById" parameterType="java.util.Map">
+        update AUDIT_BLACKLIST_TABLE
+        <set>
+            RM_FLAG = 1,UPDATE_TIME = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
+        </set>
+        where BLACKLISTID = #{blackListId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="batchUpdateCaseWhen" parameterType="java.util.Map">
+        update AUDIT_BLACKLIST_TABLE
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="VEHPLATENO =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.vehPlateNo != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.vehPlateNo}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="VEH_COLOR =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.vehColor != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.vehColor}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="REASON =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.reason != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.reason}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="STATUS =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.status != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.status}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="TYPE =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.type != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.type}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="VERSION =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.version != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.version}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="CREATION_TIME =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.creationTime != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.creationTime}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="EFFECTIVE_TIME =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.effectiveTime != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.effectiveTime}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="OWEFEE =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.oweFee != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.oweFee}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="EVASION_COUNT =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.evasioCount != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.evasioCount}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="VEHICLE_FEATURE_VERSION =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.vehicleFeatureVersion != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.vehicleFeatureVersion}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="VEHICLE_FEATURE_CODE =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.vehicleFeatureCode != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.vehicleFeatureCode}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="PROOF =case" suffix="end,">
+                <foreach collection="list" item="blackList">
+                    <if test="blackList.proof != null">
+                        when BLACKLISTID = #{blackList.blackListId} then #{blackList.proof}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        UPDATE_TIME = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
+        <where>
+            <foreach collection="list" separator="or" item="blackList">
+                BLACKLISTID = #{blackList.blackListId}
+            </foreach>
+        </where>
+    </update>
+
+</mapper>

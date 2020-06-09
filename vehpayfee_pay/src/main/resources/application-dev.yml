@@ -1,0 +1,57 @@
+#端口号
+server:
+  port: 8335
+
+#dubbo配置
+dubbo:
+  application:            #应用配置，用于配置当前应用信息，不管该应用是提供者还是消费者。
+    name: pay_provide
+  registry:                 #注册中心配置，用于配置连接注册中心相关信息。
+    address: zookeeper://127.0.0.1:2181?backup=127.0.0.1:2182,127.0.0.1:2183
+  metadata-report:
+    address: zookeeper://127.0.0.1:2181?backup=127.0.0.1:2182,127.0.0.1:2183
+  protocol:     #协议配置，用于配置提供服务的协议信息，协议由提供方指定，消费方被动接受。
+    name: dubbo
+    port: "20889"
+  version: 1.0.0
+  scan:
+    base-packages: com.sutong.**.impl  #服务暴露与发现消费所在的package
+
+#Mybatis配置
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mybatis/**/*.xml
+
+#Spring配置
+spring:
+  datasource:
+    url: jdbc:db2://172.20.53.245:50000/AUDIT
+    username: db2inst1
+    password: 111111
+    driver-class-name: com.ibm.db2.jcc.DB2Driver
+    hikari: #连接池配置
+      minimum-idle: 5 #池中维护的最小空闲连接数
+      maximum-pool-size: 15 #池中最大连接数，包括闲置和使用中的连接
+      auto-commit: true #自动提交从池中返回的连接
+      idle-timeout: 30000 #连接允许在池中闲置的最长时间
+      pool-name: DatebookHikariCP #连接池的用户定义名称，主要出现在日志记录和JMX管理控制台中以识别池和池配置
+      max-lifetime: 1800000 #池中连接最长生命周期
+      connection-timeout: 30000 #等待来自池的连接的最大毫秒数
+  jackson:
+    default-property-inclusion: non_null
+
+#短信接口
+sms:
+  ip: "http://192.168.1.31:8305/"
+  mothed: "sms_Send"
+  SOAPActionURI: "http://tempuri.org/sms_Send"
+  Namespace: "http://tempuri.org/"
+  ChannelID: "40"
+
+#发行接口
+issue:
+  clientIp: 172.20.53.103
+  sessionKey: 0b9486484d6c9aaf2f737a6cfc4e9be2
+  url: http://172.20.53.136:38080/
+

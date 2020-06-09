@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.workorder.mapper.AuditCheckCommentsTableEntityMapper">
+
+    <resultMap id="BaseResultMap" type="com.sutong.workorder.entity.AuditCheckCommentsTableEntity">
+        <id column="CHECKCOMMENTSID" property="checkCommentsId" jdbcType="VARCHAR"/>
+        <result column="WORKORDERID" property="workOrderId" jdbcType="VARCHAR"/>
+        <result column="ADSCRIPTION" property="adscription" jdbcType="INTEGER"/>
+        <result column="ISSUER" property="issuer" jdbcType="VARCHAR"/>
+        <result column="TYPE" property="type" jdbcType="VARCHAR"/>
+        <result column="CODE" property="code" jdbcType="VARCHAR"/>
+        <result column="ESCAPE_TYPE" property="escapeType" jdbcType="VARCHAR"/>
+        <result column="RESPONSOR" property="reSponsor" jdbcType="INTEGER"/>
+        <result column="ADEQUACY" property="adequacy" jdbcType="INTEGER"/>
+        <result column="ADVANCE_AMOUNT" property="advanceAmount" jdbcType="INTEGER"/>
+        <result column="AMOUNT" property="amount" jdbcType="INTEGER"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+        <result column="PROVINCE" property="province" jdbcType="VARCHAR"/>
+        <result column="ROAD_ID" property="roadId" jdbcType="INTEGER"/>
+        <result column="IS_LESS_FEE" property="isLessFee" jdbcType="INTEGER"/>
+        <result column="UNITNAME" property="unitName" jdbcType="VARCHAR"/>
+        <result column="UNITID" property="unitId" jdbcType="VARCHAR"/>
+        <result column="DATANUMBER" property="dataNumber" jdbcType="VARCHAR"/>
+        <result column="FEE" property="fee" jdbcType="INTEGER"/>
+        <result column="PASS_PROVINCE" property="passProvince" jdbcType="VARCHAR"/>
+        <result column="ESCAPE" property="escape" jdbcType="VARCHAR"/>
+        <result column="DATA_PROGRESS" property="dataProgress" jdbcType="VARCHAR"/>
+        <result column="UNIT_PROGRESS" property="unitProgress" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="PROCESSER" property="processer" jdbcType="VARCHAR"/>
+        <result column="CHARGE_UNIT_NUMBER" property="chargeUnitNumber" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        CHECKCOMMENTSID,WORKORDERID,ADSCRIPTION,ISSUER,TYPE,CODE,ESCAPE_TYPE,RESPONSOR,ADEQUACY,ADVANCE_AMOUNT,
+        AMOUNT,UPDATE_TIME,CREATE_TIME,PROVINCE,ROAD_ID,IS_LESS_FEE,UNITNAME,UNITID,DATANUMBER,FEE,PASS_PROVINCE,
+        ESCAPE,DATA_PROGRESS,UNIT_PROGRESS,STATUS,PROCESSER,CHARGE_UNIT_NUMBER
+    </sql>
+
+    <resultMap id="BaseResultMapTwo" type="com.sutong.workorder.model.AuditCheckCommentsDTO">
+        <id column="CHECKCOMMENTSID" property="checkCommentsId" jdbcType="VARCHAR"/>
+        <result column="CODE" property="code" jdbcType="VARCHAR"/>
+        <result column="ESCAPE_TYPE" property="escapeType" jdbcType="VARCHAR"/>
+        <result column="VEHICLENO" property="vehicleNo" jdbcType="VARCHAR"/>
+        <result column="VEH_COLOR" property="vehColor" jdbcType="INTEGER"/>
+        <result column="VEH_TYPE" property="vehType" jdbcType="INTEGER"/>
+        <result column="VEH_CLASS" property="vehClass" jdbcType="INTEGER"/>
+        <result column="PASSPATH" property="passPath" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="auditTime" jdbcType="VARCHAR"/>
+        <result column="IS_LESS_FEE" property="isLessFee" jdbcType="INTEGER"/>
+        <result column="RESPONSOR" property="reSponsor" jdbcType="INTEGER"/>
+        <result column="ADEQUACY" property="adequacy" jdbcType="INTEGER"/>
+        <result column="FEE" property="fee" jdbcType="INTEGER"/>
+        <result column="AMOUNT" property="amount" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="BaseColumnListTwo">
+        ACT.CHECKCOMMENTSID,ACT.CODE,ACT.ESCAPE_TYPE,AWT.VEHICLENO,AWT.VEH_COLOR,AWT.VEH_CLASS,
+        AWT.PASSPATH,ACT.CREATE_TIME,ACT.IS_LESS_FEE,ACT.RESPONSOR,ACT.ADEQUACY,ACT.FEE,ACT.AMOUNT
+    </sql>
+
+    <select id="selectByQuery" resultMap="BaseResultMapTwo" parameterType="java.util.HashMap">
+        SELECT
+         <include refid="BaseColumnListTwo"/>
+         FROM AUDIT_CHECKCOMMENTS_TABLE ACT LEFT JOIN AUDIT_WORKORDER_TABLE AWT ON ACT.WORKORDERID=AWT.WORKORDERID
+        <where>
+            <if test="code !=null and code!=''">
+                and ACT.CODE like '%'||#{code}||'%'
+            </if>
+            <if test="vehicleNo != null and vehicleNo !=''">
+                and AWT.VEHICLENO like '%'||#{vehicleNo}||'%'
+            </if>
+            <if test="vehColor != null and vehColor !=''">
+                and AWT.VEH_COLOR = #{vehColor}
+            </if>
+            <if test="isLessFee != null and isLessFee != ''">
+                and ACT.IS_LESS_FEE = #{isLessFee}
+            </if>
+            <if test="reSponsor != null and reSponsor != ''">
+                and ACT.RESPONSOR = #{reSponsor}
+            </if>
+            <if test="adequacy != null and adequacy != ''">
+                and ACT.ADEQUACY = #{adequacy}
+            </if>
+            <if test="passProvince != null and passProvince != ''">
+                and ACT.PASS_PROVINCE like '%'||#{passProvince}||'%'
+            </if>
+            <if test="passPath != null and passPath != ''">
+                and AWT.PASSPATH like '%'||#{passPath}||'%'
+            </if>
+            <if test="auditStartTime !=null and auditStartTime !='' and auditEndTime !=null and auditEndTime !=''">
+                and ACT.CREATE_TIME &gt;= #{auditStartTime} and ACT.CREATE_TIME &lt;= #{auditEndTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectOneByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_CHECKCOMMENTS_TABLE
+        <where>
+            <if test="workOrderId != null and workOrderId != ''">
+                and WORKORDERID = #{workOrderId}
+            </if>
+            <if test="adscription !=null and adscription != ''">
+                and ADSCRIPTION = #{adscription}
+            </if>
+        </where>
+    </select>
+    <!-- 根据实体类条件查询稽核数据 -->
+    <select id="doFindAuditCheckcommentsTable" resultMap="BaseResultMap" 
+    	parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_CHECKCOMMENTS_TABLE
+        <where>
+            <if test="data_number != null and data_number != ''">
+                WORKORDERID = (SELECT WORKORDERID FROM AUDIT_WORKORDER_TABLE  WHERE DATA_NUMBER = #{data_number} ) 
+            </if>
+        </where>
+    </select>
+
+        <select id="selectRoadByQuery" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_CHECKCOMMENTS_TABLE
+        <where>
+            <if test="workOrderId != null and workOrderId != ''">
+                and WORKORDERID = #{workOrderId}
+            </if>
+            <if test="province != null and province != ''">
+                and PROVINCE like '%'||#{province}||'%'
+            </if>
+            <if test="isLessFee != null and isLessFee != ''">
+                and IS_LESS_FEE = #{isLessFee}
+            </if>
+            <if test="reSponsor != null and reSponsor != ''">
+                and RESPONSOR = #{reSponsor}
+            </if>
+            <if test="adequacy != null and adequacy != ''">
+                and ADEQUACY = #{adequacy}
+            </if>
+            <if test="adscription != null and adscription != ''">
+                and ADSCRIPTION = #{adscription}
+            </if>
+        </where>
+
+    </select>
+    <sql id="ads_type_where">
+        <where>
+            <if test="id !=null and id!=''">
+                id = #{id}
+            </if>
+            <if test="parentId !=null and parentId!=''">
+                AND parent_id = #{parentId}
+            </if>
+            <if test="typeName !=null and typeName != ''">
+                AND type_name LIKE CONCAT('%',#{typeName},'%')
+            </if>
+            <if test="createTime !=null ">
+                AND create_time = #{createTime}
+            </if>
+        </where>
+
+    </sql>
+</mapper>

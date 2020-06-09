@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sutong.systemManagement.mapper.SystemUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.sutong.systemManagement.model.entity.AuditSystemUserManage">
+        <id column="USER_ID" property="userId" jdbcType="VARCHAR"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="USER_PASSWORD" property="userPassword" jdbcType="VARCHAR"/>
+        <result column="CELL_PHONE" property="cellPhone" jdbcType="VARCHAR"/>
+        <result column="SEX" property="sex" jdbcType="VARCHAR"/>
+        <result column="BIRTHDAY" property="birthday" jdbcType="VARCHAR"/>
+        <result column="E_MAIL" property="mail" jdbcType="VARCHAR"/>
+        <result column="ID_NUMBER" property="idNumber" jdbcType="VARCHAR"/>
+        <result column="NATION" property="nation" jdbcType="VARCHAR"/>
+        <result column="NATIVE" property="nativel" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+       USER_ID,USER_NAME,USER_PASSWORD,CELL_PHONE,SEX,BIRTHDAY,E_MAIL,ID_NUMBER,NATION,NATIVE
+    </sql>
+    <!--根据条件查询用户-->
+    <select id="doFindUserManage" resultMap="BaseResultMap"
+            parameterType="com.sutong.systemManagement.model.entity.AuditSystemUserManage">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_SYSTEM_USER_MANAGE_TABLE
+        <where>
+            <if test="userId !=null and userId !=''">
+                and USER_ID= #{userId}
+            </if>
+            <if test="userName !=null and userName !=''">
+                and USER_NAME= #{userName}
+            </if>
+            <if test="cellPhone !=null and cellPhone != ''">
+                and CELL_PHONE = #{cellPhone}
+            </if>
+            <if test="mail !=null and mail != ''">
+                and E_MAIL = #{mail}
+            </if>
+            <if test="idNumber !=null and idNumber != ''">
+                and ID_NUMBER = #{idNumber}
+            </if>
+        </where>
+    </select>
+
+    <!--创建用户信息-->
+    <insert id="doInsertUserManage"
+            parameterType="com.sutong.systemManagement.model.entity.AuditSystemUserManage">
+        insert into AUDIT_SYSTEM_USER_MANAGE_TABLE
+        (
+        <include refid="Base_Column_List"/>
+        )
+        values
+        (
+        #{userId,jdbcType=VARCHAR},
+        #{userName,jdbcType=VARCHAR},
+        #{userPassword,jdbcType=VARCHAR},
+        #{cellPhone,jdbcType=VARCHAR},
+        #{sex,jdbcType=VARCHAR},
+        #{birthday,jdbcType=VARCHAR},
+        #{mail,jdbcType=VARCHAR},
+        #{idNumber,jdbcType=VARCHAR},
+        #{nation,jdbcType=VARCHAR},
+        #{nativel,jdbcType=VARCHAR}
+        )
+
+    </insert>
+    <!--根据用户id循环创建对应的角色-->
+    <insert id="doInsertUserRoleManage" parameterType="java.lang.String">
+        insert into AUDIT_SYSTEM_USER_ROLE_MANAGE_TABLE
+        (
+          USER_ID,ROLE_ID
+        )
+        values
+        (
+         #{userId,jdbcType=VARCHAR},
+         #{roleId,jdbcType=VARCHAR}
+        )
+    </insert>
+    <!--修改用户信息-->
+    <update id="doUpdateUserId" parameterType="com.sutong.systemManagement.model.entity.AuditSystemUserManage">
+        update
+        AUDIT_SYSTEM_USER_MANAGE_TABLE
+        <set>
+            <if test="userName !=null and userName !=''">
+                USER_NAME= #{userName},
+            </if>
+            <if test="userPassword !=null and userPassword !=''">
+                USER_PASSWORD= #{userPassword},
+            </if>
+            <if test="cellPhone !=null and cellPhone != ''">
+                CELL_PHONE = #{cellPhone},
+            </if>
+            <if test="sex !=null and sex != ''">
+                SEX = #{sex},
+            </if>
+            <if test="birthday !=null and birthday != ''">
+                BIRTHDAY = #{birthday},
+            </if>
+            <if test="idNumber !=null and idNumber != ''">
+                ID_NUMBER = #{idNumber},
+            </if>
+            <if test="nation !=null and nation != ''">
+                NATION = #{nation},
+            </if>
+            <if test="nativel !=null and nativel != ''">
+                NATIVE = #{nativel},
+            </if>
+            <if test="mail !=null and mail != ''">
+                E_MAIL = #{mail},
+            </if>
+        </set>
+        where USER_ID = #{userId,jdbcType=VARCHAR}
+    </update>
+    <!--删除用户-->
+    <delete id="doDeleteUserId" parameterType="java.lang.String">
+        delete AUDIT_SYSTEM_USER_MANAGE_TABLE
+        <where>
+            <if test="userId !=null and userId !=''">
+                and USER_ID = #{userId}
+            </if>
+        </where>
+    </delete>
+
+    <!--删除中间表对应角色id-->
+    <delete id="doDeleteUserRoleId" parameterType="java.lang.String">
+        delete AUDIT_SYSTEM_USER_ROLE_MANAGE_TABLE
+        <where>
+            <if test="userId !=null and userId !=''">
+                and USER_ID = #{userId}
+            </if>
+        </where>
+    </delete>
+
+
+</mapper>

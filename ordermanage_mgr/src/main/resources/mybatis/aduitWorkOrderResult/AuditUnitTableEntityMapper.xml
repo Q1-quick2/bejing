@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.workorder.mapper.AuditUnitTableEntityMapper">
+    <resultMap id="BaseResultMap" type="com.sutong.workorder.entity.AuditUnitTableEntity">
+        <id column="UNITID" property="unitId" jdbcType="VARCHAR"/>
+        <result column="CHECKCOMMENTSID" property="checkCommentsId" jdbcType="VARCHAR"/>
+        <result column="UNITNAME" property="unitName" jdbcType="VARCHAR"/>
+        <result column="PROCESS_TIME" property="processTime" jdbcType="VARCHAR"/>
+        <result column="PROCESSER" property="processer" jdbcType="VARCHAR"/>
+        <result column="VEHICLE" property="vehicle" jdbcType="INTEGER"/>
+        <result column="VEHICLE_COLOR" property="vehicleColor" jdbcType="INTEGER"/>
+        <result column="VEHPLATENO" property="vehplateNo" jdbcType="VARCHAR"/>
+        <result column="CONFIRMEDESCAPE" property="conFirmedeScape" jdbcType="INTEGER"/>
+        <result column="WHETHER_FEE" property="whetherFee" jdbcType="VARCHAR"/>
+        <result column="TOLL_PATH" property="tollPath" jdbcType="VARCHAR"/>
+        <result column="PATHWAY_UNIT" property="pathwayUnit" jdbcType="VARCHAR"/>
+        <result column="PAYFEE" property="payFee" jdbcType="INTEGER"/>
+        <result column="TOLLFEE" property="tollFee" jdbcType="INTEGER"/>
+        <result column="FEE" property="fee" jdbcType="INTEGER"/>
+        <result column="OTHERFEE" property="otherFee" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="CHAIN_OF_EVIDENCE" property="chainOfEvidence" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        UNITID,CHECKCOMMENTSID,UNITNAME,PROCESS_TIME,PROCESSER,VEHICLE,VEHICLE_COLOR,VEHPLATENO,CONFIRMEDESCAPE,
+        WHETHER_FEE,TOLL_PATH,PATHWAY_UNIT,PAYFEE,TOLLFEE,FEE,OTHERFEE,REMARK,CHAIN_OF_EVIDENCE
+    </sql>
+
+    <select id="doFindListByCheckId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_UNIT_TABLE
+        <where>
+            CHECKCOMMENTSID = #{checkCommentsId}
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.pay.mapper.AuditPaybackFeeFlowMapper" >
+   <resultMap id="PaybackFeeFlowMap" type="com.sutong.bjstjh.entity.AuditPaybackFeeFlowModel">
+
+      <id column="FLOW_ID" jdbcType="VARCHAR" property="flowId" />
+      <result column="PAY_BACK_FEE_ID" jdbcType="VARCHAR" property="paybackFeeId" />
+      <result column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+      <result column="ORDER_TYPE" jdbcType="VARCHAR" property="orderType" />
+      <result column="VEHICLE_NUMBER" jdbcType="VARCHAR" property="vehicleNumber" />
+      <result column="VEHICLE_COLOUR" jdbcType="VARCHAR" property="vehicleColour" />
+      <result column="PAY_BACK_SUM" jdbcType="INTEGER" property="payBackSum" />
+      <result column="UID" jdbcType="VARCHAR" property="uid" />
+      <result column="TOKEN" jdbcType="VARCHAR" property="token" />
+      <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+      <result column="ID_NUMBER" jdbcType="VARCHAR" property="idNumber" />
+      <result column="TOLL_PROVINCE_ID" jdbcType="VARCHAR" property="tollProvinceId" />
+      <result column="MESSAGE_ID" jdbcType="BIGINT" property="messageId" />
+      <result column="VEHICLE_ID" jdbcType="VARCHAR" property="vehicleId" />
+      <result column="PASS_ID" jdbcType="VARCHAR" property="passId" />
+      <result column="PAY_BACK_USER" jdbcType="VARCHAR" property="payBackUser" />
+      <result column="PAY_BACK_USER_PHONE" jdbcType="VARCHAR" property="payBackUserPhone" />
+      <result column="TRANSACTION_TYPE" jdbcType="INTEGER" property="transactionType" />
+      <result column="ETC_CARD_ID" jdbcType="VARCHAR" property="etcCardId" />
+      <result column="PAY_BACK_TYPE" jdbcType="INTEGER" property="payBackType" />
+      <result column="OPERATOR" jdbcType="VARCHAR" property="operator" />
+      <result column="OPERATE_ORG" jdbcType="VARCHAR" property="operateOrg" />
+      <result column="OPERATE_ROAD" jdbcType="VARCHAR" property="operateRoad" />
+      <result column="OPERATE_STATION" jdbcType="VARCHAR" property="operateStation" />
+      <result column="OWE_FEE" jdbcType="INTEGER" property="oweFee" />
+      <result column="PAY_BACK_FEE" jdbcType="INTEGER" property="payBackFee" />
+      <result column="FLOW_CREATE_TIME" jdbcType="VARCHAR" property="flowCreateTime" />
+
+      <result column="END_PAYORDERNO" jdbcType="VARCHAR" property="endPayorderno" />
+      <result column="END_PAYMENTTIME" jdbcType="VARCHAR" property="endPaymenttime" />
+      <result column="END_PAYTYPE" jdbcType="VARCHAR" property="endPaytype" />
+      <result column="END_ACTPAYAMT" jdbcType="VARCHAR" property="endActpayamt" />
+
+   </resultMap>
+
+   <sql id="PaybackFeeFlowSQL">
+F.FLOW_ID,F.PAY_BACK_FEE_ID,F.ORDER_ID,F.ORDER_TYPE,F.VEHICLE_NUMBER,F.VEHICLE_COLOUR,F.PAY_BACK_SUM,F.UID,F.TOKEN,USER_NAME,
+F.ID_NUMBER,F.TOLL_PROVINCE_ID,F.MESSAGE_ID,F.VEHICLE_ID,F.PASS_ID,F.PAY_BACK_USER,F.PAY_BACK_USER_PHONE,
+F.TRANSACTION_TYPE,F.ETC_CARD_ID,F.PAY_BACK_TYPE,F.OPERATOR,F.OPERATE_ORG,F.OPERATE_ROAD,F.OPERATE_STATION,F.OWE_FEE,F.PAY_BACK_FEE,F.FLOW_CREATE_TIME,
+E.END_PAYTYPE,E.END_PAYORDERNO,E.END_PAYMENTTIME,E.END_ACTPAYAMT
+   </sql>
+
+
+   <!--根据条件查询历史补费列表-->
+   <select id="paybackfeeFlow" resultMap="PaybackFeeFlowMap" parameterType="com.sutong.bjstjh.entity.AuditPaybackFeeFlowModel">
+     SELECT <include refid="PaybackFeeFlowSQL" /> FROM MERCHANT.AUDIT_PAY_BACK_FEE_FLOW F INNER JOIN AUDIT_PAY_END E ON F.PAY_BACK_FEE_ID = E.END_PAYSERIALNO
+     <where>
+         E.END_RESULTCODE = 'BD'
+        <if test="vehicleId != null and vehicleId != '' ">
+           AND F.VEHICLE_ID = #{vehicleId}
+        </if>
+        <if test="vehicleNumber != null and vehicleNumber != '' ">
+           AND F.VEHICLE_NUMBER = #{vehicleNumber}
+        </if>
+        <if test="vehicleColour != null and vehicleColour != '' ">
+           AND F.VEHICLE_COLOUR = #{vehicleColour}
+        </if>
+        <if test="orderType != null and orderType != '' ">
+           AND F.ORDER_TYPE = #{orderType}
+        </if>
+        <if test="paybegintime != null and paybegintime != '' ">
+           AND ((substr(E.END_PAYMENTTIME,1,4) || '-' || substr(E.END_PAYMENTTIME,5,2) || '-' || substr(E.END_PAYMENTTIME,7,2)))
+           <![CDATA[ >= ]]> #{paybegintime}
+        </if>
+        <if test="payendtime != null and payendtime != ''">
+           AND ((substr(E.END_PAYMENTTIME,1,4) || '-' || substr(E.END_PAYMENTTIME,5,2) || '-' || substr(E.END_PAYMENTTIME,7,2)))
+           <![CDATA[ <= ]]> #{payendtime}
+        </if>
+     </where>
+   </select>
+   <!--根据主键查询历史补费详情-->
+   <select id="paybackfeeFlowDetail" resultMap="PaybackFeeFlowMap" parameterType="com.sutong.bjstjh.entity.AuditPaybackFeeFlowModel">
+      SELECT  <include refid="PaybackFeeFlowSQL" />  FROM MERCHANT.AUDIT_PAY_BACK_FEE_FLOW  F INNER JOIN AUDIT_PAY_END E ON F.PAY_BACK_FEE_ID = E.END_PAYSERIALNO
+      <where>
+         E.END_RESULTCODE = 'BD'
+         <if test="flowId != null and flowId != '' ">
+            AND F.FLOW_ID = #{flowId}
+         </if>
+         <if test="paybackFeeId != null and paybackFeeId != '' ">
+            AND F.PAY_BACK_FEE_ID = #{paybackFeeId}
+         </if>
+      </where>
+   </select>
+
+
+</mapper>
+
+
+
+

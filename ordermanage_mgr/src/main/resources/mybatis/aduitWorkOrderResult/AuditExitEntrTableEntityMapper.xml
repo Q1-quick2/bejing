@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.workorder.mapper.AuditExitEntrTableEntityMapper">
+    <resultMap id="BaseResultMap" type="com.sutong.workorder.entity.AuditExitEntrTableEntity">
+        <id column="EXITENTRID" property="exitEntrId" jdbcType="VARCHAR"/>
+        <result column="WORKORDERID" property="workOrderId" jdbcType="VARCHAR"/>
+        <result column="ENTRANCE" property="entrance" jdbcType="INTEGER"/>
+        <result column="ENTRANCE_CODE" property="entranceCode" jdbcType="VARCHAR"/>
+        <result column="PASS_MEDIA_TYPE" property="passMediaType" jdbcType="INTEGER"/>
+        <result column="OBU_SIGN" property="obuSign" jdbcType="INTEGER"/>
+        <result column="TERMINAL_TRANSNO" property="terminalTransNo" jdbcType="VARCHAR"/>
+        <result column="OBUNO" property="obuNo" jdbcType="VARCHAR"/>
+        <result column="ETCNO_CPCNO" property="etcNoCpcNo" jdbcType="VARCHAR"/>
+        <result column="ENTRYTIME" property="entryTime" jdbcType="VARCHAR"/>
+        <result column="REAL_VEHPLATENO" property="realVehplateNo" jdbcType="VARCHAR"/>
+        <result column="REAL_VEH_COLORCODE" property="realVehColorCode" jdbcType="INTEGER"/>
+        <result column="ENREAL_VEHPLATENO" property="enRealVehplateNo" jdbcType="VARCHAR"/>
+        <result column="ENREAL_VEH_COLORCODE" property="enRealVehColorCode" jdbcType="INTEGER"/>
+        <result column="COLLECTFEE_VEH_TYPE" property="collectFeeVehType" jdbcType="INTEGER"/>
+        <result column="VEH_CLASS_TYPECODE" property="vehClassTypeCode" jdbcType="INTEGER"/>
+        <result column="TACNO" property="tacNo" jdbcType="VARCHAR"/>
+        <result column="TRANS_TYPE" property="transType" jdbcType="VARCHAR"/>
+        <result column="TERMINALNO" property="terminalNo" jdbcType="VARCHAR"/>
+        <result column="ENWEIGHT" property="enWeight" jdbcType="VARCHAR"/>
+        <result column="ENAXLE_COUNT" property="enAxleCount" jdbcType="INTEGER"/>
+        <result column="PERCENTAGE" property="percentage" jdbcType="VARCHAR"/>
+        <result column="LABEL_STATUS" property="labelStatus" jdbcType="INTEGER"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        EXITENTRID,WORKORDERID,ENTRANCE,ENTRANCE_CODE,PASS_MEDIA_TYPE,OBU_SIGN,TERMINAL_TRANSNO,
+        OBUNO,ETCNO_CPCNO,ENTRYTIME,REAL_VEHPLATENO,REAL_VEH_COLORCODE,ENREAL_VEHPLATENO,ENREAL_VEH_COLORCODE,
+        COLLECTFEE_VEH_TYPE,VEH_CLASS_TYPECODE,TACNO,TRANS_TYPE,TERMINALNO,ENWEIGHT,ENAXLE_COUNT,PERCENTAGE,
+        LABEL_STATUS,DESCRIPTION
+    </sql>
+
+    <select id="doFindExitEntr" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_EXITENTR_TABLE
+        <where>
+            WORKORDERID = #{workOrderId,jdbcType=VARCHAR}
+            and ENTRYTIME IN
+            <foreach close=")" collection="entryTimes" item="entryTime" open="(" separator=",">
+                #{entryTime}
+            </foreach>
+        </where>
+    </select>
+
+</mapper>

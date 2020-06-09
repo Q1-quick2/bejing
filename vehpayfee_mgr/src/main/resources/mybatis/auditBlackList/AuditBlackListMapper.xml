@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditBlackList.mapper.AuditBlackListMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.auditBlackList.model.AuditBlackList" >
+        <id column="BLACKLISTID" property="blacklistid" jdbcType="VARCHAR" />
+        <result column="VEHPLATENO" property="vehplateno" jdbcType="VARCHAR" />
+        <result column="VEH_COLOR" property="vehColor" jdbcType="SMALLINT" />
+        <result column="REASON" property="reason" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="SMALLINT" />
+        <result column="TYPE" property="type" jdbcType="SMALLINT" />
+        <result column="VERSION" property="version" jdbcType="INTEGER" />
+        <result column="CREATION_TIME" property="creationTime" jdbcType="VARCHAR" />
+        <result column="EFFECTIVE_TIME" property="effectiveTime" jdbcType="VARCHAR" />
+        <result column="OWEFEE" property="owefee" jdbcType="INTEGER" />
+        <result column="EVASION_COUNT" property="evasionCount" jdbcType="SMALLINT" />
+        <result column="VEHICLE_FEATURE_VERSION" property="vehicleFeatureVersion" jdbcType="VARCHAR" />
+        <result column="VEHICLE_FEATURE_CODE" property="vehicleFeatureCode" jdbcType="VARCHAR" />
+        <result column="RM_FLAG" property="rmFlag" jdbcType="SMALLINT" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        BLACKLISTID, VEHPLATENO, VEH_COLOR, REASON, STATUS, TYPE, VERSION, CREATION_TIME, 
+        EFFECTIVE_TIME, OWEFEE, EVASION_COUNT, VEHICLE_FEATURE_VERSION, VEHICLE_FEATURE_CODE, 
+        RM_FLAG, CREATE_TIME, UPDATE_TIME
+    </sql>
+
+    <!--查询黑名单分页-->
+    <select id="doFindAuditBlackListPage" resultMap="BaseResultMap" parameterType="com.sutong.auditBlackList.model.AuditBlackList" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_BLACK_LIST
+        <where>
+            <if test="vehplateno !=null and vehplateno !='' ">
+                and AUDIT_BLACK_LIST.VEHPLATENO = #{vehplateno}
+            </if>
+            <if test="vehColor !=null">
+                and AUDIT_BLACK_LIST.VEH_COLOR = #{vehColor}
+            </if>
+            <if test="reason !=null and reason !='' ">
+                and AUDIT_BLACK_LIST.REASON = #{reason}
+            </if>
+            <if test="version !=null and version !='' ">
+                and AUDIT_BLACK_LIST.VERSION like '%'||#{version}||'%'
+            </if>
+            <if test="effectiveTime !=null and effectiveTime !='' ">
+                and AUDIT_BLACK_LIST.EFFECTIVE_TIME like '%'||#{effectiveTime}||'%'
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select 
+        <include refid="Base_Column_List" />
+        from AUDIT_BLACK_LIST
+        where BLACKLISTID = #{blacklistid,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from AUDIT_BLACK_LIST
+        where BLACKLISTID = #{blacklistid,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.sutong.auditBlackList.model.AuditBlackList" >
+        insert into AUDIT_BLACK_LIST (BLACKLISTID, VEHPLATENO, VEH_COLOR, 
+            REASON, STATUS, TYPE, 
+            VERSION, CREATION_TIME, EFFECTIVE_TIME, 
+            OWEFEE, EVASION_COUNT, VEHICLE_FEATURE_VERSION, 
+            VEHICLE_FEATURE_CODE, RM_FLAG, CREATE_TIME, 
+            UPDATE_TIME)
+        values (#{blacklistid,jdbcType=VARCHAR}, #{vehplateno,jdbcType=VARCHAR}, #{vehColor,jdbcType=SMALLINT}, 
+            #{reason,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, #{type,jdbcType=SMALLINT}, 
+            #{version,jdbcType=INTEGER}, #{creationTime,jdbcType=VARCHAR}, #{effectiveTime,jdbcType=VARCHAR}, 
+            #{owefee,jdbcType=INTEGER}, #{evasionCount,jdbcType=SMALLINT}, #{vehicleFeatureVersion,jdbcType=VARCHAR}, 
+            #{vehicleFeatureCode,jdbcType=VARCHAR}, #{rmFlag,jdbcType=SMALLINT}, #{createTime,jdbcType=VARCHAR}, 
+            #{updateTime,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.sutong.auditBlackList.model.AuditBlackList" >
+        insert into AUDIT_BLACK_LIST
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="blacklistid != null" >
+                BLACKLISTID,
+            </if>
+            <if test="vehplateno != null" >
+                VEHPLATENO,
+            </if>
+            <if test="vehColor != null" >
+                VEH_COLOR,
+            </if>
+            <if test="reason != null" >
+                REASON,
+            </if>
+            <if test="status != null" >
+                STATUS,
+            </if>
+            <if test="type != null" >
+                TYPE,
+            </if>
+            <if test="version != null" >
+                VERSION,
+            </if>
+            <if test="creationTime != null" >
+                CREATION_TIME,
+            </if>
+            <if test="effectiveTime != null" >
+                EFFECTIVE_TIME,
+            </if>
+            <if test="owefee != null" >
+                OWEFEE,
+            </if>
+            <if test="evasionCount != null" >
+                EVASION_COUNT,
+            </if>
+            <if test="vehicleFeatureVersion != null" >
+                VEHICLE_FEATURE_VERSION,
+            </if>
+            <if test="vehicleFeatureCode != null" >
+                VEHICLE_FEATURE_CODE,
+            </if>
+            <if test="rmFlag != null" >
+                RM_FLAG,
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME,
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="blacklistid != null" >
+                #{blacklistid,jdbcType=VARCHAR},
+            </if>
+            <if test="vehplateno != null" >
+                #{vehplateno,jdbcType=VARCHAR},
+            </if>
+            <if test="vehColor != null" >
+                #{vehColor,jdbcType=SMALLINT},
+            </if>
+            <if test="reason != null" >
+                #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=SMALLINT},
+            </if>
+            <if test="type != null" >
+                #{type,jdbcType=SMALLINT},
+            </if>
+            <if test="version != null" >
+                #{version,jdbcType=INTEGER},
+            </if>
+            <if test="creationTime != null" >
+                #{creationTime,jdbcType=VARCHAR},
+            </if>
+            <if test="effectiveTime != null" >
+                #{effectiveTime,jdbcType=VARCHAR},
+            </if>
+            <if test="owefee != null" >
+                #{owefee,jdbcType=INTEGER},
+            </if>
+            <if test="evasionCount != null" >
+                #{evasionCount,jdbcType=SMALLINT},
+            </if>
+            <if test="vehicleFeatureVersion != null" >
+                #{vehicleFeatureVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleFeatureCode != null" >
+                #{vehicleFeatureCode,jdbcType=VARCHAR},
+            </if>
+            <if test="rmFlag != null" >
+                #{rmFlag,jdbcType=SMALLINT},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sutong.auditBlackList.model.AuditBlackList" >
+        update AUDIT_BLACK_LIST
+        <set >
+            <if test="vehplateno != null" >
+                VEHPLATENO = #{vehplateno,jdbcType=VARCHAR},
+            </if>
+            <if test="vehColor != null" >
+                VEH_COLOR = #{vehColor,jdbcType=SMALLINT},
+            </if>
+            <if test="reason != null" >
+                REASON = #{reason,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                STATUS = #{status,jdbcType=SMALLINT},
+            </if>
+            <if test="type != null" >
+                TYPE = #{type,jdbcType=SMALLINT},
+            </if>
+            <if test="version != null" >
+                VERSION = #{version,jdbcType=INTEGER},
+            </if>
+            <if test="creationTime != null" >
+                CREATION_TIME = #{creationTime,jdbcType=VARCHAR},
+            </if>
+            <if test="effectiveTime != null" >
+                EFFECTIVE_TIME = #{effectiveTime,jdbcType=VARCHAR},
+            </if>
+            <if test="owefee != null" >
+                OWEFEE = #{owefee,jdbcType=INTEGER},
+            </if>
+            <if test="evasionCount != null" >
+                EVASION_COUNT = #{evasionCount,jdbcType=SMALLINT},
+            </if>
+            <if test="vehicleFeatureVersion != null" >
+                VEHICLE_FEATURE_VERSION = #{vehicleFeatureVersion,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleFeatureCode != null" >
+                VEHICLE_FEATURE_CODE = #{vehicleFeatureCode,jdbcType=VARCHAR},
+            </if>
+            <if test="rmFlag != null" >
+                RM_FLAG = #{rmFlag,jdbcType=SMALLINT},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where BLACKLISTID = #{blacklistid,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.sutong.auditBlackList.model.AuditBlackList" >
+        update AUDIT_BLACK_LIST
+        set VEHPLATENO = #{vehplateno,jdbcType=VARCHAR},
+            VEH_COLOR = #{vehColor,jdbcType=SMALLINT},
+            REASON = #{reason,jdbcType=VARCHAR},
+            STATUS = #{status,jdbcType=SMALLINT},
+            TYPE = #{type,jdbcType=SMALLINT},
+            VERSION = #{version,jdbcType=INTEGER},
+            CREATION_TIME = #{creationTime,jdbcType=VARCHAR},
+            EFFECTIVE_TIME = #{effectiveTime,jdbcType=VARCHAR},
+            OWEFEE = #{owefee,jdbcType=INTEGER},
+            EVASION_COUNT = #{evasionCount,jdbcType=SMALLINT},
+            VEHICLE_FEATURE_VERSION = #{vehicleFeatureVersion,jdbcType=VARCHAR},
+            VEHICLE_FEATURE_CODE = #{vehicleFeatureCode,jdbcType=VARCHAR},
+            RM_FLAG = #{rmFlag,jdbcType=SMALLINT},
+            CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+            UPDATE_TIME = #{updateTime,jdbcType=VARCHAR}
+        where BLACKLISTID = #{blacklistid,jdbcType=VARCHAR}
+    </update>
+</mapper>

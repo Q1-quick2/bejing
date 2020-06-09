@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.workorder.mapper.AuditBlackListTempEntityMapper">
+    <resultMap id="BaseResultMap" type="com.sutong.workorder.entity.AuditBlackListTempEntity">
+        <id column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="VEHICLE_ID" property="vehicleId" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="REASON" property="reason" jdbcType="VARCHAR"/>
+        <result column="CREATION_TIME" property="creationTime" jdbcType="VARCHAR"/>
+        <result column="TYPE" property="type" jdbcType="VARCHAR"/>
+        <result column="VEHICLE_FEATURE_VERSION" property="vehicleFeatureVersion" jdbcType="VARCHAR"/>
+        <result column="VEHICLE_FEATURE_CODE" property="vehicleFeatureCode" jdbcType="VARCHAR"/>
+        <result column="OWE_FEE" property="oweFee" jdbcType="INTEGER"/>
+        <result column="EVASION_COUNT" property="evasionCount" jdbcType="INTEGER"/>
+        <result column="VERSION" property="version" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ID,VEHICLE_ID,STATUS,REASON,CREATION_TIME,TYPE,VEHICLE_FEATURE_VERSION,VEHICLE_FEATURE_CODE,OWE_FEE,EVASION_COUNT,VERSION
+    </sql>
+
+    <select id="doFindAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_BLACK_LIST_TEMP
+    </select>
+
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.mapper.FileProcessMapper">
+
+	<!-- 将上传的文件路径保存到数据库 -->
+	<insert id="saveFilepath" parameterType="java.util.Map">
+		INSERT	INTO 
+			AUDIT_FILE_TABLE(
+			FILEID,
+			FILEPATH,
+			FILETYPE,
+			TABLE_NAME,
+			TABLEID,
+			TABLE_COLUMN
+			) VALUES (
+			#{fileid,jdbcType=VARCHAR},
+			#{file_path,jdbcType=VARCHAR},
+			#{content_type,jdbcType=VARCHAR},
+			#{table_name,jdbcType=VARCHAR},
+			#{id,jdbcType=VARCHAR},
+			#{table_column,jdbcType=VARCHAR}
+			)
+	</insert>
+	
+	<!-- 根据表名和表id获取文件路径 -->
+	<select id="queryFilepath" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT 
+			FILEPATH 
+		FROM 
+			AUDIT_FILE_TABLE
+		 WHERE 
+		 	TABLE_NAME = #{table,jdbcType=VARCHAR} 
+		 	AND TABLEID = #{tableID,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 根据表名,表id,表字段获取文件路径 -->
+	<select id="queryFilepathByColumn" resultType="java.lang.String" parameterType="java.lang.String">
+		SELECT 
+			FILEPATH 
+		FROM 
+			AUDIT_FILE_TABLE
+		 WHERE 
+		 	TABLE_NAME = #{table,jdbcType=VARCHAR} 
+		 	AND TABLEID = #{tableID,jdbcType=VARCHAR} 
+		 	AND TABLE_COLUMN = #{tableColumn,jdbcType=VARCHAR} 
+	</select>
+	
+</mapper>

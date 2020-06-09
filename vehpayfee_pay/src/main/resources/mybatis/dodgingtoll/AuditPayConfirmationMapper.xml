@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.dodgingtoll.mapper.AuditPayConfirmationMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.dodgingtoll.model.AuditPayConfirmation" >
+        <id column="PAY_ID" property="payId" jdbcType="VARCHAR" />
+        <result column="PAY_DISPOSE_TIME" property="payDisposeTime" jdbcType="VARCHAR" />
+        <result column="PAY_DISPOSE_SITE" property="payDisposeSite" jdbcType="VARCHAR" />
+        <result column="PAY_PLATE_NUMBER" property="payPlateNumber" jdbcType="VARCHAR" />
+        <result column="PAY_CAR_TYPE" property="payCarType" jdbcType="VARCHAR" />
+        <result column="PAY_CAR_CATEGORY" property="payCarCategory" jdbcType="VARCHAR" />
+        <result column="PAY_PLATE_NUMBER_COLOR" property="payPlateNumberColor" jdbcType="VARCHAR" />
+        <result column="PAY_VEHICLE_OWNER" property="payVehicleOwner" jdbcType="VARCHAR" />
+        <result column="PAY_DRIVER_NAME" property="payDriverName" jdbcType="VARCHAR" />
+        <result column="PAY_RFID" property="payRfid" jdbcType="VARCHAR" />
+        <result column="PAY_ENGINE_NUMBER" property="payEngineNumber" jdbcType="VARCHAR" />
+        <result column="PAY_DRIVER_NUMBER" property="payDriverNumber" jdbcType="VARCHAR" />
+        <result column="PAY_CARD_NUMBER" property="payCardNumber" jdbcType="VARCHAR" />
+        <result column="PAY_SITE" property="paySite" jdbcType="VARCHAR" />
+        <result column="PAY_TIME" property="payTime" jdbcType="VARCHAR" />
+        <result column="PAY_COUNT" property="payCount" jdbcType="VARCHAR" />
+        <result column="PAY_INFO" property="payInfo" jdbcType="VARCHAR" />
+        <result column="PAY_NAME" property="payName" jdbcType="VARCHAR" />
+        <result column="PAY_PHONE" property="payPhone" jdbcType="VARCHAR" />
+        <result column="PAY_DATE" property="payDate" jdbcType="VARCHAR" />
+        <result column="PAY_TOTAL" property="payTotal" jdbcType="VARCHAR" />
+        <result column="PAY_CONDUCTOR" property="payConductor" jdbcType="VARCHAR" />
+        <result column="PAY_PROCESSING_UNIT" property="payProcessingUnit" jdbcType="VARCHAR" />
+        <result column="PAY_PAYPIKE" property="payPaypike" jdbcType="VARCHAR" />
+        <result column="PAY_END_TIME" property="payEndTime" jdbcType="VARCHAR" />
+        <result column="AUDIT_PAY_CONFIRMATION" property="auditPayConfirmation" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getCountNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+
+        SELECT COUNT(PAY_RFID)
+         FROM
+         AUDIT_PAY_CONFIRMATION
+         WHERE
+         PAY_RFID=#{obu}
+    </select>
+
+   <select id="getConfirmationByObu" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+       PAY_ID, PAY_DISPOSE_TIME, PAY_DISPOSE_SITE, PAY_PLATE_NUMBER, PAY_CAR_TYPE, PAY_CAR_CATEGORY,
+       PAY_PLATE_NUMBER_COLOR, PAY_VEHICLE_OWNER, PAY_DRIVER_NAME, PAY_RFID, PAY_ENGINE_NUMBER,
+       PAY_DRIVER_NUMBER, PAY_CARD_NUMBER, PAY_SITE, PAY_TIME, PAY_COUNT, PAY_INFO, PAY_NAME,
+       PAY_PHONE, PAY_DATE, PAY_TOTAL, PAY_CONDUCTOR, PAY_PROCESSING_UNIT, PAY_PAYPIKE,
+       PAY_END_TIME, AUDIT_PAY_CONFIRMATION
+        FROM
+        AUDIT_PAY_CONFIRMATION
+       WHERE
+       PAY_RFID=#{obu}
+        <!--<where>-->
+            <!--<if test="obu != null" >-->
+                <!--AND PAY_RFID=#{obu}-->
+            <!--</if>-->
+
+            <!--<if test="payId != null" >-->
+                <!--AND PAY_ID=#{payId}-->
+            <!--</if>-->
+            <!--<if test="payDisposeTime != null" >-->
+                <!--AND  PAY_DISPOSE_TIME=#{payDisposeTime}-->
+            <!--</if>-->
+            <!--<if test="payDisposeSite != null" >-->
+                <!--AND PAY_DISPOSE_SITE=#{payDisposeSite}-->
+            <!--</if>-->
+            <!--<if test="payPlateNumber != null" >-->
+                <!--AND PAY_PLATE_NUMBER=#{payPlateNumber}-->
+            <!--</if>-->
+            <!--<if test="payCarType != null" >-->
+                <!--AND PAY_CAR_TYPE=#{payCarType}-->
+            <!--</if>-->
+            <!--<if test="payCarCategory != null" >-->
+                <!--AND PAY_CAR_CATEGORY=#{payCarCategory}-->
+            <!--</if>-->
+            <!--<if test="payPlateNumberColor != null" >-->
+                <!--AND PAY_PLATE_NUMBER_COLOR=#{}-->
+            <!--</if>-->
+            <!--<if test="payVehicleOwner != null" >-->
+                <!--AND PAY_VEHICLE_OWNER=#{payVehicleOwner}-->
+            <!--</if>-->
+            <!--<if test="payDriverName != null" >-->
+                <!--AND PAY_DRIVER_NAME=#{payDriverName}-->
+            <!--</if>-->
+
+            <!--<if test="payEngineNumber != null" >-->
+                <!--AND PAY_ENGINE_NUMBER=#{payEngineNumber}-->
+            <!--</if>-->
+            <!--<if test="payDriverNumber != null" >-->
+                <!--AND PAY_DRIVER_NUMBER=#{payDriverNumber}-->
+            <!--</if>-->
+            <!--<if test="payCardNumber != null" >-->
+                <!--AND PAY__CARD_NUMBER=#{payCardNumber}-->
+            <!--</if>-->
+            <!--<if test="paySite != null" >-->
+                <!--AND PAY_SITE=#{paySite}-->
+            <!--</if>-->
+            <!--<if test="payTime != null" >-->
+                <!--AND PAY_TIME=#{payTime}-->
+            <!--</if>-->
+            <!--<if test="payCount != null" >-->
+                <!--AND PAY_COUNT=#{payCount}-->
+            <!--</if>-->
+            <!--<if test="payInfo != null" >-->
+                <!--AND PAY_INFO=#{payInfo}-->
+            <!--</if>-->
+            <!--<if test="payName != null" >-->
+                <!--AND PAY_NAME=#{payName}-->
+            <!--</if>-->
+            <!--<if test="payPhone != null" >-->
+                <!--AND PAY_PHONE=#{payPhone}-->
+            <!--</if>-->
+            <!--<if test="payDate != null" >-->
+                <!--AND PAY_DATE=#{payDate}-->
+            <!--</if>-->
+            <!--<if test="payTotal != null" >-->
+                <!--AND PAY_TOTAL=#{payTotal}-->
+            <!--</if>-->
+            <!--<if test="payConductor != null" >-->
+                <!--AND PAY_CONDUCTOR=#{payConductor}-->
+            <!--</if>-->
+            <!--<if test="payProcessingUnit != null" >-->
+                <!--AND PAY_PROCESSING_UNIT=#{payProcessingUnit}-->
+            <!--</if>-->
+            <!--<if test="payPaypike != null" >-->
+                <!--AND PAY_PAYPIKE=#{payPaypike}-->
+            <!--</if>-->
+            <!--<if test="payEndTime != null" >-->
+                <!--AND PAY_END_TIME=#{payEndTime}-->
+            <!--</if>-->
+            <!--<if test="paySignatureName != null" >-->
+                <!--AND PAY_SIGNATURE_NAME=#{paySignatureName}-->
+            <!--</if>-->
+            <!--<if test="auditPayConfirmation != null" >-->
+                <!--AND AUDIT_PAY_CONFIRMATION=#{auditPayConfirmation}-->
+            <!--</if>-->
+
+        <!--</where>-->
+   </select>
+
+
+
+
+</mapper>

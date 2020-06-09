@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.workorder.mapper.AuditWorkOrderTableEntityMapper">
+    <resultMap id="BaseResultMap" type="com.sutong.workorder.entity.AuditWorkOrderTableEntity">
+        <id column="WORKORDERID" property="workOrderId" jdbcType="VARCHAR"/>
+        <result column="VEHICLENO" property="vehicleNo" jdbcType="VARCHAR"/>
+        <result column="VEH_COLOR" property="vehColor" jdbcType="INTEGER"/>
+        <result column="CAR_COLOR" property="carColor" jdbcType="INTEGER"/>
+        <result column="VEH_TYPE" property="vehType" jdbcType="INTEGER"/>
+        <result column="VEH_CLASS" property="vehClass" jdbcType="INTEGER"/>
+        <result column="WHETHER_AUDIT" property="whetherAudit" jdbcType="INTEGER"/>
+        <result column="PASSPATH" property="passPath" jdbcType="VARCHAR"/>
+        <result column="ESCAPE" property="escape" jdbcType="VARCHAR"/>
+        <result column="ESCAPE_TYPE_ONE" property="escapeTypeOne" jdbcType="INTEGER"/>
+        <result column="TIME_TYPE" property="timeType" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+        <result column="VEH_FLAG" property="vehFlag" jdbcType="VARCHAR"/>
+        <result column="ENTRY_TIME" property="entryTime" jdbcType="VARCHAR"/>
+        <result column="ENTRY_PLACE" property="entryPlace" jdbcType="VARCHAR"/>
+        <result column="EXIT_TIME" property="exitTime" jdbcType="VARCHAR"/>
+        <result column="EXIT_PLACE" property="exitPlace" jdbcType="VARCHAR"/>
+        <result column="PASS_PROVINCE" property="passProvince" jdbcType="VARCHAR"/>
+        <result column="PASS_PROVINCE_TOTAL" property="passProvinceTotal" jdbcType="INTEGER"/>
+        <result column="PASS_ROAD_TOTAL" property="passRoadTotal" jdbcType="INTEGER"/>
+        <result column="PASS_MEDIA_TYPE" property="passMediaType" jdbcType="INTEGER"/>
+        <result column="OBUNO" property="obuNo" jdbcType="VARCHAR"/>
+        <result column="ETCNO_CPCNO" property="etcNoCpcNo" jdbcType="VARCHAR"/>
+        <result column="SPECIAL_TYPE" property="specialType" jdbcType="INTEGER"/>
+        <result column="RANS_TOTAL" property="ransTotal" jdbcType="INTEGER"/>
+        <result column="ISSUERNO" property="issuerNo" jdbcType="VARCHAR"/>
+        <result column="ETCTYPE" property="etcType" jdbcType="INTEGER"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="WORKORDER_TITLE" property="workOrderTitle" jdbcType="VARCHAR"/>
+        <result column="WORKORDER_UNIT" property="workOrderUnit" jdbcType="VARCHAR"/>
+        <result column="WORKORDER_TIME" property="workOrderTime" jdbcType="VARCHAR"/>
+        <result column="INVESTIGATE_PROGRESS" property="investigateProgress" jdbcType="VARCHAR"/>
+        <result column="DATA_PROGRESS" property="dataProgress" jdbcType="VARCHAR"/>
+        <result column="WORKORDER_STATUS" property="workOrderStatus" jdbcType="INTEGER"/>
+        <result column="INITIATOR" property="initiator" jdbcType="VARCHAR"/>
+        <result column="UPDATETIME" property="updateTime" jdbcType="VARCHAR"/>
+        <result column="WORKODER_COUNT" property="workOrderCount" jdbcType="INTEGER"/>
+        <result column="ESCAPE_TYPE_TWO" property="escapeTypeTwo" jdbcType="INTEGER"/>
+        <result column="DATA_NUMBER" property="dataNumber" jdbcType="VARCHAR"/>
+        <result column="RM_FLAG" property="rmFlag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        WORKORDERID,VEHICLENO,VEH_COLOR,CAR_COLOR,VEH_TYPE,VEH_CLASS,WHETHER_AUDIT,PASSPATH,ESCAPE,
+        ESCAPE_TYPE_ONE,TIME_TYPE,CREATE_TIME,VEH_FLAG,ENTRY_TIME,ENTRY_PLACE,EXIT_TIME,EXIT_PLACE,PASS_PROVINCE,PASS_PROVINCE_TOTAL,
+        PASS_ROAD_TOTAL,PASS_MEDIA_TYPE,OBUNO,ETCNO_CPCNO,SPECIAL_TYPE,RANS_TOTAL,ISSUERNO,ETCTYPE,REMARK,
+        WORKORDER_TITLE,WORKORDER_UNIT,WORKORDER_TIME,INVESTIGATE_PROGRESS,DATA_PROGRESS,
+        WORKORDER_STATUS,INITIATOR,UPDATETIME,WORKODER_COUNT,ESCAPE_TYPE_TWO,DATA_NUMBER,RM_FLAG
+    </sql>
+
+    <select id="selectOneById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_WORKORDER_TABLE
+        where WORKORDERID = #{workOrderId}
+        and RM_FLAG = 0
+    </select>
+
+    <select id="selectByQueryOne" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_WORKORDER_TABLE
+        <where>
+            <if test="vehicleNo != null and vehicleNo != ''">
+                and VEHICLENO like '%'||#{vehicleNo}||'%'
+            </if>
+            <if test="vehColor != null and vehColor != ''">
+                and VEH_COLOR = #{vehColor}
+            </if>
+            <if test="vehType != null and vehType != ''">
+                and VEH_TYPE = #{vehType}
+            </if>
+            <if test="whetherAudit != null and whetherAudit != '' ">
+                and WHETHER_AUDIT = #{whetherAudit}
+            </if>
+            <if test="passProvince != null and passProvince != ''">
+                and PASS_PROVINCE like '%'||#{passProvince}||'%'
+            </if>
+            <if test="passPath != null and passPath != ''">
+                and PASSPATH like '%'||#{passPath}||'%'
+            </if>
+            <if test="escapeTypeOne != null and escapeTypeOne != ''">
+                and ESCAPE_TYPE_ONE = #{escapeTypeOne}
+            </if>
+            <if test="escapeTypeTwo != null and escapeTypeTwo != ''">
+                and ESCAPE_TYPE_TWO = #{escapeTypeTwo}
+            </if>
+            <if test="timeType != null and timeType != ''">
+                and TIME_TYPE like '%'||#{timeType}||'%'
+            </if>
+            <if test="workOrderStartTime !=null and workOrderStartTime !='' and workOrderEndTime !=null and workOrderEndTime !=''">
+                and WORKORDER_TIME &gt;= #{workOrderStartTime} and WORKORDER_TIME &lt;= #{workOrderEndTime}
+            </if>
+            and RM_FLAG = 0
+        </where>
+    </select>
+
+    <select id="selectByQueryTwo" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_WORKORDER_TABLE
+        <where>
+            <if test="vehicleNo != null and vehicleNo != ''">
+                and VEHICLENO like '%'||#{vehicleNo}||'%'
+            </if>
+            <if test="vehColor != null and vehColor != ''">
+                and VEH_COLOR = #{vehColor}
+            </if>
+            <if test="workOrderTitle != null and workOrderTitle != ''">
+                and WORKORDER_TITLE like '%'||#{workOrderTitle}||'%'
+            </if>
+            <if test="workOrderStartTime !=null and workOrderStartTime !='' and workOrderEndTime !=null and workOrderEndTime !=''">
+                and WORKORDER_TIME &gt;= #{workOrderStartTime} and WORKORDER_TIME &lt;= #{workOrderEndTime}
+            </if>
+            and WHETHER_AUDIT = 1
+            and RM_FLAG = 0
+        </where>
+    </select>
+
+    <!-- 根据条件去查询外部工单 -->
+    <select id="doFindWorkorder" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        AUDIT_WORKORDER_TABLE
+        <where>
+            <if test="AuditWorkOrderTableEntity.vehicleNo != null">
+                VEHICLENO = #{AuditWorkOrderTableEntity.vehicleNo,jdbcType=VARCHAR}
+            </if>
+            <if test="AuditWorkOrderTableEntity.vehColor != null">
+                VEH_COLOR = #{AuditWorkOrderTableEntity.vehColor,jdbcType=SMALLINT}
+            </if>
+            <if test="AuditWorkOrderTableEntity.workOrderTitle != null">
+                WORKORDER_TITLE = #{AuditWorkOrderTableEntity.workOrderTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="AuditWorkOrderTableEntity.workOrderUnit != null">
+                WORKORDER_UNIT = #{AuditWorkOrderTableEntity.workOrderUnit,jdbcType=SMALLINT}
+            </if>
+            <if test="startTime != null and endTime != null">
+                AND TIMESTAMP(TRIM(CHAR(WORKORDER_TIME)))
+                BETWEEN #{startTime,jdbcType=TIMESTAMP} AND #{endTime,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+    <!-- 根据实体类条件去查询外部工单 -->
+    <select id="doFindWorkorderByVO" resultMap="BaseResultMap" 
+    	parameterType="com.sutong.workorder.entity.AuditWorkOrderTableEntity">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        AUDIT_WORKORDER_TABLE
+        <where>
+            <if test="dataNumber != null">
+                DATA_NUMBER = #{dataNumber,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    
+    <!-- 根据实体类条件去查询车辆信息表 -->
+    <select id="doFindAuditVehicleTable" resultType="com.sutong.bjstjh.entity.AuditVehicleTable" 
+    	parameterType="java.lang.String">
+        SELECT
+          VEHPLATENOID , 
+		  WORKORDERID , 
+		  VEHPLATENO  , 
+		  VEH_COLOR AS vehColor, 
+		  VEH_TYPE AS vehType , 
+		  VEH_CLASS  AS vehClass, 
+		  CAR_COLOR  AS carColor
+        FROM
+        AUDIT_VEHICLE_TABLE
+        <where>
+            <if test="data_number != null and data_number != ''">
+                WORKORDERID = (SELECT WORKORDERID FROM AUDIT_WORKORDER_TABLE  WHERE DATA_NUMBER = #{data_number,jdbcType=VARCHAR} ) 
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="com.sutong.workorder.entity.AuditWorkOrderTableEntity">
+        insert into
+        AUDIT_WORKORDER_TABLE
+        (
+        <include refid="Base_Column_List"/>
+        )
+        values ( #{workOrderId,jdbcType=VARCHAR},#{vehicleNo,jdbcType=VARCHAR},#{vehColor,jdbcType=INTEGER},
+        #{carColor,jdbcType=INTEGER},#{vehType,jdbcType=INTEGER},#{vehClass,jdbcType=INTEGER},
+        #{whetherAudit,jdbcType=INTEGER},#{passPath,jdbcType=VARCHAR},#{escape,jdbcType=VARCHAR},
+        #{escapeTypeOne,jdbcType=INTEGER},#{timeType,jdbcType=VARCHAR},TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+        #{vehFlag,jdbcType=VARCHAR},#{entryTime,jdbcType=VARCHAR},#{entryPlace,jdbcType=VARCHAR},
+        #{exitTime,jdbcType=VARCHAR},#{exitPlace,jdbcType=VARCHAR},#{passProvince,jdbcType=VARCHAR},
+        #{passProvinceTotal,jdbcType=INTEGER},#{passRoadTotal,jdbcType=INTEGER},#{passMediaType,jdbcType=INTEGER},
+        #{obuNo,jdbcType=VARCHAR},#{etcNoCpcNo,jdbcType=VARCHAR},#{specialType,jdbcType=INTEGER},
+        #{ransTotal,jdbcType=INTEGER},#{issuerNo,jdbcType=VARCHAR},#{etcType,jdbcType=INTEGER},
+        #{remark,jdbcType=VARCHAR},#{workOrderTitle,jdbcType=VARCHAR},#{workOrderUnit,jdbcType=VARCHAR},
+        #{workOrderTime,jdbcType=VARCHAR},#{investigateProgress,jdbcType=VARCHAR},#{dataProgress,jdbcType=VARCHAR},
+        #{workOrderStatus,jdbcType=INTEGER},#{initiator,jdbcType=VARCHAR},TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+        #{workOrderCount,jdbcType=INTEGER},#{escapeTypeTwo,jdbcType=INTEGER},#{dataNumber,jdbcType=VARCHAR},
+        0)
+    </insert>
+
+
+    <update id="deleteById" parameterType="java.lang.String">
+        update AUDIT_WORKORDER_TABLE
+        <set>
+            RM_FLAG = 1,UPDATE_TIME = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
+        </set>
+        where WORKORDERID = #{workOrderId}
+    </update>
+
+    <update id="updateById" parameterType="java.util.Map">
+        update AUDIT_WORKORDER_TABLE
+        <set>
+            <if test="vehicleNo != null and vehicleNo != ''">
+                VEHICLENO = #{vehicleNo,jdbcType=VARCHAR},
+            </if>
+            <if test="vehColor != null and vehColor != ''">
+                VEH_COLOR = #{vehColor,jdbcType=INTEGER},
+            </if>
+            <if test="carColor != null and carColor != ''">
+                CAR_COLOR = #{carColor,jdbcType=INTEGER},
+            </if>
+            <if test="vehType != null and vehType != ''">
+                VEH_TYPE = #{vehType,jdbcType=INTEGER},
+            </if>
+            <if test="vehClass != null and vehClass != ''">
+                VEH_CLASS = #{vehClass,jdbcType=INTEGER},
+            </if>
+            <if test="whetherAudit != null and whetherAudit != ''">
+                WHETHER_AUDIT = #{whetherAudit,jdbcType=INTEGER},
+            </if>
+            <if test="passPath != null and passPath != ''">
+                PASSPATH = #{passPath,jdbcType=VARCHAR},
+            </if>
+            <if test="escape != null and escape != ''">
+                ESCAPE = #{escape,jdbcType=VARCHAR},
+            </if>
+            <if test="escapeTypeOne != null and escapeTypeOne != ''">
+                ESCAPE_TYPE_ONE = #{escapeTypeOne,jdbcType=INTEGER},
+            </if>
+            <if test="timeType != null and timeType != ''">
+                TIME_TYPE = #{timeType,jdbcType=VARCHAR},
+            </if>
+            <if test="vehFlag != null and vehFlag != ''">
+                VEH_FLAG = #{vehFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="entryTime != null and entryTime != ''">
+                ENTRY_TIME = #{entryTime,jdbcType=VARCHAR},
+            </if>
+            <if test="entryPlace != null and entryPlace != ''">
+                ENTRY_PLACE = #{entryPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="exitTime != null and exitTime != ''">
+                EXIT_TIME = #{exitTime,jdbcType=VARCHAR},
+            </if>
+            <if test="exitPlace != null and exitPlace != ''">
+                EXIT_PLACE = #{exitPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="passProvince != null and passProvince != ''">
+                PASS_PROVINCE = #{passProvince,jdbcType=VARCHAR},
+            </if>
+            <if test="passProvinceTotal != null and passProvinceTotal != ''">
+                PASS_PROVINCE_TOTAL = #{passProvinceTotal,jdbcType=INTEGER},
+            </if>
+            <if test="passRoadTotal != null and passRoadTotal != ''">
+                PASS_ROAD_TOTAL = #{passRoadTotal,jdbcType=INTEGER},
+            </if>
+            <if test="passMediaType != null and passMediaType != ''">
+                PASS_MEDIA_TYPE = #{passMediaType,jdbcType=INTEGER},
+            </if>
+            <if test="obuNo != null and obuNo != ''">
+                OBUNO = #{obuNo,jdbcType=VARCHAR},
+            </if>
+            <if test="etcNoCpcNo != null and etcNoCpcNo != ''">
+                ETCNO_CPCNO = #{etcNoCpcNo,jdbcType=VARCHAR},
+            </if>
+            <if test="specialType != null and specialType != ''">
+                SPECIAL_TYPE = #{specialType,jdbcType=INTEGER},
+            </if>
+            <if test="ransTotal != null and ransTotal != ''">
+                RANS_TOTAL = #{ransTotal,jdbcType=INTEGER},
+            </if>
+            <if test="issuerNo != null and issuerNo != ''">
+                ISSUERNO = #{issuerNo,jdbcType=VARCHAR},
+            </if>
+            <if test="etcType != null and etcType != ''">
+                ETCTYPE = #{etcType,jdbcType=INTEGER},
+            </if>
+            <if test="remark != null and remark !=''">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="workOrderTitle != null and workOrderTitle != ''">
+                WORKORDER_TITLE = #{workOrderTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="workOrderUnit != null and workOrderUnit != ''">
+                WORKORDER_UNIT = #{workOrderUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="workOrderTime != null and workOrderTime != ''">
+                WORKORDER_TIME = #{workOrderTime,jdbcType=VARCHAR},
+            </if>
+            <if test="investigateProgress != null and investigateProgress != ''">
+                INVESTIGATE_PROGRESS = #{investigateProgress,jdbcType=VARCHAR},
+            </if>
+            <if test="dataProgress != null and dataProgress != ''">
+                DATA_PROGRESS = #{dataProgress,jdbcType=VARCHAR},
+            </if>
+            <if test="workOrderStatus != null and workOrderStatus != ''">
+                WORKORDER_STATUS = #{workOrderStatus,jdbcType=INTEGER},
+            </if>
+            <if test="initiator != null and initiator != ''">
+                INITIATOR = #{initiator,jdbcType=VARCHAR},
+            </if>
+            <if test="workOrderCount != null and workOrderCount != ''">
+                WORKODER_COUNT = #{workOrderCount,jdbcType=INTEGER},
+            </if>
+            <if test="escapeTypeTwo != null and escapeTypeTwo != ''">
+                ESCAPE_TYPE_TWO = #{escapeTypeTwo,jdbcType=INTEGER},
+            </if>
+            <if test="dataNumber != null and dataNumber != ''">
+                DATA_NUMBER = #{dataNumber,jdbcType=VARCHAR},
+            </if>
+            UPDATE_TIME = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
+        </set>
+        where WORKORDERID = #{workOrderId,jdbcType=VARCHAR} and RM_FLAG = 0
+    </update>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+

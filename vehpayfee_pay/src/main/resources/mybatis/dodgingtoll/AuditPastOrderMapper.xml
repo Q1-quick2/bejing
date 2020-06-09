@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.dodgingtoll.mapper.AuditPastOrderMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.dodgingtoll.model.AuditPastOrder" >
+        <id column="PAST_ORDER_ID" property="pastOrderId" jdbcType="VARCHAR" />
+        <result column="CUSTOMER_NAME" property="customerName" jdbcType="VARCHAR" />
+        <result column="CUSTOMER_PHONE" property="customerPhone" jdbcType="VARCHAR" />
+        <result column="OBU_ID" property="obuId" jdbcType="VARCHAR" />
+        <result column="TRANS_NUM" property="transNum" jdbcType="VARCHAR" />
+        <result column="TRANS_ALL_MONEY" property="transAllMoney" jdbcType="VARCHAR" />
+        <result column="OWE_FEE" property="oweFee" jdbcType="VARCHAR" />
+        <result column="ORDER_STATUS" property="orderStatus" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <resultMap id="ResultVoMap" type="com.sutong.dodgingtoll.model.vo.AuditPastOrderVo" >
+            <id column="PAST_ORDER_ID" property="pastOrderId" jdbcType="VARCHAR" />
+            <result column="CUSTOMER_NAME" property="customerName" jdbcType="VARCHAR" />
+            <result column="CUSTOMER_PHONE" property="customerPhone" jdbcType="VARCHAR" />
+            <result column="OBU_ID" property="obuId" jdbcType="VARCHAR" />
+            <result column="TRANS_NUM" property="transNum" jdbcType="VARCHAR" />
+            <result column="TRANS_ALL_MONEY" property="transAllMoney" jdbcType="VARCHAR" />
+            <result column="OWE_FEE" property="oweFee" jdbcType="VARCHAR" />
+            <result column="ORDER_STATUS" property="orderStatus" jdbcType="VARCHAR" />
+        <collection property="auditPastOrderInfos" ofType="com.sutong.dodgingtoll.model.AuditPastOrderInfo">
+            <id column="ID" property="id" jdbcType="VARCHAR" />
+            <result column="PAST_ORDER_ID" property="pastOrderId" jdbcType="VARCHAR" />
+            <result column="ENSTATION" property="enstation" jdbcType="VARCHAR" />
+            <result column="EXSTATION" property="exstation" jdbcType="VARCHAR" />
+            <result column="TRANS_VEHICLE_TYPE" property="transVehicleType" jdbcType="VARCHAR" />
+            <result column="DO_VEHICLE_TYPE" property="doVehicleType" jdbcType="VARCHAR" />
+            <result column="VEHICLE_TYPE" property="vehicleType" jdbcType="VARCHAR" />
+            <result column="TRANS_VEHICLE_ID" property="transVehicleId" jdbcType="VARCHAR" />
+            <result column="DO_VEHICLE_ID" property="doVehicleId" jdbcType="VARCHAR" />
+            <result column="TRANS_SUBTR_FEE" property="transSubtrFee" jdbcType="VARCHAR" />
+            <result column="oweFeeInfo" property="oweFeeInfo" jdbcType="VARCHAR" />
+            <result column="SUBTR_FEE" property="subtrFee" jdbcType="VARCHAR" />
+            <result column="TRANS_TIME" property="transTime" jdbcType="VARCHAR" />
+            <result column="TRANS_OBU_ID" property="transObuId" jdbcType="VARCHAR" />
+            <result column="TRANS_CARD_ID" property="transCardId" jdbcType="VARCHAR" />
+            <result column="orderStatusInfo" property="orderStatusInfo" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        PAST_ORDER_ID, CUSTOMER_NAME, CUSTOMER_PHONE, OBU_ID, TRANS_NUM, TRANS_ALL_MONEY, 
+        OWE_FEE,ORDER_STATUS
+    </sql>
+    <select id="getCountByObu" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(OBU_ID)
+        from
+        AUDIT_PAST_ORDER
+        where
+        OBU_ID=#{obuId}
+    </select>
+
+    <select id="getOrderPastByObId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from
+        AUDIT_PAST_ORDER
+        WHERE
+        OBU_ID=#{obuId}
+    </select>
+
+
+
+
+    <select id="getByObuId" resultMap="ResultVoMap" parameterType="java.util.Map" >
+       SELECT
+
+        t1.CUSTOMER_NAME,
+        t1.CUSTOMER_PHONE,
+        t1.OBU_ID,
+        t1.OWE_FEE,
+        t1.PAST_ORDER_ID,
+        t1.TRANS_ALL_MONEY,
+        t1.TRANS_NUM,
+        t1.ORDER_STATUS,
+t2.ID,
+t2.ENSTATION,
+t2.EXSTATION,
+t2.TRANS_VEHICLE_TYPE,
+t2.DO_VEHICLE_TYPE,
+t2.VEHICLE_TYPE,
+t2.TRANS_VEHICLE_ID,
+t2.DO_VEHICLE_ID,
+t2.TRANS_SUBTR_FEE,
+t2.OWE_FEE as oweFeeInfo,
+t2.SUBTR_FEE,
+t2.TRANS_TIME,
+t2.TRANS_OBU_ID,
+t2.ORDER_STATUS as orderStatusInfo,
+t2.TRANS_CARD_ID
+
+
+FROM
+        AUDIT_PAST_ORDER t1
+
+LEFT JOIN
+        AUDIT_PAST_ORDER_INFO t2
+ON
+t1.OBU_ID=t2.TRANS_OBU_ID
+<where>
+
+    <if test="obuId != null" >
+        and t1.OBU_ID=#{obuId}
+    </if>
+
+
+</where>
+
+    </select>
+
+
+
+</mapper>

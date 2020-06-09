@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.notice.mapper.ResultNoticeMapper" >
+    <resultMap id="BasesResultMap" type="com.sutong.model.FeeResult">
+        <result column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+        <result column="VEHICLE_ID" jdbcType="VARCHAR" property="vehicleId" />
+        <result column="VEHICLE_COLOR" jdbcType="VARCHAR" property="vehicleColor" />
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+        <result column="PAYBACK_NAME" jdbcType="VARCHAR" property="paybackName" />
+        <result column="PHONE_NUM" jdbcType="VARCHAR" property="phoneNum" />
+        <result column="CONFIRMED_PAYBACK_FEE" jdbcType="INTEGER" property="confirmedPaybackFee" />
+        <result column="PAYBACK_FEE" jdbcType="INTEGER" property="paybackFee" />
+        <result column="PAYMENT_TIME" jdbcType="VARCHAR" property="paymentTime" />
+        <result column="PAY_PHONE" jdbcType="VARCHAR" property="payPhone" />
+        <result column="TRANSACTION_NUMBER" jdbcType="VARCHAR" property="transactionNumber" />
+        <result column="SEND_SMS_STATUS" jdbcType="VARCHAR" property="sendSmsStatus" />
+    </resultMap>
+
+    <sql id="Bases_Column_List">
+    ORDER_ID,VEHICLE_ID, VEHICLE_COLOR, USER_ID, PAYBACK_NAME, PHONE_NUM, CONFIRMED_PAYBACK_FEE,
+    PAYBACK_FEE, PAYMENT_TIME, PAY_PHONE, TRANSACTION_NUMBER,SEND_SMS_STATUS
+    </sql>
+
+    <insert id="doInsertResultNotice" parameterType="com.sutong.model.FeeResult">
+        insert into audit_fee_result_flow (ORDER_ID,VEHICLE_ID, VEHICLE_COLOR, USER_ID,
+        PAYBACK_NAME, PHONE_NUM, CONFIRMED_PAYBACK_FEE,PAYBACK_FEE,PAYMENT_TIME,
+        PAY_PHONE,TRANSACTION_NUMBER
+        )
+        values (#{orderId,jdbcType=VARCHAR},#{vehicleId,jdbcType=VARCHAR}, #{vehicleColor,jdbcType=VARCHAR},
+        #{userId,jdbcType=VARCHAR}, #{paybackName,jdbcType=VARCHAR}, #{phoneNum,jdbcType=VARCHAR},
+        #{confirmedPaybackFee,jdbcType=INTEGER}, #{paybackFee,jdbcType=INTEGER},
+        #{paymentTime,jdbcType=VARCHAR},#{payPhone,jdbcType=INTEGER},#{transactionNumber,jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="doInsertResultNoticeSelective" parameterType="com.sutong.model.FeeResult">
+        insert into audit_fee_result_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                ORDER_ID,
+            </if>
+            <if test="vehicleId != null">
+                VEHICLE_ID,
+            </if>
+            <if test="vehicleColor != null">
+                VEHICLE_COLOUR,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="paybackName != null">
+                PAYBACK_NAME,
+            </if>
+            <if test="phoneNum != null">
+                PHONE_NUM,
+            </if>
+            <if test="confirmedPaybackFee != null">
+                CONFIRMED_PAYBACK_FEE,
+            </if>
+            <if test="paybackFee != null">
+                PAYBACK_FEE,
+            </if>
+            <if test="paymentTime != null">
+                PAYMENT_TIME,
+            </if>
+            <if test="payPhone != null">
+                PAY_PHONE,
+            </if>
+            <if test="transactionNumber != null">
+                TRANSACTION_NUMBER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleId != null">
+                #{vehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleColor != null">
+                #{vehicleColour,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="paybackName != null">
+                #{paybackName,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNum != null">
+                #{phoneNum,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmedPaybackFee != null">
+                #{confirmedPaybackFee,jdbcType=INTEGER},
+            </if>
+            <if test="paybackFee != null">
+                #{paybackFee,jdbcType=INTEGER},
+            </if>
+            <if test="paymentTime != null">
+                #{paymentTime,jdbcType=INTEGER},
+            </if>
+            <if test="payPhone != null">
+                #{payPhone,jdbcType=INTEGER},
+            </if>
+            <if test="transactionNumber != null">
+                #{transactionNumber,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 查询客户补费结果列表-->
+    <select id="doFindFeeResultList" parameterType="com.sutong.model.FeeResult" resultMap="BasesResultMap">
+        select
+        <include refid="Bases_Column_List" />
+        from audit_fee_result_flow
+        <where>
+            <if test="vehicleId !=null and vehicleId !='' ">
+                and audit_fee_result_flow.VEHICLE_ID = #{vehicleId}
+            </if>
+            <if test="vehicleColor !=null and vehicleColor !='' ">
+                and audit_fee_result_flow.VEHICLE_COLOR = #{vehicleColor}
+            </if>
+            <if test="sendSmsStatus !=null and sendSmsStatus !='' ">
+                and audit_fee_result_flow.SEND_SMS_STATUS = #{sendSmsStatus}
+            </if>
+        </where>
+    </select>
+    <!--查询客户补费结果详情-->
+    <select id="doFindFeeResultInfo" parameterType="java.lang.String" resultMap="BasesResultMap">
+        select
+        <include refid="Bases_Column_List"/>
+        from audit_fee_result_flow
+        where ORDER_ID=#{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <update id="doUpdateFeeStatus" parameterType="java.lang.String" >
+        update audit_fee_result_flow
+        set SEND_SMS_STATUS  ='2'
+        where ORDER_ID=#{orderId,jdbcType=VARCHAR}
+    </update>
+
+</mapper>
+
+
+
+
+

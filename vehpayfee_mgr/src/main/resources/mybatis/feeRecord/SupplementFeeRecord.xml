@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.feeRecord.mapper.SupplementFeeRecordMapper" >
+    <resultMap id="BaseResultMap" type="com.sutong.feeRecord.model.SupplementFeeRecordModel">
+        <result column="ID" jdbcType="INTEGER" property="id" />
+        <result column="VEHICLE_ID" jdbcType="VARCHAR" property="vehicleId" />
+        <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+        <result column="PAYBACK_USER" jdbcType="VARCHAR" property="payBackUser" />
+        <result column="PAYBACK_USER_PHONE" jdbcType="VARCHAR" property="payBackUserPhone" />
+        <result column="TRANSACTION_TYPE" jdbcType="VARCHAR" property="transactionType" />
+        <result column="PAYBACK_TIME" jdbcType="VARCHAR" property="payBackTime" />
+        <result column="PAYBACK_FEE" jdbcType="VARCHAR" property="payBackFee" />
+        <result column="OPERATE_ROAD" jdbcType="VARCHAR" property="operateRoad" />
+        <result column="VEHICLE_COLOUR" jdbcType="VARCHAR" property="vehicleColour" />
+
+    </resultMap>
+    <sql id="Base_Column_List">
+      ID,VEHICLE_ID, ORDER_NO, PAYBACK_USER, PAYBACK_USER_PHONE, TRANSACTION_TYPE, PAYBACK_TIME, PAYBACK_FEE,OPERATE_ROAD,VEHICLE_COLOUR
+    </sql>
+
+    <!-- 查询客户逃费列表-->
+    <select id="doSearchFeeRecordList" parameterType="com.sutong.feeRecord.model.SupplementFeeRecordModel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Supplement_Fee_Record
+    <where>
+        <if test="vehicleId!=null and vehicleId!='' ">
+            and VEHICLE_ID = #{vehicleId}
+        </if>
+        <if test="vehicleColour!= null and vehicleColour!= '' ">
+            and  VEHICLE_COLOUR = #{vehicleColour}
+        </if>
+    </where>
+
+</select>
+
+
+    <select id="doFindFeeRecordInfo" parameterType="String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from Supplement_Fee_Record
+        where ID = #{id}
+    </select>
+
+</mapper>
+
+
+
+
+

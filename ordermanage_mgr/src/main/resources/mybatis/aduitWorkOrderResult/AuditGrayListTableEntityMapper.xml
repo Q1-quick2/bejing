@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.workorder.mapper.AuditGrayListTableEntityMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.sutong.workorder.entity.AuditGrayListTableEntity">
+        <id column="GRAYLISTID" property="grayListId" jdbcType="VARCHAR"/>
+        <result column="VEHPLATENO" property="vehPlateNo" jdbcType="VARCHAR"/>
+        <result column="VEH_COLOR" property="vehColor" jdbcType="INTEGER"/>
+        <result column="REASON" property="reason" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="CREATION_TIME" property="creationTime" jdbcType="VARCHAR"/>
+        <result column="ENTERED_PROVINCE_ID" property="enteredProvinceId" jdbcType="INTEGER"/>
+        <result column="ENTERED_PROVINCE" property="enteredProvince" jdbcType="VARCHAR"/>
+        <result column="VERSION" property="version" jdbcType="INTEGER"/>
+        <result column="PROOF" property="proof" jdbcType="VARCHAR"/>
+        <result column="RM_FLAG" property="rmFlag" jdbcType="INTEGER"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        GRAYLISTID,VEHPLATENO,VEH_COLOR,REASON,STATUS,CREATION_TIME,ENTERED_PROVINCE_ID,ENTERED_PROVINCE,VERSION,PROOF,RM_FLAG,CREATE_TIME,UPDATE_TIME
+    </sql>
+
+    <insert id="insert" parameterType="com.sutong.workorder.entity.AuditGrayListTableEntity">
+        insert into AUDIT_GRAYLIST_TABLE(GRAYLISTID,VEHPLATENO,VEH_COLOR,REASON,STATUS,CREATION_TIME,ENTERED_PROVINCE_ID,ENTERED_PROVINCE,VERSION,PROOF,RM_FLAG,CREATE_TIME,UPDATE_TIME)
+        values ( #{grayListId,jdbcType=VARCHAR},#{vehPlateNo,jdbcType=VARCHAR},#{vehColor,jdbcType=INTEGER},#{reason,jdbcType=VARCHAR},
+                 #{status,jdbcType=INTEGER},#{creationTime,jdbcType=VARCHAR},#{enteredProvinceId},#{enteredProvince,jdbcType=VARCHAR},
+                 #{version,jdbcType=INTEGER},#{proof,jdbcType=VARCHAR},0,TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'))
+    </insert>
+
+    <select id="selectByQuery" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_GRAYLIST_TABLE
+            <where>
+                <if test="vehPlateNo !=null and vehPlateNo !='' ">
+                    and VEHPLATENO like '%'||#{vehPlateNo}||'%'
+                </if>
+                <if test="vehColor !=null and vehColor !='' ">
+                    and VEH_COLOR = #{vehColor}
+                </if>
+                <if test="reason !=null and reason !='' ">
+                    and REASON like '%'||#{reason}||'%'
+                </if>
+                <if test="status !=null and status !='' ">
+                    and STATUS = #{status}
+                </if>
+                <if test="creationStartTime !=null and creationStartTime !='' and creationEndTime !=null and creationEndTime !=''">
+                    and CREATION_TIME &gt;= #{creationStartTime} and CREATION_TIME &lt;= #{creationEndTime}
+                </if>
+                <if test="enteredProvinceId !=null and enteredProvinceId !='' ">
+                    and ENTERED_PROVINCE_ID = #{enteredProvinceId}
+                </if>
+                    and RM_FLAG = 0
+            </where>
+    </select>
+
+    <insert id="batchInsertGrayList" parameterType="com.sutong.workorder.entity.AuditGrayListTableEntity">
+        insert into
+            AUDIT_GRAYLIST_TABLE(GRAYLISTID,VEHPLATENO,VEH_COLOR,REASON,STATUS,CREATION_TIME,ENTERED_PROVINCE_ID,ENTERED_PROVINCE,VERSION,PROOF,RM_FLAG,CREATE_TIME,UPDATE_TIME)
+        values
+        <foreach collection="list" item="grayList" separator=",">
+            ( #{grayList.grayListId,jdbcType=VARCHAR},#{grayList.vehPlateNo,jdbcType=VARCHAR},#{grayList.vehColor,jdbcType=INTEGER},#{grayList.reason,jdbcType=VARCHAR},
+            #{grayList.status,jdbcType=INTEGER},#{grayList.creationTime,jdbcType=VARCHAR},#{grayList.enteredProvinceId},#{grayList.enteredProvince,jdbcType=VARCHAR},
+            #{grayList.version,jdbcType=INTEGER},#{grayList.proof,jdbcType=VARCHAR},0,TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'))
+        </foreach>
+    </insert>
+
+</mapper>

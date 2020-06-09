@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.dodgingtoll.mapper.AuditEvidenceResultMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.dodgingtoll.model.AuditEvidenceResult" >
+        <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+        <result column="AUD_TYPE" property="audType" jdbcType="VARCHAR" />
+        <result column="AUD_FILE_NAME" property="audFileName" jdbcType="VARCHAR" />
+        <result column="AUD_FILE_TYPE" property="audFileType" jdbcType="VARCHAR" />
+        <result column="AUD_FILE_PATH" property="audFilePath" jdbcType="VARCHAR" />
+        <result column="AUD_FILE_DESC" property="audFileDesc" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getAuditEvidenceListByOid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+          ORDER_ID,
+          AUD_TYPE,
+          AUD_FILE_NAME,
+          AUD_FILE_TYPE,
+          AUD_FILE_PATH,
+          AUD_FILE_DESC
+          from
+          AUDIT_EVIDENCE_RESULT
+          where
+          ORDER_ID=#{orderId}
+    </select>
+
+    <insert id="insert" parameterType="com.sutong.dodgingtoll.model.AuditEvidenceResult" >
+        insert into AUDIT_EVIDENCE_RESULT (ORDER_ID, AUD_TYPE, AUD_FILE_NAME, 
+            AUD_FILE_TYPE, AUD_FILE_PATH, AUD_FILE_DESC
+            )
+        values (#{orderId,jdbcType=VARCHAR}, #{audType,jdbcType=VARCHAR}, #{audFileName,jdbcType=VARCHAR}, 
+            #{audFileType,jdbcType=VARCHAR}, #{audFilePath,jdbcType=VARCHAR}, #{audFileDesc,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.sutong.dodgingtoll.model.AuditEvidenceResult" >
+        insert into AUDIT_EVIDENCE_RESULT
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="orderId != null" >
+                ORDER_ID,
+            </if>
+            <if test="audType != null" >
+                AUD_TYPE,
+            </if>
+            <if test="audFileName != null" >
+                AUD_FILE_NAME,
+            </if>
+            <if test="audFileType != null" >
+                AUD_FILE_TYPE,
+            </if>
+            <if test="audFilePath != null" >
+                AUD_FILE_PATH,
+            </if>
+            <if test="audFileDesc != null" >
+                AUD_FILE_DESC,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="orderId != null" >
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="audType != null" >
+                #{audType,jdbcType=VARCHAR},
+            </if>
+            <if test="audFileName != null" >
+                #{audFileName,jdbcType=VARCHAR},
+            </if>
+            <if test="audFileType != null" >
+                #{audFileType,jdbcType=VARCHAR},
+            </if>
+            <if test="audFilePath != null" >
+                #{audFilePath,jdbcType=VARCHAR},
+            </if>
+            <if test="audFileDesc != null" >
+                #{audFileDesc,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+</mapper>

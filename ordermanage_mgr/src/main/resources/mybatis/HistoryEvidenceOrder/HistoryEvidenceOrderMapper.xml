@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.historyEvidenceOrder.mapper.HistoryEvidenceOrderMapper">
+    <!--List<AuditFile> doFindEvidenceResultList(AuditFile historyEvidenceOrder);-->
+    <select id="doFindEvidenceResultList" resultType="com.sutong.historyEvidenceOrder.model.AuditFile"
+            parameterType="com.sutong.historyOrder.model.ParameterHistoryOrder">
+    select
+        FILEID ,
+        TABLE_NAME tableName,
+        TABLEID,
+        FILETYPE,
+        FILEPATH,
+        CREATE_TIME createTime,
+        TABLE_COLUMN tableColumn
+        from
+        TABLE_COLUMN
+
+        <where>
+            <if test="tableId !=null and tableId !='' ">
+                and TABLEID = #{tableId}
+            </if>
+
+        </where>
+    </select>
+
+</mapper>

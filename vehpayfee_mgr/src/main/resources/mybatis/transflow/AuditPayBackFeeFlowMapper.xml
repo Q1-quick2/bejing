@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.transflow.mapper.AuditPayBackFeeFlowMapper">
+
+    <resultMap id="BaseResultMap" type="com.sutong.transflow.model.AuditPayBackFeeFlow">
+        <id column="FLOW_ID" property="flowId" jdbcType="VARCHAR"/>
+        <result column="PAY_BACK_FEE_ID" property="payBackFeeId" jdbcType="VARCHAR"/>
+        <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR"/>
+        <result column="ORDER_TYPE" property="orderType" jdbcType="VARCHAR"/>
+        <result column="VEHICLE_NUMBER" property="vehicleNumber" jdbcType="VARCHAR"/>
+        <result column="VEHICLE_COLOUR" property="vehicleColour" jdbcType="VARCHAR"/>
+        <result column="PAY_BACK_SUM" property="payBackSum" jdbcType="INTEGER"/>
+        <result column="UID" property="uid" jdbcType="VARCHAR"/>
+        <result column="TOKEN" property="token" jdbcType="VARCHAR"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
+        <result column="ID_NUMBER" property="idNumber" jdbcType="VARCHAR"/>
+        <result column="TOLL_PROVINCE_ID" property="tollProvinceId" jdbcType="VARCHAR"/>
+        <result column="MESSAGE_ID" property="messageId" jdbcType="BIGINT"/>
+        <result column="VEHICLE_ID" property="vehicleId" jdbcType="VARCHAR"/>
+        <result column="PASS_ID" property="passId" jdbcType="VARCHAR"/>
+        <result column="PAY_BACK_USER" property="payBackUser" jdbcType="VARCHAR"/>
+        <result column="PAY_BACK_USER_PHONE" property="payBackUserPhone" jdbcType="VARCHAR"/>
+        <result column="TRANSACTION_TYPE" property="transactionType" jdbcType="INTEGER"/>
+        <result column="ETC_CARD_ID" property="etcCardId" jdbcType="VARCHAR"/>
+        <result column="PAY_BACK_TYPE" property="payBackType" jdbcType="INTEGER"/>
+        <result column="OPERATOR" property="operator" jdbcType="VARCHAR"/>
+        <result column="OPERATE_ORG" property="operateOrg" jdbcType="VARCHAR"/>
+        <result column="OPERATE_ROAD" property="operateRoad" jdbcType="VARCHAR"/>
+        <result column="OPERATE_STATION" property="operateStation" jdbcType="VARCHAR"/>
+        <result column="OWE_FEE" property="oweFee" jdbcType="INTEGER"/>
+        <result column="PAY_BACK_FEE" property="payBackFee" jdbcType="INTEGER"/>
+        <result column="FLOW_CREATE_TIME" property="flowCreateTime" jdbcType="VARCHAR"/>
+        <association property="auditPayEnd" javaType="com.sutong.transflow.model.AuditPayEnd">
+            <result column="END_CHARSET" property="endCharset" jdbcType="VARCHAR"/>
+            <result column="END_VERSION" property="endVersion" jdbcType="VARCHAR"/>
+            <result column="END_SERVERCERT" property="endServercert" jdbcType="VARCHAR"/>
+            <result column="END_SERVERSIGN" property="endServersign" jdbcType="VARCHAR"/>
+            <result column="END_SIGNTYPE" property="endSigntype" jdbcType="VARCHAR"/>
+            <result column="END_SERVICE" property="endService" jdbcType="VARCHAR"/>
+            <result column="END_MERCHANTID" property="endMerchantid" jdbcType="VARCHAR"/>
+            <result column="END_RESULTCODE" property="endResultcode" jdbcType="VARCHAR"/>
+            <result column="END_RESULTMSG" property="endResultmsg" jdbcType="VARCHAR"/>
+            <result column="END_PAYSERIALNO" property="endPayserialno" jdbcType="VARCHAR"/>
+            <result column="END_TXNAMT" property="endTxnamt" jdbcType="BIGINT"/>
+            <result column="END_PAYORDERNO" property="endPayorderno" jdbcType="VARCHAR"/>
+            <result column="END_PAYMENTTIME" property="endPaymenttime" jdbcType="VARCHAR"/>
+            <result column="END_PAYTYPE" property="endPaytype" jdbcType="VARCHAR"/>
+            <result column="END_RMK" property="endRmk" jdbcType="VARCHAR"/>
+            <result column="END_ACTPAYAMT" property="endActpayamt" jdbcType="BIGINT"/>
+            <result column="END_DISCOUNTSAMT" property="endDiscountsamt" jdbcType="BIGINT"/>
+            <result column="END_REQUESTTIME" property="endRequesttime" jdbcType="VARCHAR"/>
+            <result column="END_DISCOUNTSINFOLISTNUM" property="endDiscountsinfolistnum" jdbcType="VARCHAR"/>
+            <result column="END_DISCOUNTSINFOLIST" property="endDiscountsinfolist" jdbcType="VARCHAR"/>
+            <result column="PAY_HISTORY" property="payHistory" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+
+    <select id="getByList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select 
+        t1.FLOW_ID,
+        t1.PAY_BACK_FEE_ID,
+        t1.ORDER_ID,
+        t1.ORDER_TYPE,
+        t1.VEHICLE_NUMBER,
+        t1.VEHICLE_COLOUR,
+        t1.PAY_BACK_SUM,
+        t1.UID,
+        t1.TOKEN,
+        t1.USER_NAME,
+        t1.ID_NUMBER,
+        t1.TOLL_PROVINCE_ID,
+        t1.MESSAGE_ID,
+        t1.VEHICLE_ID,
+        t1.PASS_ID,
+        t1.PAY_BACK_USER,
+        t1.PAY_BACK_USER_PHONE,
+        t1.TRANSACTION_TYPE,
+        t1.ETC_CARD_ID,
+        t1.PAY_BACK_TYPE,
+        t1.OPERATOR, OPERATE_ORG,
+        t1.OPERATE_ROAD,
+        t1.OPERATE_STATION,
+        t1.OWE_FEE,
+        t1.PAY_BACK_FEE,
+        t1.FLOW_CREATE_TIME,
+        t2.END_SERVERSIGN,
+        t2.END_SIGNTYPE,
+        t2.END_SERVICE,
+        t2.END_MERCHANTID,
+        t2.END_RESULTCODE,
+        t2.END_RESULTMSG,
+        t2.END_PAYSERIALNO,
+        t2.END_TXNAMT,
+        t2.END_PAYORDERNO,
+        t2.END_PAYMENTTIME,
+        t2.END_PAYTYPE,
+        t2.END_RMK,
+        t2.END_ACTPAYAMT,
+        t2.END_DISCOUNTSAMT,
+        t2.END_REQUESTTIME,
+        t2.END_DISCOUNTSINFOLISTNUM,
+        t2.END_DISCOUNTSINFOLIST,
+        t2.PAY_HISTORY
+        from
+        AUDIT_PAY_END t2
+
+        INNER JOIN
+        AUDIT_PAY_BACK_FEE_FLOW t1
+        ON
+        t1.PAY_BACK_FEE_ID = t2.END_PAYSERIALNO
+        AND t2.END_RESULTCODE='BD'
+        <where>
+            <if test="vehicleId != null and vehicleId!=''">
+                AND t1.VEHICLE_NUMBER=#{vehicleId}
+            </if>
+            <if test="vehicleColour != null and vehicleColour!=''">
+                AND t1.VEHICLE_COLOUR=#{vehicleColour}
+            </if>
+
+        </where>
+
+
+    </select>
+    
+    <select id="getById" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+         select
+        t1.FLOW_ID,
+        t1.PAY_BACK_FEE_ID,
+        t1.ORDER_ID,
+        t1.ORDER_TYPE,
+        t1.VEHICLE_NUMBER,
+        t1.VEHICLE_COLOUR,
+        t1.PAY_BACK_SUM,
+        t1.UID,
+        t1.TOKEN,
+        t1.USER_NAME,
+        t1.ID_NUMBER,
+        t1.TOLL_PROVINCE_ID,
+        t1.MESSAGE_ID,
+        t1.VEHICLE_ID,
+        t1.PASS_ID,
+        t1.PAY_BACK_USER,
+        t1.PAY_BACK_USER_PHONE,
+        t1.TRANSACTION_TYPE,
+        t1.ETC_CARD_ID,
+        t1.PAY_BACK_TYPE,
+        t1.OPERATOR, OPERATE_ORG,
+        t1.OPERATE_ROAD,
+        t1.OPERATE_STATION,
+        t1.OWE_FEE,
+        t1.PAY_BACK_FEE,
+        t1.FLOW_CREATE_TIME,
+        t2.END_SERVERSIGN,
+        t2.END_SIGNTYPE,
+        t2.END_SERVICE,
+        t2.END_MERCHANTID,
+        t2.END_RESULTCODE,
+        t2.END_RESULTMSG,
+        t2.END_PAYSERIALNO,
+        t2.END_TXNAMT,
+        t2.END_PAYORDERNO,
+        t2.END_PAYMENTTIME,
+        t2.END_PAYTYPE,
+        t2.END_RMK,
+        t2.END_ACTPAYAMT,
+        t2.END_DISCOUNTSAMT,
+        t2.END_REQUESTTIME,
+        t2.END_DISCOUNTSINFOLISTNUM,
+        t2.END_DISCOUNTSINFOLIST,
+        t2.PAY_HISTORY
+        from
+         AUDIT_PAY_END t2
+        INNER JOIN
+        AUDIT_PAY_BACK_FEE_FLOW t1
+
+        ON
+        t1.PAY_BACK_FEE_ID = t2.END_PAYSERIALNO
+        AND t2.END_RESULTCODE='BD'
+        where t1.FLOW_ID=#{flowId}
+
+    </select>
+
+
+</mapper>

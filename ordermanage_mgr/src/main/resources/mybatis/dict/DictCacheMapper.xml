@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.mapper.DictCacheMapper" >
+
+	<select id="queryDictByDictType" parameterType="java.lang.String"
+		resultType="com.sutong.bjstjh.entity.AuditDictionaryInfoTable">
+		SELECT 
+			DICT_ID AS dictId,
+			DICT_NAME AS dictName,
+			DICT_NUMBER AS dictNumber,
+			DICT_TYPE AS dictType,
+			DICT_VALUE AS dictValue
+		FROM 
+			AUDIT_DICTIONARY_INFO_TABLE
+		WHERE
+			DICT_TYPE = #{dictType,jdbcType=VARCHAR}
+	</select>
+  
+</mapper>

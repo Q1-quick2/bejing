@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditManualMinistryWorkOrder.mapper.AuditManualMinistryWorkOrderMapper" >
+
+
+    <resultMap id="BaseResultMap" type="com.sutong.bjstjh.entity.AuditManualMinistryWorkOrder">
+        <id column="MINISTRY_WORKORDER_ID" property="ministryWorkOrderId" jdbcType="VARCHAR"/>
+        <result column="OBUNO" property="obuNo" jdbcType="VARCHAR"/>
+        <result column="ETCNO" property="etcNo" jdbcType="VARCHAR"/>
+        <result column="VEHTYPE" property="vehType" jdbcType="SMALLINT"/>
+        <result column="VEH_CLASS_TYPECODE" property="vehClassTypeCode" jdbcType="SMALLINT"/>
+        <result column="VEHPLATENO" property="vehPlateNo" jdbcType="VARCHAR"/>
+        <result column="VEH_COLORCODE" property="vehColorCode" jdbcType="SMALLINT"/>
+        <result column="PASS_ID" property="passId" jdbcType="VARCHAR"/>
+        <result column="WORKORDERID" property="workOrderId" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+    </resultMap>
+    <insert id="doInsertAuditManualMinistryWorkOrder" parameterType="com.sutong.bjstjh.entity.AuditManualMinistryWorkOrder">
+        insert into AUDIT_MANUAL_MINISTRY_WORKORDER_TABLE(MINISTRY_WORKORDER_ID,OBUNO,ETCNO,VEHTYPE,VEH_CLASS_TYPECODE,VEHPLATENO,VEH_COLORCODE,PASS_ID,WORKORDERID,CREATE_TIME)
+        values(#{ministryWorkOrderId,jdbcType=VARCHAR},#{obuNo,jdbcType=VARCHAR},#{etcNo,jdbcType=VARCHAR},#{vehType,jdbcType=SMALLINT},#{vehClassTypeCode,jdbcType=SMALLINT},#{vehPlateNo,jdbcType=VARCHAR},#{vehColorCode,jdbcType=SMALLINT},#{passId,jdbcType=VARCHAR},#{workOrderId,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 部级工单条件查询 -->
+    <select id="doFindAuditManualMinistryWorkOrderList" resultMap="BaseResultMap" parameterType="com.sutong.auditManualMinistryWorkOrder.model.AuditManualMinistryWorkOrderModel">
+        select MINISTRY_WORKORDER_ID,OBUNO,ETCNO,VEHTYPE,VEH_CLASS_TYPECODE,VEHPLATENO,VEH_COLORCODE,PASS_ID,WORKORDERID,CREATE_TIME from AUDIT_MANUAL_MINISTRY_WORKORDER_TABLE
+        <where>
+            <if test="vehPlateNo!=null and vehPlateNo != '' "> and VEHPLATENO = #{vehPlateNo} </if>
+            <if test="vehColorCode!=null and vehColorCode != '' "> and VEH_COLORCODE = #{vehColorCode} </if>
+            <if test="vehType!=null and vehType != '' "> and VEHTYPE = #{vehType} </if>
+            <!--<if test="orderType!=null and orderType != '' ">
+            and VEH_CLASS_TYPECODE = #{orderType}
+        </if>-->
+            <if test="obuNo!=null and obuNo != '' "> and OBUNO = #{obuNo}</if>
+            <if test="etcNo!=null and etcNo != '' "> and ETCNO = #{etcNo}</if>
+         </where>
+    </select>
+<!--部级工单查询-->
+    <select id="doFindAuditManualMinistryWorkOrder" parameterType="String" resultMap="BaseResultMap">
+        select MINISTRY_WORKORDER_ID,OBUNO,ETCNO,VEHTYPE,VEH_CLASS_TYPECODE,VEHPLATENO,VEH_COLORCODE,PASS_ID,WORKORDERID,CREATE_TIME from AUDIT_MANUAL_MINISTRY_WORKORDER_TABLE where MINISTRY_WORKORDER_ID = #{ministryWorkOrderId}
+    </select>
+</mapper>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.pay.mapper.PayEndInformMapper" >
+    <resultMap id="BaseResultMap" type="com.sutong.bjstjh.entity.PayEndInformModel">
+      <result column="END_CHARSET" jdbcType="VARCHAR" property="charset" />
+      <result column="END_VERSION" jdbcType="VARCHAR" property="version" />
+      <result column="END_SERVERCERT" jdbcType="VARCHAR" property="serverCert" />
+      <result column="END_SERVERSIGN" jdbcType="VARCHAR" property="serverSign" />
+      <result column="END_SIGNTYPE" jdbcType="VARCHAR" property="signType" />
+      <result column="END_SERVICE" jdbcType="VARCHAR" property="service" />
+      <result column="END_MERCHANTID" jdbcType="VARCHAR" property="merchantId" />
+      <result column="END_RESULTCODE" jdbcType="VARCHAR" property="resultCode" />
+      <result column="END_RESULTMSG" jdbcType="VARCHAR" property="resultMsg" />
+      <result column="END_PAYSERIALNO" jdbcType="VARCHAR" property="paySerialNo" />
+      <result column="END_TXNAMT" jdbcType="INTEGER" property="txnAmt" />
+      <result column="END_PAYORDERNO" jdbcType="VARCHAR" property="payOrderNo" />
+      <result column="END_PAYMENTTIME" jdbcType="VARCHAR" property="paymentTime" />
+      <result column="END_PAYTYPE" jdbcType="VARCHAR" property="payType" />
+      <result column="END_RMK" jdbcType="VARCHAR" property="rmk" />
+      <result column="END_ACTPAYAMT" jdbcType="INTEGER" property="actPayAmt" />
+      <result column="END_DISCOUNTSAMT" jdbcType="INTEGER" property="discountsAmt" />
+      <result column="END_DISCOUNTSINFOLISTNUM" jdbcType="VARCHAR" property="discountsInfoListNum" />
+      <result column="END_DISCOUNTSINFOLIST" jdbcType="VARCHAR" property="discountsInfoList" />
+      <result column="END_REQUESTTIME" jdbcType="VARCHAR" property="requestTime" />
+      <result column="PAY_HISTORY" jdbcType="VARCHAR" property="history" />
+    </resultMap>
+
+   <!--支付结果通知-->
+   <insert id="AppPayEndInform">
+      INSERT INTO AUDIT_PAY_END
+     <trim prefix="(" suffix=")" suffixOverrides="," >
+     end_charset,end_version,end_serverCert,end_serverSign,end_signType,end_service,end_merchantId,PAY_HISTORY
+     <if test="resultCode != null" >
+       ,end_resultCode
+     </if>
+     <if test="resultMsg != null" >
+       ,end_resultMsg
+     </if>
+     <if test="paySerialNo != null" >
+       ,end_paySerialNo
+     </if>
+     <if test="txnAmt != null" >
+       ,end_txnAmt
+     </if>
+     <if test="payOrderNo != null" >
+       ,end_payOrderNo
+     </if>
+     <if test="paymentTime != null" >
+       ,end_paymentTime
+     </if>
+     <if test="payType != null" >
+       ,end_payType
+     </if>
+     <if test="rmk != null" >
+       ,end_rmk
+     </if>
+     <if test="actPayAmt != null" >
+       ,end_actPayAmt
+     </if>
+     <if test="discountsAmt != null" >
+       ,end_discountsAmt
+     </if>
+     <if test="discountsInfoListNum != null" >
+       ,end_discountsInfoListNum
+     </if>
+     <if test="discountsInfoList != null" >
+       ,end_discountsInfoList
+     </if>
+     <if test="requestTime != null" >
+       ,END_REQUESTTIME
+     </if>
+     </trim>
+     <trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+     #{charset},#{version},#{serverCert},#{serverSign},#{signType},#{service},#{merchantId},#{history}
+     <if test="resultCode != null" >
+       ,#{resultCode}
+     </if>
+     <if test="resultMsg != null" >
+       ,#{resultMsg}
+     </if>
+     <if test="paySerialNo != null" >
+       ,#{paySerialNo}
+     </if>
+     <if test="txnAmt != null" >
+       ,#{txnAmt}
+     </if>
+     <if test="payOrderNo != null" >
+       ,#{payOrderNo}
+     </if>
+     <if test="paymentTime != null" >
+       ,#{paymentTime}
+     </if>
+     <if test="payType != null" >
+       ,#{payType}
+     </if>
+     <if test="rmk != null" >
+       ,#{rmk}
+     </if>
+     <if test="actPayAmt != null" >
+       ,#{actPayAmt}
+     </if>
+     <if test="discountsAmt != null" >
+       ,#{discountsAmt}
+     </if>
+     <if test="discountsInfoListNum != null" >
+       ,#{discountsInfoListNum}
+     </if>
+     <if test="discountsInfoList != null" >
+       ,#{discountsInfoList}
+     </if>
+     <if test="requestTime != null" >
+       ,#{requestTime}
+     </if>
+     </trim>
+   </insert>
+
+
+
+   <!--支付结果返回-->
+   <select id="doFindReturn" resultMap="BaseResultMap" parameterType="com.sutong.bjstjh.entity.PayEndInformModel">
+      SELECT end_charset,end_version,end_signType,end_service,end_rmk,end_requestTime,end_merchantId FROM AUDIT_PAY_END t WHERE END_PAYSERIALNO = #{paySerialNo}
+   </select>
+
+
+
+
+</mapper>
+
+
+
+

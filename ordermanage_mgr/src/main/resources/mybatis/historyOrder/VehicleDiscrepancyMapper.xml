@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sutong.historyOrder.mapper.VehicleDiscrepancyMapper">
+
+    <resultMap id="BaseResultMap" type="com.sutong.historyOrder.model.AuditLicensePlateDiferentEntity">
+        <id column="SERIAL_ID" property="serialId" jdbcType="VARCHAR"/>
+        <result column="VIDEO_DATE" property="videoDate" jdbcType="VARCHAR"/>
+        <result column="FEEDBACK_DATE" property="feedbackDate" jdbcType="VARCHAR"/>
+        <result column="VERIFICATION_PARTY" property="verificationParty" jdbcType="VARCHAR"/>
+        <result column="FEEDBACK_BATCH" property="feedbackBatch" jdbcType="VARCHAR"/>
+        <result column="REPETITIONS" property="repetitions" jdbcType="INTEGER"/>
+        <result column="VEHPLATENO" property="vehplateno" jdbcType="VARCHAR"/>
+        <result column="DETERMINE" property="determine" jdbcType="INTEGER"/>
+        <result column="NOTIFICTION_MODE" property="notifictionMode" jdbcType="INTEGER"/>
+        <result column="VIDEO_INFORMATION" property="videoInformation" jdbcType="VARCHAR"/>
+        <result column="DATA_INFORMATION" property="dataInformation" jdbcType="VARCHAR"/>
+        <result column="CONTACT_TELEPHONENO" property="contactTelephoneno" jdbcType="VARCHAR"/>
+        <result column="DISABLE_DATE" property="disableDate" jdbcType="VARCHAR"/>
+        <result column="CHANGE_STATUS" property="changeStatus" jdbcType="INTEGER"/>
+        <result column="STATUS" property="status" jdbcType="INTEGER"/>
+        <result column="RM_FLAG" property="rmFlag" jdbcType="INTEGER"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+        <result column="CHARGE_PERSON" property="chargePerson" jdbcType="VARCHAR"/>
+        <result column="CHARGE_PERSON_PHONE" property="chargePersonPhone" jdbcType="VARCHAR"/>
+        <result column="EVENT_PASS" property="eventPass" jdbcType="VARCHAR"/>
+        <result column="TOLL_PLAZA" property="tollPlaza" jdbcType="VARCHAR"/>
+        <result column="TRANSACTION_TIME" property="transactionTime" jdbcType="VARCHAR"/>
+        <result column="ACTUAL_AEHICLE_TYPE" property="actualAehicleType" jdbcType="VARCHAR"/>
+        <result column="ACTUAL_PLATE_NUMBER" property="actualPlateNumber" jdbcType="VARCHAR"/>
+        <result column="OBU_PLATE_NUMBER" property="obuPlateNumber" jdbcType="VARCHAR"/>
+        <result column="OBU_NUMBER" property="obuNumber" jdbcType="VARCHAR"/>
+        <result column="ETC_NUMBER" property="etcNumber" jdbcType="VARCHAR"/>
+        <result column="LIFTING_TIME" property="liftingTime" jdbcType="VARCHAR"/>
+        <result column="PROOF" property="proof" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        SERIAL_ID,VIDEO_DATE,FEEDBACK_DATE,VERIFICATION_PARTY,FEEDBACK_BATCH,REPETITIONS,VEHPLATENO,DETERMINE,NOTIFICTION_MODE,VIDEO_INFORMATION,
+DATA_INFORMATION,CONTACT_TELEPHONENO,DISABLE_DATE,CHANGE_STATUS,STATUS,RM_FLAG,UPDATE_TIME,CREATE_TIME,CHARGE_PERSON,CHARGE_PERSON_PHONE,
+EVENT_PASS,TOLL_PLAZA,TRANSACTION_TIME,ACTUAL_AEHICLE_TYPE,ACTUAL_PLATE_NUMBER,OBU_PLATE_NUMBER,OBU_NUMBER,ETC_NUMBER,LIFTING_TIME,PROOF
+    </sql>
+
+    <insert id="batchInsert" parameterType="com.sutong.historyOrder.model.AuditLicensePlateDiferentEntity">
+        insert into AUDIT_LICENSE_PLATE_DIFERENT
+        (
+        <include refid="Base_Column_List"/>
+        )
+        values
+        <foreach collection="list" item="plateList" separator=",">
+            ( #{serialId,jdbcType=VARCHAR},
+            #{videoDate,jdbcType=VARCHAR},#{feedbackDate,jdbcType=VARCHAR},#{verificationParty,jdbcType=VARCHAR},#{feedbackBatch,jdbcType=VARCHAR},
+            #{repetitions,jdbcType=INTEGER},#{vehplateno,jdbcType=VARCHAR},#{determine,jdbcType=INTEGER},#{notifictionMode,jdbcType=INTEGER},#{videoInformation,jdbcType=VARCHAR},
+            #{dataInformation,jdbcType=VARCHAR},#{contactTelephoneno,jdbcType=VARCHAR},#{disableDate,jdbcType=VARCHAR},#{changeStatus,jdbcType=INTEGER},#{status,jdbcType=INTEGER},
+            0,TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD
+            HH24:MI:SS'),#{chargePerson,jdbcType=VARCHAR},#{chargePersonPhone,jdbcType=VARCHAR},
+            #{eventPass,jdbcType=VARCHAR},#{tollPlaza,jdbcType=VARCHAR},#{transactionTime,jdbcType=VARCHAR},#{actualAehicleType,jdbcType=VARCHAR},#{actualPlateNumber,jdbcType=VARCHAR},
+            #{obuPlateNumber,jdbcType=VARCHAR},#{obuNumber,jdbcType=VARCHAR},#{etcNumber,jdbcType=VARCHAR},#{liftingTime,jdbcType=VARCHAR},#{proof,jdbc=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id="selectByQuery" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_LICENSE_PLATE_DIFERENT
+        <where>
+            <if test="videoDate !=null and videoDate !=''">
+                and VIDEO_DATE like '%'||#{videoDate}||'%'
+            </if>
+            <if test="verificationParty !=null and verificationParty != ''">
+                and VERIFICATION_PARTY like '%'||#{verificationParty}||'%'
+            </if>
+            <if test="vehplateno != null and vehplateno != ''">
+                and VEHPLATENO like '%'||#{vehplateno}||'%'
+            </if>
+            <if test="determine != null and determine != ''">
+                and DETERMINE = #{determine}
+            </if>
+            <if test="changeStatus !=null and changeStatus != ''">
+                and CHANGE_STATUS = #{changeStatus}
+            </if>
+            <if test="obuPlateNumber !=null and obuPlateNumber != ''">
+                and OBU_PLATE_NUMBER like '%'||#{obuPlateNumber}||'%'
+            </if>
+            <if test="obuNumber !=null and obuNumber != ''">
+                and OBU_NUMBER like '%'||#{obuNumber}||'%'
+            </if>
+            <if test="etcNumber != null and etcNumber != ''">
+                and ETC_NUMBER like '%'||#{etcNumber}||'%'
+            </if>
+            and RM_FLAG = 0
+        </where>
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_LICENSE_PLATE_DIFERENT
+        WHERE RM_FLAG = 0
+    </select>
+
+    <update id="updateById" parameterType="java.util.HashMap">
+        update AUDIT_LICENSE_PLATE_DIFERENT
+        <set>
+            <if test="videoDate != null and videoDate!= ''">
+                VIDEO_DATE = #{videoDate,jdbcType=VARCHAR},
+            </if>
+            <if test="feedbackDate != null and feedbackDate!= ''">
+                FEEDBACK_DATE = #{feedbackDate,jdbcType=VARCHAR},
+            </if>
+            <if test="verificationParty != null and verificationParty!= ''">
+                VERIFICATION_PARTY = #{verificationParty,jdbcType=VARCHAR},
+            </if>
+            <if test="feedbackBatch != null and feedbackBatch!= ''">
+                FEEDBACK_BATCH = #{feedbackBatch,jdbcType=VARCHAR},
+            </if>
+            <if test="repetitions != null and repetitions!= ''">
+                REPETITIONS = #{repetitions,jdbcType=INTEGER},
+            </if>
+            <if test="vehplateno != null and vehplateno!= ''">
+                VEHPLATENO = #{vehplateno,jdbcType=VARCHAR},
+            </if>
+            <if test="determine != null and determine!= ''">
+                DETERMINE = #{determine,jdbcType=INTEGER},
+            </if>
+            <if test="notifictionMode != null and notifictionMode!= ''">
+                NOTIFICTION_MODE = #{notifictionMode,jdbcType=INTEGER},
+            </if>
+            <if test="videoInformation != null and videoInformation!= ''">
+                VIDEO_INFORMATION = #{videoInformation,jdbcType=VARCHAR},
+            </if>
+            <if test="dataInformation != null and dataInformation!= ''">
+                DATA_INFORMATION = #{dataInformation,jdbcType=VARCHAR},
+            </if>
+            <if test="contactTelephoneno != null and contactTelephoneno!= ''">
+                CONTACT_TELEPHONENO = #{contactTelephoneno,jdbcType=VARCHAR},
+            </if>
+            <if test="disableDate != null and disableDate!= ''">
+                DISABLE_DATE = #{disableDate,jdbcType=VARCHAR},
+            </if>
+            <if test="changeStatus != null and changeStatus!= ''">
+                CHANGE_STATUS = #{changeStatus,jdbcType=INTEGER},
+            </if>
+            <if test="status != null and status!= ''">
+                STATUS = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="chargePerson != null and chargePerson!= ''">
+                CHARGE_PERSON = #{chargePerson,jdbcType=VARCHAR},
+            </if>
+            <if test="chargePersonPhone != null and chargePersonPhone!= ''">
+                CHARGE_PERSON_PHONE = #{chargePersonPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="eventPass != null and eventPass!= ''">
+                EVENT_PASS = #{eventPass,jdbcType=VARCHAR},
+            </if>
+            <if test="tollPlaza != null and tollPlaza!= ''">
+                TOLL_PLAZA = #{tollPlaza,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionTime != null and transactionTime!= ''">
+                TRANSACTION_TIME = #{transactionTime,jdbcType=VARCHAR},
+            </if>
+            <if test="actualAehicleType != null and actualAehicleType!= ''">
+                ACTUAL_AEHICLE_TYPE = #{actualAehicleType,jdbcType=VARCHAR},
+            </if>
+            <if test="actualPlateNumber != null and actualPlateNumber!= ''">
+                ACTUAL_PLATE_NUMBER = #{actualPlateNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="obuPlateNumber != null and obuPlateNumber!= ''">
+                OBU_PLATE_NUMBER = #{obuPlateNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="obuNumber != null and obuNumber!= ''">
+                OBU_NUMBER = #{obuNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="etcNumber != null and etcNumber!= ''">
+                ETC_NUMBER = #{etcNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="liftingTime != null and liftingTime!= ''">
+                LIFTING_TIME = #{liftingTime,jdbcType=VARCHAR},
+            </if>
+            <if test="proof != null and proof != ''">
+                PROOF = #{proof,jdbc=VARCHAR},
+            </if>
+            UPDATE_TIME = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
+        </set>
+        where SERIAL_ID = #{serialId,jdbcType=VARCHAR}
+    </update>
+
+
+    <!--根据前台条件信息查询车牌不符工单表添加删除标识 -->
+    <select id="doFindVehicle" resultType="com.sutong.historyOrder.model.AuditLicensePlateDiferentEntity"
+            parameterType="com.sutong.historyOrder.model.AuditLicensePlateQuery">
+        select
+        SERIAL_ID serialId,
+        VIDEO_DATE videoDate,
+        FEEDBACK_DATE feedbackDate,
+        VERIFICATION_PARTY verificationParty,
+        FEEDBACK_BATCH feedbackBatch,
+        REPETITIONS,
+        VEHPLATENO,
+        DETERMINE,
+        NOTIFICTION_MODE notifictionMode,
+        VIDEO_INFORMATION videoInformation,
+        DATA_INFORMATION dataInformation,
+        CONTACT_TELEPHONENO contactTelephoneno,
+        DISABLE_DATE disableDate,
+        CHANGE_STATUS changeStatus,
+        STATUS,
+        RM_FLAG rmFlag,
+        UPDATE_TIME updateTime,
+        CREATE_TIME createTime,
+        CHARGE_PERSON chargePerson,
+        CHARGE_PERSON_PHONE chargePersonPhone,
+        EVENT_PASS eventPass,
+        TOLL_PLAZA tollPlaza,
+        TRANSACTION_TIME transactionTime,
+        ACTUAL_AEHICLE_TYPE actualAehicleType,
+        ACTUAL_PLATE_NUMBER actualPlateNumber,
+        OBU_PLATE_NUMBER obuPlateNumber,
+        OBU_NUMBER obuNumber,
+        ETC_NUMBER etcNumber,
+        LIFTING_TIME liftingTime,
+        PROOF
+        from
+        AUDIT_LICENSE_PLATE_DIFERENT
+        <where>
+            <if test="videoDateStart !=null and videoDateStart !='' and videoDateEnd !=null and videoDateEnd !=''">
+                and VIDEO_DATE &gt;= #{videoDateStart} and VIDEO_DATE &lt;= #{videoDateEnd}
+            </if>
+            <if test="verificationParty !=null and verificationParty !='' ">
+                and VERIFICATION_PARTY = #{verificationParty}
+            </if>
+            <if test="vehplateno !=null and vehplateno !='' ">
+                and VEHPLATENO LIKE  '%'|| #{vehplateno}||'%'
+            </if>
+            <if test="determine !=null and determine !='' ">
+                and DETERMINE = #{determine}
+            </if>
+            <if test="changeStatus !=null and changeStatus !=''">
+                and CHANGE_STATUS = #{changeStatus }
+            </if>
+            <if test="obuPlateNumber !=null and obuPlateNumber !='' ">
+                and OBU_PLATE_NUMBER LIKE '%'|| #{obuPlateNumber}||'%'
+            </if>
+            <if test="obuNumber !=null and obuNumber != ''">
+                and OBU_NUMBER LIKE '%'||#{obuNumber}||'%'
+            </if>
+            <if test="etcNumber != null and etcNumber != ''">
+                and ETC_NUMBER LIKE '%'|| #{etcNumber}||'%'
+            </if>
+            and RM_FLAG = 0
+        </where>
+
+    </select>
+
+    <!--创建车牌不符工单表添加删除标识创建时间更新时间-->
+    <insert id="doInsertVehicleDiscrepancy"
+            parameterType="com.sutong.historyOrder.model.AuditLicensePlateDiferentEntity">
+        insert into
+        AUDIT_LICENSE_PLATE_DIFERENT
+         (
+         SERIAL_ID,VIDEO_DATE,FEEDBACK_DATE,VERIFICATION_PARTY,FEEDBACK_BATCH,REPETITIONS,VEHPLATENO,DETERMINE,NOTIFICTION_MODE,VIDEO_INFORMATION,
+DATA_INFORMATION,CONTACT_TELEPHONENO,DISABLE_DATE,CHANGE_STATUS,STATUS,RM_FLAG,UPDATE_TIME,CREATE_TIME,CHARGE_PERSON,CHARGE_PERSON_PHONE,
+EVENT_PASS,TOLL_PLAZA,TRANSACTION_TIME,ACTUAL_AEHICLE_TYPE,ACTUAL_PLATE_NUMBER,OBU_PLATE_NUMBER,OBU_NUMBER,ETC_NUMBER,LIFTING_TIME,PROOF
+                                                   )
+        values (#{serialId,jdbcType=VARCHAR},
+                #{videoDate,jdbcType=VARCHAR},
+                #{feedbackDate,jdbcType=VARCHAR},
+                #{verificationParty,jdbcType=VARCHAR},
+                #{feedbackBatch,jdbcType=VARCHAR},
+                #{repetitions,jdbcType=INTEGER},
+                #{vehplateno,jdbcType=VARCHAR},
+                #{determine,jdbcType=INTEGER},
+                #{notifictionMode,jdbcType=INTEGER},
+                #{videoInformation,jdbcType=VARCHAR},
+                #{dataInformation,jdbcType=VARCHAR},
+                #{contactTelephoneno,jdbcType=VARCHAR},
+                #{disableDate,jdbcType=VARCHAR},
+                #{changeStatus,jdbcType=INTEGER},
+                #{status,jdbcType=INTEGER},
+                 0,
+                TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+                TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+
+                #{chargePerson,jdbcType=VARCHAR},
+                #{chargePersonPhone,jdbcType=VARCHAR},
+                #{eventPass,jdbcType=VARCHAR},
+                #{tollPlaza,jdbcType=VARCHAR},
+                #{transactionTime,jdbcType=VARCHAR},
+                #{actualAehicleType,jdbcType=VARCHAR},
+                #{actualPlateNumber,jdbcType=VARCHAR},
+                #{obuPlateNumber,jdbcType=VARCHAR},
+                #{obuNumber,jdbcType=VARCHAR},
+                #{etcNumber,jdbcType=VARCHAR},
+                #{liftingTime,jdbcType=VARCHAR},
+                #{proof,jdbcType=VARCHAR}
+              )
+    </insert>
+
+    <!-- 导入车牌不符工单表添加删除标识创建时间更新时间-->
+
+    <insert id="doInsertVehicleTable" parameterType="com.sutong.historyOrder.model.AuditLicensePlateDiferentEntity">
+        insert into
+        AUDIT_LICENSE_PLATE_DIFERENT
+        (
+        SERIAL_ID,VIDEO_DATE,FEEDBACK_DATE,VERIFICATION_PARTY,
+        FEEDBACK_BATCH,REPETITIONS,VEHPLATENO,DETERMINE,NOTIFICTION_MODE,
+        VIDEO_INFORMATION,DATA_INFORMATION,CONTACT_TELEPHONENO,DISABLE_DATE,
+        CHANGE_STATUS,STATUS,RM_FLAG,UPDATE_TIME,CREATE_TIME,CHARGE_PERSON,
+        CHARGE_PERSON_PHONE,EVENT_PASS,TOLL_PLAZA,TRANSACTION_TIME,ACTUAL_AEHICLE_TYPE,
+        ACTUAL_PLATE_NUMBER,OBU_PLATE_NUMBER,OBU_NUMBER,ETC_NUMBER,LIFTING_TIME,PROOF
+
+        )
+        values
+        <foreach collection="list" item="date" separator=",">
+            (#{date.serialId,jdbcType=VARCHAR},
+            #{date.videoDate,jdbcType=VARCHAR},
+            #{date.feedbackDate,jdbcType=VARCHAR},
+            #{date.verificationParty,jdbcType=VARCHAR},
+            #{date.feedbackBatch,jdbcType=VARCHAR},
+            #{date.repetitions,jdbcType=INTEGER},
+            #{date.vehplateno,jdbcType=VARCHAR},
+            #{date.determine,jdbcType=INTEGER},
+            #{date.notifictionMode,jdbcType=INTEGER},
+            #{date.videoInformation,jdbcType=VARCHAR},
+            #{date.dataInformation,jdbcType=VARCHAR},
+            #{date.contactTelephoneno,jdbcType=VARCHAR},
+            #{date.disableDate,jdbcType=VARCHAR},
+            #{date.changeStatus,jdbcType=INTEGER},
+            #{date.status,jdbcType=INTEGER},
+
+            0,
+            TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+            TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),
+            #{date.chargePerson,jdbcType=VARCHAR},
+            #{date.chargePersonPhone,jdbcType=VARCHAR},
+            #{date.eventPass,jdbcType=VARCHAR},
+            #{date.tollPlaza,jdbcType=VARCHAR},
+            #{date.transactionTime,jdbcType=VARCHAR},
+            #{date.actualAehicleType,jdbcType=VARCHAR},
+            #{date.actualPlateNumber,jdbcType=VARCHAR},
+            #{date.obuPlateNumber,jdbcType=VARCHAR},
+            #{date.obuNumber,jdbcType=VARCHAR},
+            #{date.etcNumber,jdbcType=VARCHAR},
+            #{date.liftingTime,jdbcType=VARCHAR},
+            #{date.proof,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 依据id查询车牌不符工单详情-->
+    <select id="doFindVehicleResultInfo" parameterType="java.lang.String"
+            resultType="com.sutong.historyOrder.model.AuditLicensePlateDiferentEntity">
+        select
+        SERIAL_ID serialId,
+        VIDEO_DATE videoDate,
+        FEEDBACK_DATE feedbackDate,
+        VERIFICATION_PARTY verificationParty,
+        FEEDBACK_BATCH feedbackBatch,
+        REPETITIONS,
+        VEHPLATENO,
+        DETERMINE,
+        NOTIFICTION_MODE notifictionMode,
+        VIDEO_INFORMATION videoInformation,
+        DATA_INFORMATION dataInformation,
+        CONTACT_TELEPHONENO contactTelephoneno,
+        DISABLE_DATE disableDate,
+        CHANGE_STATUS changeStatus,
+        STATUS,
+        RM_FLAG rmFlag,
+        UPDATE_TIME updateTime,
+        CREATE_TIME createTime,
+        CHARGE_PERSON chargePerson,
+        CHARGE_PERSON_PHONE chargePersonPhone,
+        EVENT_PASS eventPass,
+        TOLL_PLAZA tollPlaza,
+        TRANSACTION_TIME transactionTime,
+        ACTUAL_AEHICLE_TYPE actualAehicleType,
+        ACTUAL_PLATE_NUMBER actualPlateNumber,
+        OBU_PLATE_NUMBER obuPlateNumber,
+        OBU_NUMBER obuNumber,
+        ETC_NUMBER etcNumber,
+        LIFTING_TIME liftingTime,
+        PROOF
+        from
+        AUDIT_LICENSE_PLATE_DIFERENT
+        <where>
+            <if test="serialId!= null and serialId !=''">
+                and SERIAL_ID = #{serialId}
+            </if>
+            and RM_FLAG = 0
+        </where>
+    </select>
+
+    <!--车牌不符变更状态-->
+    <update id="doUpdate" parameterType="Map">
+        update
+         AUDIT_LICENSE_PLATE_DIFERENT
+        set
+            CHANGE_STATUS=#{status}
+        where
+        SERIAL_ID = #{serialId}
+
+    </update>
+
+    <!--更新通知状态-->
+    <update id="updateStatusFlagById">
+        update AUDIT_LICENSE_PLATE_DIFERENT
+        <set>
+            NOTIFICTION_MODE = 3,STATUS = 1,UPDATE_TIME = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
+        </set>
+        where SERIAL_ID in
+        <foreach collection="list" item="successId" open="(" close=")" separator=",">
+            #{successId}
+        </foreach>
+    </update>
+
+    <!--获得未解禁的信息-->
+    <select id="getNotLiftingEntity" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from AUDIT_LICENSE_PLATE_DIFERENT
+        <where>
+            <if test="status!='' and status!=null">
+                and STATUS = #{status}
+            </if>
+            and RM_FLAG = 0
+        </where>
+    </select>
+
+
+
+    <update id="doUpdateLiftingStatus">
+        update AUDIT_LICENSE_PLATE_DIFERENT
+        <set>
+            LIFTING_TIME = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'),STATUS = 0,UPDATE_TIME = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
+        </set>
+        where SERIAL_ID in
+        <foreach collection="list" item="successId" open="(" close=")" separator=",">
+            #{successId}
+        </foreach>
+    </update>
+
+    <!-- 根据ETC卡号和交易时间批量查询车牌不符表 -->
+    <select id="doFindTableByETCAndTransactiontime" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        AUDIT_LICENSE_PLATE_DIFERENT
+        WHERE
+        TRANSACTION_TIME
+        IN
+        <foreach collection="transTimeList" item="transTimeList" open="(" close=")" separator=",">
+            #{transTimeList}
+        </foreach>
+        AND
+        ETC_NUMBER
+        IN
+        <foreach collection="icCardList" item="icCardList" open="(" close=")" separator=",">
+            #{icCardList}
+        </foreach>
+
+    </select>
+
+
+</mapper>
+
+
+
+
+
+

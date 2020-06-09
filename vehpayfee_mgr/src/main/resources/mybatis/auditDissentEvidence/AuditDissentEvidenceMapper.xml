@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditDissentEvidence.mapper.AuditDissentEvidenceMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.auditDissentEvidence.model.AuditDissentEvidence" >
+        <id column="DISSENT_ID" property="dissentId" jdbcType="VARCHAR" />
+        <result column="FILE_NAME" property="fileName" jdbcType="VARCHAR" />
+        <result column="FILE_TYPE" property="fileType" jdbcType="SMALLINT" />
+        <result column="LOCATION_URL" property="locationUrl" jdbcType="VARCHAR" />
+        <result column="EVIDENCE_DESC" property="evidenceDesc" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        DISSENT_ID, FILE_NAME, FILE_TYPE, LOCATION_URL, EVIDENCE_DESC
+    </sql>
+    <!--查询异议申请流水证据集合-->
+    <select id="doFindAuditDissentEvidenceList" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_DISSENT_EVIDENCE
+        where DISSENT_ID = #{dissentId,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select 
+        <include refid="Base_Column_List" />
+        from AUDIT_DISSENT_EVIDENCE
+        where DISSENT_ID = #{dissentId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from AUDIT_DISSENT_EVIDENCE
+        where DISSENT_ID = #{dissentId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.sutong.auditDissentEvidence.model.AuditDissentEvidence" >
+        insert into AUDIT_DISSENT_EVIDENCE (DISSENT_ID, FILE_NAME, FILE_TYPE, 
+            LOCATION_URL, EVIDENCE_DESC)
+        values (#{dissentId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{fileType,jdbcType=SMALLINT}, 
+            #{locationUrl,jdbcType=VARCHAR}, #{evidenceDesc,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.sutong.auditDissentEvidence.model.AuditDissentEvidence" >
+        insert into AUDIT_DISSENT_EVIDENCE
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="dissentId != null" >
+                DISSENT_ID,
+            </if>
+            <if test="fileName != null" >
+                FILE_NAME,
+            </if>
+            <if test="fileType != null" >
+                FILE_TYPE,
+            </if>
+            <if test="locationUrl != null" >
+                LOCATION_URL,
+            </if>
+            <if test="evidenceDesc != null" >
+                EVIDENCE_DESC,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="dissentId != null" >
+                #{dissentId,jdbcType=VARCHAR},
+            </if>
+            <if test="fileName != null" >
+                #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="fileType != null" >
+                #{fileType,jdbcType=SMALLINT},
+            </if>
+            <if test="locationUrl != null" >
+                #{locationUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="evidenceDesc != null" >
+                #{evidenceDesc,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sutong.auditDissentEvidence.model.AuditDissentEvidence" >
+        update AUDIT_DISSENT_EVIDENCE
+        <set >
+            <if test="fileName != null" >
+                FILE_NAME = #{fileName,jdbcType=VARCHAR},
+            </if>
+            <if test="fileType != null" >
+                FILE_TYPE = #{fileType,jdbcType=SMALLINT},
+            </if>
+            <if test="locationUrl != null" >
+                LOCATION_URL = #{locationUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="evidenceDesc != null" >
+                EVIDENCE_DESC = #{evidenceDesc,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where DISSENT_ID = #{dissentId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.sutong.auditDissentEvidence.model.AuditDissentEvidence" >
+        update AUDIT_DISSENT_EVIDENCE
+        set FILE_NAME = #{fileName,jdbcType=VARCHAR},
+            FILE_TYPE = #{fileType,jdbcType=SMALLINT},
+            LOCATION_URL = #{locationUrl,jdbcType=VARCHAR},
+            EVIDENCE_DESC = #{evidenceDesc,jdbcType=VARCHAR}
+        where DISSENT_ID = #{dissentId,jdbcType=VARCHAR}
+    </update>
+</mapper>

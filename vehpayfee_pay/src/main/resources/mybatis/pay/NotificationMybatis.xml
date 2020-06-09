@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.pay.mapper.NotificationMapper" >
+    <resultMap id="BaseResultMap" type="com.sutong.bjstjh.entity.NotificationModel">
+      <id column="SMS_ID" jdbcType="VARCHAR" property="smsId" />
+      <result column="SMS_TYPE" jdbcType="VARCHAR" property="smsType" />
+      <result column="PAYER_NAME" jdbcType="VARCHAR" property="payerName" />
+      <result column="PAYER_PHONE" jdbcType="VARCHAR" property="payerPhone" />
+      <result column="PAY_RECORD" jdbcType="VARCHAR" property="payRecord" />
+      <result column="PAY_AMOUNT" jdbcType="INTEGER" property="payAmount" />
+      <result column="PAY_TIME" jdbcType="VARCHAR" property="payTime" />
+      <result column="STATUS" jdbcType="VARCHAR" property="status" />
+      <result column="PAY_MODE" jdbcType="VARCHAR" property="payMode" />
+      <result column="EVASION_TIME" jdbcType="VARCHAR" property="evasionTime" />
+      <result column="EVASION_BEHAVIOR" jdbcType="VARCHAR" property="evasionBehavior" />
+      <result column="PAY_HISTORY" jdbcType="VARCHAR" property="history" />
+      <result column="SEND_SMS_STATUS" jdbcType="VARCHAR" property="sendSmsStatus" />
+    </resultMap>
+
+  <!--发送短信之后将结果保存数据库-->
+   <insert id="doInsertNotification" parameterType="com.sutong.bjstjh.entity.NotificationModel">
+       INSERT INTO AUDIT_SMS_NOTIFICATION
+       <trim prefix="(" suffix=")" suffixOverrides="," >
+       SMS_ID,
+       SMS_TYPE,
+       PAYER_NAME,
+       PAYER_PHONE,
+       PAY_RECORD,
+       PAY_AMOUNT,
+       PAY_TIME,
+       STATUS,
+       PAY_MODE,
+       PAY_HISTORY,
+       SEND_SMS_STATUS
+       </trim>
+       <trim prefix="VALUES (" suffix=")" suffixOverrides="," >
+       #{smsId},#{smsType},#{payerName},#{payerPhone},#{payRecord},
+       #{payAmount},#{payTime},#{status},#{payMode},#{history},#{sendSmsStatus}
+       </trim>
+   </insert>
+
+
+
+</mapper>
+
+
+
+

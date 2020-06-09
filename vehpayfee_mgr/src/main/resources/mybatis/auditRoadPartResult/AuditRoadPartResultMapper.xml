@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditRoadPartResult.mapper.AuditRoadPartResultMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.auditRoadPartResult.model.AuditRoadPartResult" >
+        <id column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+        <result column="PUBLISH_ORDER_ID" property="publishOrderId" jdbcType="VARCHAR" />
+        <result column="VEHICLE_ID" property="vehicleId" jdbcType="VARCHAR" />
+        <result column="AUD_ROAD_ID" property="audRoadId" jdbcType="VARCHAR" />
+        <result column="INVESTIGATION_UNIT" property="investigationUnit" jdbcType="VARCHAR" />
+        <result column="ESCAPE_TYPE" property="escapeType" jdbcType="VARCHAR" />
+        <result column="AUD_IS_LESS_FEE" property="audIsLessFee" jdbcType="VARCHAR" />
+        <result column="DUTY_BODY" property="dutyBody" jdbcType="VARCHAR" />
+        <result column="EVIDENCE_ENOUGH" property="evidenceEnough" jdbcType="VARCHAR" />
+        <result column="BILLING_AMOUNT" property="billingAmount" jdbcType="VARCHAR" />
+        <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="VARCHAR" />
+        <result column="CHARGE_UNIT_NUMBER" property="chargeUnitNumber" jdbcType="VARCHAR" />
+        <result column="CHARGE_UNIT_NAME" property="chargeUnitName" jdbcType="VARCHAR" />
+        <result column="PASS_TIME" property="passTime" jdbcType="VARCHAR" />
+        <result column="RECE_PASS_AMOUNT" property="recePassAmount" jdbcType="VARCHAR" />
+        <result column="FITTING_TAGS" property="fittingTags" jdbcType="VARCHAR" />
+        <result column="CAR_TYPE" property="carType" jdbcType="VARCHAR" />
+        <result column="TOLL_PROVINCE_ID" property="tollProvinceId" jdbcType="VARCHAR" />
+        <result column="CAR_COLOUR" property="carColour" jdbcType="VARCHAR" />
+        <result column="AUDIT_TIME" property="auditTime" jdbcType="VARCHAR" />
+        <result column="AUDIT_PEOPLE" property="auditPeople" jdbcType="VARCHAR" />
+        <result column="CHARGE_WAY" property="chargeWay" jdbcType="VARCHAR" />
+        <result column="REAL_AMOUNT" property="realAmount" jdbcType="VARCHAR" />
+        <result column="OWE_AMOUNT" property="oweAmount" jdbcType="VARCHAR" />
+        <result column="OTHER_AMOUNT" property="otherAmount" jdbcType="VARCHAR" />
+        <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+        <result column="RECEIVABLE_AMOUNT" property="receivableAmount" jdbcType="VARCHAR" />
+        <result column="WAY_TO_UNIT" property="wayToUnit" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        ORDER_ID, PUBLISH_ORDER_ID, VEHICLE_ID, AUD_ROAD_ID, INVESTIGATION_UNIT, ESCAPE_TYPE, 
+        AUD_IS_LESS_FEE, DUTY_BODY, EVIDENCE_ENOUGH, BILLING_AMOUNT, LAST_UPDATE_TIME, CHARGE_UNIT_NUMBER, 
+        CHARGE_UNIT_NAME, PASS_TIME, RECE_PASS_AMOUNT, FITTING_TAGS, CAR_TYPE, TOLL_PROVINCE_ID, CAR_COLOUR,
+        AUDIT_TIME, AUDIT_PEOPLE, CHARGE_WAY, REAL_AMOUNT, OWE_AMOUNT, OTHER_AMOUNT, REMARK,RECEIVABLE_AMOUNT,WAY_TO_UNIT
+    </sql>
+
+    <!--查询稽核结论信息分页-->
+    <select id="doFindAuditRoadPartResultPage" resultMap="BaseResultMap" parameterType="com.sutong.auditRoadPartResult.model.AuditRoadPartResult" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_ROAD_PART_RESULT
+        <where>
+            <if test="publishOrderId !=null and publishOrderId !='' ">
+                and AUDIT_ROAD_PART_RESULT.PUBLISH_ORDER_ID = #{publishOrderId}
+            </if>
+            <if test="vehicleId !=null and vehicleId !='' ">
+                and AUDIT_ROAD_PART_RESULT.VEHICLE_ID = #{vehicleId}
+            </if>
+            <if test="carColour !=null and carColour !='' ">
+                and AUDIT_ROAD_PART_RESULT.CAR_COLOUR = #{carColour}
+            </if>
+            <if test="dutyBody !=null and dutyBody !='' ">
+                and AUDIT_ROAD_PART_RESULT.DUTY_BODY = #{dutyBody}
+            </if>
+            <if test="tollProvinceId !=null and tollProvinceId !='' ">
+                and AUDIT_ROAD_PART_RESULT.TOLL_PROVINCE_ID = #{tollProvinceId}
+            </if>
+            <if test="evidenceEnough !=null and evidenceEnough !='' ">
+                and AUDIT_ROAD_PART_RESULT.EVIDENCE_ENOUGH = #{evidenceEnough}
+            </if>
+            <if test="audRoadId !=null and audRoadId !='' ">
+                and AUDIT_ROAD_PART_RESULT.AUD_ROAD_ID = #{audRoadId}
+            </if>
+            <if test="audIsLessFee !=null and audIsLessFee !='' ">
+                and AUDIT_ROAD_PART_RESULT.AUD_IS_LESS_FEE = #{audIsLessFee}
+            </if>
+        </where>
+    </select>
+    <!--查询路段稽核结论详情-->
+    <select id="doFindByOrderId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_ROAD_PART_RESULT
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from AUDIT_ROAD_PART_RESULT
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.sutong.auditPublishResult.model.AuditPublishResult" >
+        insert into AUDIT_ROAD_PART_RESULT (ORDER_ID, PUBLISH_ORDER_ID, VEHICLE_ID, 
+            AUD_ROAD_ID, INVESTIGATION_UNIT, ESCAPE_TYPE, 
+            AUD_IS_LESS_FEE, DUTY_BODY, EVIDENCE_ENOUGH, 
+            BILLING_AMOUNT, LAST_UPDATE_TIME, CHARGE_UNIT_NUMBER, 
+            CHARGE_UNIT_NAME, PASS_TIME, RECE_PASS_AMOUNT, 
+            FITTING_TAGS, CAR_TYPE, TOLL_PROVINCE_ID, 
+            CAR_COLOUR)
+        values (#{orderId,jdbcType=VARCHAR}, #{publishOrderId,jdbcType=VARCHAR}, #{vehicleId,jdbcType=VARCHAR}, 
+            #{audRoadId,jdbcType=VARCHAR}, #{investigationUnit,jdbcType=VARCHAR}, #{escapeType,jdbcType=VARCHAR}, 
+            #{audIsLessFee,jdbcType=VARCHAR}, #{dutyBody,jdbcType=VARCHAR}, #{evidenceEnough,jdbcType=VARCHAR}, 
+            #{billingAmount,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=VARCHAR}, #{chargeUnitNumber,jdbcType=VARCHAR}, 
+            #{chargeUnitName,jdbcType=VARCHAR}, #{passTime,jdbcType=VARCHAR}, #{recePassAmount,jdbcType=VARCHAR}, 
+            #{fittingTags,jdbcType=VARCHAR}, #{carType,jdbcType=VARCHAR}, #{tollProvinceId,jdbcType=VARCHAR}, 
+            #{carColour,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.sutong.auditPublishResult.model.AuditPublishResult" >
+        insert into AUDIT_ROAD_PART_RESULT
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="orderId != null" >
+                ORDER_ID,
+            </if>
+            <if test="publishOrderId != null" >
+                PUBLISH_ORDER_ID,
+            </if>
+            <if test="vehicleId != null" >
+                VEHICLE_ID,
+            </if>
+            <if test="audRoadId != null" >
+                AUD_ROAD_ID,
+            </if>
+            <if test="investigationUnit != null" >
+                INVESTIGATION_UNIT,
+            </if>
+            <if test="escapeType != null" >
+                ESCAPE_TYPE,
+            </if>
+            <if test="audIsLessFee != null" >
+                AUD_IS_LESS_FEE,
+            </if>
+            <if test="dutyBody != null" >
+                DUTY_BODY,
+            </if>
+            <if test="evidenceEnough != null" >
+                EVIDENCE_ENOUGH,
+            </if>
+            <if test="billingAmount != null" >
+                BILLING_AMOUNT,
+            </if>
+            <if test="lastUpdateTime != null" >
+                LAST_UPDATE_TIME,
+            </if>
+            <if test="chargeUnitNumber != null" >
+                CHARGE_UNIT_NUMBER,
+            </if>
+            <if test="chargeUnitName != null" >
+                CHARGE_UNIT_NAME,
+            </if>
+            <if test="passTime != null" >
+                PASS_TIME,
+            </if>
+            <if test="recePassAmount != null" >
+                RECE_PASS_AMOUNT,
+            </if>
+            <if test="fittingTags != null" >
+                FITTING_TAGS,
+            </if>
+            <if test="carType != null" >
+                CAR_TYPE,
+            </if>
+            <if test="tollProvinceId != null" >
+                TOLL_PROVINCE_ID,
+            </if>
+            <if test="carColour != null" >
+                CAR_COLOUR,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="orderId != null" >
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="publishOrderId != null" >
+                #{publishOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleId != null" >
+                #{vehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="audRoadId != null" >
+                #{audRoadId,jdbcType=VARCHAR},
+            </if>
+            <if test="investigationUnit != null" >
+                #{investigationUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="escapeType != null" >
+                #{escapeType,jdbcType=VARCHAR},
+            </if>
+            <if test="audIsLessFee != null" >
+                #{audIsLessFee,jdbcType=VARCHAR},
+            </if>
+            <if test="dutyBody != null" >
+                #{dutyBody,jdbcType=VARCHAR},
+            </if>
+            <if test="evidenceEnough != null" >
+                #{evidenceEnough,jdbcType=VARCHAR},
+            </if>
+            <if test="billingAmount != null" >
+                #{billingAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null" >
+                #{lastUpdateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="chargeUnitNumber != null" >
+                #{chargeUnitNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="chargeUnitName != null" >
+                #{chargeUnitName,jdbcType=VARCHAR},
+            </if>
+            <if test="passTime != null" >
+                #{passTime,jdbcType=VARCHAR},
+            </if>
+            <if test="recePassAmount != null" >
+                #{recePassAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="fittingTags != null" >
+                #{fittingTags,jdbcType=VARCHAR},
+            </if>
+            <if test="carType != null" >
+                #{carType,jdbcType=VARCHAR},
+            </if>
+            <if test="tollProvinceId != null" >
+                #{tollProvinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="carColour != null" >
+                #{carColour,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sutong.auditPublishResult.model.AuditPublishResult" >
+        update AUDIT_ROAD_PART_RESULT
+        <set >
+            <if test="publishOrderId != null" >
+                PUBLISH_ORDER_ID = #{publishOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleId != null" >
+                VEHICLE_ID = #{vehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="audRoadId != null" >
+                AUD_ROAD_ID = #{audRoadId,jdbcType=VARCHAR},
+            </if>
+            <if test="investigationUnit != null" >
+                INVESTIGATION_UNIT = #{investigationUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="escapeType != null" >
+                ESCAPE_TYPE = #{escapeType,jdbcType=VARCHAR},
+            </if>
+            <if test="audIsLessFee != null" >
+                AUD_IS_LESS_FEE = #{audIsLessFee,jdbcType=VARCHAR},
+            </if>
+            <if test="dutyBody != null" >
+                DUTY_BODY = #{dutyBody,jdbcType=VARCHAR},
+            </if>
+            <if test="evidenceEnough != null" >
+                EVIDENCE_ENOUGH = #{evidenceEnough,jdbcType=VARCHAR},
+            </if>
+            <if test="billingAmount != null" >
+                BILLING_AMOUNT = #{billingAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="lastUpdateTime != null" >
+                LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=VARCHAR},
+            </if>
+            <if test="chargeUnitNumber != null" >
+                CHARGE_UNIT_NUMBER = #{chargeUnitNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="chargeUnitName != null" >
+                CHARGE_UNIT_NAME = #{chargeUnitName,jdbcType=VARCHAR},
+            </if>
+            <if test="passTime != null" >
+                PASS_TIME = #{passTime,jdbcType=VARCHAR},
+            </if>
+            <if test="recePassAmount != null" >
+                RECE_PASS_AMOUNT = #{recePassAmount,jdbcType=VARCHAR},
+            </if>
+            <if test="fittingTags != null" >
+                FITTING_TAGS = #{fittingTags,jdbcType=VARCHAR},
+            </if>
+            <if test="carType != null" >
+                CAR_TYPE = #{carType,jdbcType=VARCHAR},
+            </if>
+            <if test="tollProvinceId != null" >
+                TOLL_PROVINCE_ID = #{tollProvinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="carColour != null" >
+                CAR_COLOUR = #{carColour,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.sutong.auditPublishResult.model.AuditPublishResult" >
+        update AUDIT_ROAD_PART_RESULT
+        set PUBLISH_ORDER_ID = #{publishOrderId,jdbcType=VARCHAR},
+            VEHICLE_ID = #{vehicleId,jdbcType=VARCHAR},
+            AUD_ROAD_ID = #{audRoadId,jdbcType=VARCHAR},
+            INVESTIGATION_UNIT = #{investigationUnit,jdbcType=VARCHAR},
+            ESCAPE_TYPE = #{escapeType,jdbcType=VARCHAR},
+            AUD_IS_LESS_FEE = #{audIsLessFee,jdbcType=VARCHAR},
+            DUTY_BODY = #{dutyBody,jdbcType=VARCHAR},
+            EVIDENCE_ENOUGH = #{evidenceEnough,jdbcType=VARCHAR},
+            BILLING_AMOUNT = #{billingAmount,jdbcType=VARCHAR},
+            LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=VARCHAR},
+            CHARGE_UNIT_NUMBER = #{chargeUnitNumber,jdbcType=VARCHAR},
+            CHARGE_UNIT_NAME = #{chargeUnitName,jdbcType=VARCHAR},
+            PASS_TIME = #{passTime,jdbcType=VARCHAR},
+            RECE_PASS_AMOUNT = #{recePassAmount,jdbcType=VARCHAR},
+            FITTING_TAGS = #{fittingTags,jdbcType=VARCHAR},
+            CAR_TYPE = #{carType,jdbcType=VARCHAR},
+            TOLL_PROVINCE_ID = #{tollProvinceId,jdbcType=VARCHAR},
+            CAR_COLOUR = #{carColour,jdbcType=VARCHAR}
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </update>
+</mapper>

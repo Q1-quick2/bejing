@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.pay.mapper.AppRepairfeeMapper" >
+   <resultMap id="BaseResultMap" type="com.sutong.bjstjh.entity.RepairfeeModel">
+      <id column="VEHICLE_ID" jdbcType="VARCHAR" property="vehicleId" />
+      <result column="PAYBACK_NAME" jdbcType="VARCHAR" property="paybackUser" />
+      <result column="CONFIRMED_PAYBACK_FEE" jdbcType="INTEGER" property="confirmedPaybackFee" />
+      <result column="PAYBACK_FEE" jdbcType="INTEGER" property="paybackFee" />
+      <result column="PAYMENT_TIME" jdbcType="VARCHAR" property="paymentTime" />
+      <result column="PAY_PHONE" jdbcType="VARCHAR" property="payPhone" />
+      <result column="TRANSACTION_NUMBER" jdbcType="VARCHAR" property="transactionNumber" />
+   </resultMap>
+
+
+
+
+   <!--历史补费-->
+   <select id="historyRepairfee" resultMap="BaseResultMap" parameterType="com.sutong.bjstjh.entity.RepairfeeModel">
+     SELECT * FROM AUDIT_FEE_RESULT_FLOW t WHERE t.VEHICLE_ID = #{vehicleId}
+   </select>
+
+
+
+
+
+</mapper>
+
+
+
+

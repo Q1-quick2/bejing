@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sutong.mapper.NoticeMapper" >
+    <resultMap id="BasessResultMap" type="com.sutong.runfee.model.RunFee">
+        <id column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+        <result column="VEHICLE_ID" jdbcType="VARCHAR" property="vehicleId" />
+        <result column="VEHICLE_COLOUR" jdbcType="VARCHAR" property="vehicleColour" />
+        <result column="TIME_NODES" jdbcType="VARCHAR" property="timeNodes" />
+        <result column="INFO" jdbcType="VARCHAR" property="info" />
+        <result column="RECEIVE_TIME" jdbcType="VARCHAR" property="receiveTime" />
+        <result column="VEHICLE_TYPE" jdbcType="VARCHAR" property="vehicleType" />
+        <result column="VEHICLE_CLASS" jdbcType="VARCHAR" property="vehicleClass" />
+        <result column="CONFIRMEDESCAPE_TYPE" jdbcType="VARCHAR" property="confirmedescapeType" />
+        <result column="OWEFEE" jdbcType="INTEGER" property="owefee" />
+        <result column="PASSID" jdbcType="VARCHAR" property="passid" />
+        <result column="TRANSACTION_ID" jdbcType="VARCHAR" property="transactionId" />
+        <result column="MEDIA_TYPE" jdbcType="VARCHAR" property="mediaType" />
+        <result column="OBU_ID" jdbcType="VARCHAR" property="obuId" />
+        <result column="CARD_ID" jdbcType="VARCHAR" property="cardId" />
+        <result column="ENTIME" jdbcType="VARCHAR" property="entime" />
+        <result column="ENLANE_ID" jdbcType="VARCHAR" property="enlaneId" />
+        <result column="EXTIME" jdbcType="VARCHAR" property="extime" />
+        <result column="EXLANE_ID" jdbcType="VARCHAR" property="exlaneId" />
+        <result column="REAL_ENTIME" jdbcType="VARCHAR" property="realEntime" />
+        <result column="REAL_ENLANEID" jdbcType="VARCHAR" property="realEnlaneid" />
+        <result column="REAL_EXTIME" jdbcType="VARCHAR" property="realExtime" />
+        <result column="REAL_EXLANEID" jdbcType="VARCHAR" property="realExlaneid" />
+        <result column="REAL_VEHICLE_CLASS" jdbcType="VARCHAR" property="realVehicleClass" />
+        <result column="REAL_VEHICLE_TYPE" jdbcType="VARCHAR" property="realVehicleType" />
+        <result column="OWEFEEE" jdbcType="INTEGER" property="owefeee" />
+        <result column="PAYBACK_STATUS" jdbcType="INTEGER" property="paybackStatus" />
+        <result column="IS_START_DISSENT" jdbcType="VARCHAR" property="isStartDissent" />
+        <result column="AUDIT_ID" jdbcType="VARCHAR" property="auditId" />
+        <result column="PROCESSER" jdbcType="VARCHAR" property="processer" />
+        <result column="PROCESS_TIME" jdbcType="VARCHAR" property="processTime" />
+        <result column="AUD_ROAD" jdbcType="VARCHAR" property="audRoad" />
+        <result column="TRANSCATION_ID" jdbcType="VARCHAR" property="transcationId" />
+        <result column="TOLLINTERVAL_ID" jdbcType="VARCHAR" property="tollintervalId" />
+        <result column="ACTUAL_FEE" jdbcType="INTEGER" property="actualFee" />
+        <result column="EXPECT_FEE" jdbcType="INTEGER" property="expectFee" />
+    </resultMap>
+
+    <sql id="Basess_Column_List">
+   ORDER_ID, VEHICLE_ID, VEHICLE_COLOUR, TIME_NODES, INFO, RECEIVE_TIME, VEHICLE_TYPE,
+    VEHICLE_CLASS, CONFIRMEDESCAPE_TYPE, OWEFEE, PASSID, TRANSACTION_ID, MEDIA_TYPE,
+    OBU_ID, CARD_ID, ENTIME, ENLANE_ID, EXTIME, EXLANE_ID, REAL_ENTIME, REAL_ENLANEID,
+    REAL_EXTIME, REAL_EXLANEID, REAL_VEHICLE_CLASS, REAL_VEHICLE_TYPE, OWEFEEE, PAYBACK_STATUS,
+    IS_START_DISSENT, AUDIT_ID, PROCESSER, PROCESS_TIME, AUD_ROAD, TRANSCATION_ID, TOLLINTERVAL_ID,
+    ACTUAL_FEE, EXPECT_FEE
+    </sql>
+
+    <insert id="doInsertNotice" parameterType="com.sutong.runfee.model.RunFee">
+        insert into audit_run_fee_flow (ORDER_ID, VEHICLE_ID, VEHICLE_COLOUR,
+      TIME_NODES, INFO, RECEIVE_TIME,
+      VEHICLE_TYPE, VEHICLE_CLASS, CONFIRMEDESCAPE_TYPE,
+      OWEFEE, PASSID, TRANSACTION_ID,
+      MEDIA_TYPE, OBU_ID, CARD_ID,
+      ENTIME, ENLANE_ID, EXTIME,
+      EXLANE_ID, REAL_ENTIME, REAL_ENLANEID,
+      REAL_EXTIME, REAL_EXLANEID, REAL_VEHICLE_CLASS,
+      REAL_VEHICLE_TYPE, OWEFEEE, PAYBACK_STATUS,
+      IS_START_DISSENT, AUDIT_ID, PROCESSER,
+      PROCESS_TIME, AUD_ROAD, TRANSCATION_ID,
+      TOLLINTERVAL_ID, ACTUAL_FEE, EXPECT_FEE
+        )
+        values (#{orderId,jdbcType=INTEGER}, #{vehicleId,jdbcType=VARCHAR}, #{vehicleColour,jdbcType=VARCHAR},
+      #{timeNodes,jdbcType=VARCHAR}, #{info,jdbcType=VARCHAR}, #{receiveTime,jdbcType=VARCHAR},
+      #{vehicleType,jdbcType=VARCHAR}, #{vehicleClass,jdbcType=VARCHAR}, #{confirmedescapeType,jdbcType=VARCHAR},
+      #{owefee,jdbcType=INTEGER}, #{passid,jdbcType=VARCHAR}, #{transactionId,jdbcType=VARCHAR},
+      #{mediaType,jdbcType=VARCHAR}, #{obuId,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR},
+      #{entime,jdbcType=VARCHAR}, #{enlaneId,jdbcType=VARCHAR}, #{extime,jdbcType=VARCHAR},
+      #{exlaneId,jdbcType=VARCHAR}, #{realEntime,jdbcType=VARCHAR}, #{realEnlaneid,jdbcType=VARCHAR},
+      #{realExtime,jdbcType=VARCHAR}, #{realExlaneid,jdbcType=VARCHAR}, #{realVehicleClass,jdbcType=VARCHAR},
+      #{realVehicleType,jdbcType=VARCHAR}, #{owefeee,jdbcType=INTEGER}, #{paybackStatus,jdbcType=INTEGER},
+      #{isStartDissent,jdbcType=VARCHAR}, #{auditId,jdbcType=VARCHAR}, #{processer,jdbcType=VARCHAR},
+      #{processTime,jdbcType=VARCHAR}, #{audRoad,jdbcType=VARCHAR}, #{transcationId,jdbcType=VARCHAR},
+      #{tollintervalId,jdbcType=VARCHAR}, #{actualFee,jdbcType=INTEGER}, #{expectFee,jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="doInsertNoticeSelective" parameterType="com.sutong.runfee.model.RunFee">
+        insert into audit_run_fee_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                ORDER_ID,
+            </if>
+            <if test="vehicleId != null">
+                VEHICLE_ID,
+            </if>
+            <if test="vehicleColour != null">
+                VEHICLE_COLOUR,
+            </if>
+            <if test="timeNodes != null">
+                TIME_NODES,
+            </if>
+            <if test="info != null">
+                INFO,
+            </if>
+            <if test="receiveTime != null">
+                RECEIVE_TIME,
+            </if>
+            <if test="vehicleType != null">
+                VEHICLE_TYPE,
+            </if>
+            <if test="vehicleClass != null">
+                VEHICLE_CLASS,
+            </if>
+            <if test="confirmedescapeType != null">
+                CONFIRMEDESCAPE_TYPE,
+            </if>
+            <if test="owefee != null">
+                OWEFEE,
+            </if>
+            <if test="passid != null">
+                PASSID,
+            </if>
+            <if test="transactionId != null">
+                TRANSACTION_ID,
+            </if>
+            <if test="mediaType != null">
+                MEDIA_TYPE,
+            </if>
+            <if test="obuId != null">
+                OBU_ID,
+            </if>
+            <if test="cardId != null">
+                CARD_ID,
+            </if>
+            <if test="entime != null">
+                ENTIME,
+            </if>
+            <if test="enlaneId != null">
+                ENLANE_ID,
+            </if>
+            <if test="extime != null">
+                EXTIME,
+            </if>
+            <if test="exlaneId != null">
+                EXLANE_ID,
+            </if>
+            <if test="realEntime != null">
+                REAL_ENTIME,
+            </if>
+            <if test="realEnlaneid != null">
+                REAL_ENLANEID,
+            </if>
+            <if test="realExtime != null">
+                REAL_EXTIME,
+            </if>
+            <if test="realExlaneid != null">
+                REAL_EXLANEID,
+            </if>
+            <if test="realVehicleClass != null">
+                REAL_VEHICLE_CLASS,
+            </if>
+            <if test="realVehicleType != null">
+                REAL_VEHICLE_TYPE,
+            </if>
+            <if test="owefeee != null">
+                OWEFEEE,
+            </if>
+            <if test="paybackStatus != null">
+                PAYBACK_STATUS,
+            </if>
+            <if test="isStartDissent != null">
+                IS_START_DISSENT,
+            </if>
+            <if test="auditId != null">
+                AUDIT_ID,
+            </if>
+            <if test="processer != null">
+                PROCESSER,
+            </if>
+            <if test="processTime != null">
+                PROCESS_TIME,
+            </if>
+            <if test="audRoad != null">
+                AUD_ROAD,
+            </if>
+            <if test="transcationId != null">
+                TRANSCATION_ID,
+            </if>
+            <if test="tollintervalId != null">
+                TOLLINTERVAL_ID,
+            </if>
+            <if test="actualFee != null">
+                ACTUAL_FEE,
+            </if>
+            <if test="expectFee != null">
+                EXPECT_FEE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">
+                #{orderId,jdbcType=INTEGER},
+            </if>
+            <if test="vehicleId != null">
+                #{vehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleColour != null">
+                #{vehicleColour,jdbcType=VARCHAR},
+            </if>
+            <if test="timeNodes != null">
+                #{timeNodes,jdbcType=VARCHAR},
+            </if>
+            <if test="info != null">
+                #{info,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveTime != null">
+                #{receiveTime,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleType != null">
+                #{vehicleType,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleClass != null">
+                #{vehicleClass,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmedescapeType != null">
+                #{confirmedescapeType,jdbcType=VARCHAR},
+            </if>
+            <if test="owefee != null">
+                #{owefee,jdbcType=INTEGER},
+            </if>
+            <if test="passid != null">
+                #{passid,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionId != null">
+                #{transactionId,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaType != null">
+                #{mediaType,jdbcType=VARCHAR},
+            </if>
+            <if test="obuId != null">
+                #{obuId,jdbcType=VARCHAR},
+            </if>
+            <if test="cardId != null">
+                #{cardId,jdbcType=VARCHAR},
+            </if>
+            <if test="entime != null">
+                #{entime,jdbcType=VARCHAR},
+            </if>
+            <if test="enlaneId != null">
+                #{enlaneId,jdbcType=VARCHAR},
+            </if>
+            <if test="extime != null">
+                #{extime,jdbcType=VARCHAR},
+            </if>
+            <if test="exlaneId != null">
+                #{exlaneId,jdbcType=VARCHAR},
+            </if>
+            <if test="realEntime != null">
+                #{realEntime,jdbcType=VARCHAR},
+            </if>
+            <if test="realEnlaneid != null">
+                #{realEnlaneid,jdbcType=VARCHAR},
+            </if>
+            <if test="realExtime != null">
+                #{realExtime,jdbcType=VARCHAR},
+            </if>
+            <if test="realExlaneid != null">
+                #{realExlaneid,jdbcType=VARCHAR},
+            </if>
+            <if test="realVehicleClass != null">
+                #{realVehicleClass,jdbcType=VARCHAR},
+            </if>
+            <if test="realVehicleType != null">
+                #{realVehicleType,jdbcType=VARCHAR},
+            </if>
+            <if test="owefeee != null">
+                #{owefeee,jdbcType=INTEGER},
+            </if>
+            <if test="paybackStatus != null">
+                #{paybackStatus,jdbcType=INTEGER},
+            </if>
+            <if test="isStartDissent != null">
+                #{isStartDissent,jdbcType=VARCHAR},
+            </if>
+            <if test="auditId != null">
+                #{auditId,jdbcType=VARCHAR},
+            </if>
+            <if test="processer != null">
+                #{processer,jdbcType=VARCHAR},
+            </if>
+            <if test="processTime != null">
+                #{processTime,jdbcType=VARCHAR},
+            </if>
+            <if test="audRoad != null">
+                #{audRoad,jdbcType=VARCHAR},
+            </if>
+            <if test="transcationId != null">
+                #{transcationId,jdbcType=VARCHAR},
+            </if>
+            <if test="tollintervalId != null">
+                #{tollintervalId,jdbcType=VARCHAR},
+            </if>
+            <if test="actualFee != null">
+                #{actualFee,jdbcType=INTEGER},
+            </if>
+            <if test="expectFee != null">
+                #{expectFee,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 查询客户补费通知列表分页-->
+    <select id="doFindRunFeePage" parameterType="com.sutong.runfee.model.RunFee" resultMap="BasessResultMap">
+        select
+        <include refid="Basess_Column_List" />
+        from audit_run_fee_flow
+        <where>
+            <if test="vehicleId !=null and vehicleId !='' ">
+                and audit_run_fee_flow.VEHICLE_ID like '%'||#{vehicleId}||'%'
+            </if>
+            <if test="vehicleColour !=null and vehicleColour !='' ">
+                and audit_run_fee_flow.VEHICLE_COLOUR = #{vehicleColour}
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询客户补费通知列表（手动通知）-->
+    <select id="doFindRunFeeList" parameterType="com.sutong.runfee.model.RunFee" resultMap="BasessResultMap">
+        select
+        <include refid="Basess_Column_List" />
+        from audit_run_fee_flow
+        <where>
+            <if test="vehicleId !=null and vehicleId !='' ">
+                and audit_run_fee_flow.VEHICLE_ID like '%'||#{vehicleId}||'%'
+            </if>
+            <if test="vehicleColour !=null and vehicleColour !='' ">
+                and audit_run_fee_flow.VEHICLE_COLOUR = #{vehicleColour}
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询客户补费通知列表（自动通知）-->
+    <select id="doFindRunFeeAutoList" parameterType="com.sutong.runfee.model.RunFee" resultMap="BasessResultMap">
+        select
+        <include refid="Basess_Column_List" />
+        from audit_run_fee_flow
+        <where>
+            <if test="vehicleId !=null and vehicleId !='' ">
+                and audit_run_fee_flow.VEHICLE_ID like '%'||#{vehicleId}||'%'
+            </if>
+            <if test="vehicleColour !=null and vehicleColour !='' ">
+                and audit_run_fee_flow.VEHICLE_COLOUR = #{vehicleColour}
+            </if>
+        </where>
+    </select>
+
+</mapper>
+
+
+
+
+

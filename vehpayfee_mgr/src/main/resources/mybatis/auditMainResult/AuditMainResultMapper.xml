@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditMainResult.mapper.AuditMainResultMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.auditMainResult.model.AuditMainResult" >
+        <id column="AUDIT_RESULT_ID" property="auditResultId" jdbcType="VARCHAR" />
+        <result column="TOLL_PROVINCE_ID" property="tollProvinceId" jdbcType="VARCHAR" />
+        <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+        <result column="PROCESSER" property="processer" jdbcType="VARCHAR" />
+        <result column="PROCESS_TIME" property="processTime" jdbcType="VARCHAR" />
+        <result column="PROCESS_TYPE" property="processType" jdbcType="VARCHAR" />
+        <result column="ISSUER_ID" property="issuerId" jdbcType="VARCHAR" />
+        <result column="AUD_ROAD_ID" property="audRoadId" jdbcType="VARCHAR" />
+        <result column="RESULT" property="result" jdbcType="SMALLINT" />
+        <result column="CARD_TYPE" property="cardType" jdbcType="SMALLINT" />
+        <result column="CARD_ID" property="cardId" jdbcType="VARCHAR" />
+        <result column="RESPONSOR" property="responsor" jdbcType="SMALLINT" />
+        <result column="EVIDENCE_ENOUGH" property="evidenceEnough" jdbcType="SMALLINT" />
+        <result column="COMFIRMED_ESCAPE_TYPE" property="comfirmedEscapeType" jdbcType="VARCHAR" />
+        <result column="AUD_RESULT_MEMO" property="audResultMemo" jdbcType="VARCHAR" />
+        <result column="AUD_IS_LESS_FEE" property="audIsLessFee" jdbcType="SMALLINT" />
+        <result column="TOLL_INTERVALS" property="tollIntervals" jdbcType="VARCHAR" />
+        <result column="AUD_EVIDENCE_ID" property="audEvidenceId" jdbcType="VARCHAR" />
+        <result column="OWE_FEE_DETAIL_ID" property="oweFeeDetailId" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        AUDIT_RESULT_ID, TOLL_PROVINCE_ID, ORDER_ID, PROCESSER, PROCESS_TIME, PROCESS_TYPE,
+        ISSUER_ID, AUD_ROAD_ID, RESULT, CARD_TYPE, CARD_ID, RESPONSOR, EVIDENCE_ENOUGH, COMFIRMED_ESCAPE_TYPE,
+        AUD_RESULT_MEMO, AUD_IS_LESS_FEE, TOLL_INTERVALS, AUD_EVIDENCE_ID, OWE_FEE_DETAIL_ID
+    </sql>
+    <!--查询稽核结论信息分页-->
+    <select id="doFindAuditMainResultPage" resultMap="BaseResultMap" parameterType="com.sutong.auditMainResult.model.AuditMainResult" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_MAIN_RESULT
+        <where>
+            <if test="processType !=null and processType !='' ">
+                and AUDIT_MAIN_RESULT.PROCESS_TYPE = #{processType}
+            </if>
+            <if test="tollProvinceId !=null and tollProvinceId !='' ">
+                and AUDIT_MAIN_RESULT.TOLL_PROVINCE_ID = #{tollProvinceId}
+            </if>
+            <if test="evidenceEnough !=null and evidenceEnough !='' ">
+                and AUDIT_MAIN_RESULT.EVIDENCE_ENOUGH = #{evidenceEnough}
+            </if>
+            <if test="audRoadId !=null and audRoadId !='' ">
+                and AUDIT_MAIN_RESULT.AUD_ROAD_ID = #{audRoadId}
+            </if>
+            <if test="audIsLessFee !=null and audIsLessFee !='' ">
+                and AUDIT_MAIN_RESULT.AUD_IS_LESS_FEE = #{audIsLessFee}
+            </if>
+        </where>
+    </select>
+    <select id="doFindAuditMainResultList" resultMap="BaseResultMap" parameterType="com.sutong.auditMainResult.model.AuditMainResult" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_MAIN_RESULT
+        <where>
+            <if test="processType !=null and processType !='' ">
+                and AUDIT_MAIN_RESULT.PROCESS_TYPE = #{processType}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_MAIN_RESULT
+        where AUDIT_RESULT_ID = #{auditResultId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from AUDIT_MAIN_RESULT
+        where AUDIT_RESULT_ID = #{auditResultId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.sutong.auditMainResult.model.AuditMainResult" >
+        insert into AUDIT_MAIN_RESULT (AUDIT_RESULT_ID, TOLL_PROVINCE_ID, ORDER_ID,
+            PROCESSER, PROCESS_TIME, PROCESS_TYPE,
+            ISSUER_ID, AUD_ROAD_ID, RESULT,
+            CARD_TYPE, CARD_ID, RESPONSOR,
+            EVIDENCE_ENOUGH, COMFIRMED_ESCAPE_TYPE,
+            AUD_RESULT_MEMO, AUD_IS_LESS_FEE, TOLL_INTERVALS,
+            AUD_EVIDENCE_ID, OWE_FEE_DETAIL_ID)
+        values (#{auditResultId,jdbcType=VARCHAR}, #{tollProvinceId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR},
+            #{processer,jdbcType=VARCHAR}, #{processTime,jdbcType=VARCHAR}, #{processType,jdbcType=VARCHAR},
+            #{issuerId,jdbcType=VARCHAR}, #{audRoadId,jdbcType=VARCHAR}, #{result,jdbcType=SMALLINT},
+            #{cardType,jdbcType=SMALLINT}, #{cardId,jdbcType=VARCHAR}, #{responsor,jdbcType=SMALLINT},
+            #{evidenceEnough,jdbcType=SMALLINT}, #{comfirmedEscapeType,jdbcType=VARCHAR},
+            #{audResultMemo,jdbcType=VARCHAR}, #{audIsLessFee,jdbcType=SMALLINT}, #{tollIntervals,jdbcType=VARCHAR},
+            #{audEvidenceId,jdbcType=VARCHAR}, #{oweFeeDetailId,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.sutong.auditMainResult.model.AuditMainResult" >
+        insert into AUDIT_MAIN_RESULT
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="auditResultId != null" >
+                AUDIT_RESULT_ID,
+            </if>
+            <if test="tollProvinceId != null" >
+                TOLL_PROVINCE_ID,
+            </if>
+            <if test="orderId != null" >
+                ORDER_ID,
+            </if>
+            <if test="processer != null" >
+                PROCESSER,
+            </if>
+            <if test="processTime != null" >
+                PROCESS_TIME,
+            </if>
+            <if test="processType != null" >
+                PROCESS_TYPE,
+            </if>
+            <if test="issuerId != null" >
+                ISSUER_ID,
+            </if>
+            <if test="audRoadId != null" >
+                AUD_ROAD_ID,
+            </if>
+            <if test="result != null" >
+                RESULT,
+            </if>
+            <if test="cardType != null" >
+                CARD_TYPE,
+            </if>
+            <if test="cardId != null" >
+                CARD_ID,
+            </if>
+            <if test="responsor != null" >
+                RESPONSOR,
+            </if>
+            <if test="evidenceEnough != null" >
+                EVIDENCE_ENOUGH,
+            </if>
+            <if test="comfirmedEscapeType != null" >
+                COMFIRMED_ESCAPE_TYPE,
+            </if>
+            <if test="audResultMemo != null" >
+                AUD_RESULT_MEMO,
+            </if>
+            <if test="audIsLessFee != null" >
+                AUD_IS_LESS_FEE,
+            </if>
+            <if test="tollIntervals != null" >
+                TOLL_INTERVALS,
+            </if>
+            <if test="audEvidenceId != null" >
+                AUD_EVIDENCE_ID,
+            </if>
+            <if test="oweFeeDetailId != null" >
+                OWE_FEE_DETAIL_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="auditResultId != null" >
+                #{auditResultId,jdbcType=VARCHAR},
+            </if>
+            <if test="tollProvinceId != null" >
+                #{tollProvinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null" >
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="processer != null" >
+                #{processer,jdbcType=VARCHAR},
+            </if>
+            <if test="processTime != null" >
+                #{processTime,jdbcType=VARCHAR},
+            </if>
+            <if test="processType != null" >
+                #{processType,jdbcType=VARCHAR},
+            </if>
+            <if test="issuerId != null" >
+                #{issuerId,jdbcType=VARCHAR},
+            </if>
+            <if test="audRoadId != null" >
+                #{audRoadId,jdbcType=VARCHAR},
+            </if>
+            <if test="result != null" >
+                #{result,jdbcType=SMALLINT},
+            </if>
+            <if test="cardType != null" >
+                #{cardType,jdbcType=SMALLINT},
+            </if>
+            <if test="cardId != null" >
+                #{cardId,jdbcType=VARCHAR},
+            </if>
+            <if test="responsor != null" >
+                #{responsor,jdbcType=SMALLINT},
+            </if>
+            <if test="evidenceEnough != null" >
+                #{evidenceEnough,jdbcType=SMALLINT},
+            </if>
+            <if test="comfirmedEscapeType != null" >
+                #{comfirmedEscapeType,jdbcType=VARCHAR},
+            </if>
+            <if test="audResultMemo != null" >
+                #{audResultMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="audIsLessFee != null" >
+                #{audIsLessFee,jdbcType=SMALLINT},
+            </if>
+            <if test="tollIntervals != null" >
+                #{tollIntervals,jdbcType=VARCHAR},
+            </if>
+            <if test="audEvidenceId != null" >
+                #{audEvidenceId,jdbcType=VARCHAR},
+            </if>
+            <if test="oweFeeDetailId != null" >
+                #{oweFeeDetailId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sutong.auditMainResult.model.AuditMainResult" >
+        update AUDIT_MAIN_RESULT
+        <set >
+            <if test="tollProvinceId != null" >
+                TOLL_PROVINCE_ID = #{tollProvinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null" >
+                ORDER_ID = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="processer != null" >
+                PROCESSER = #{processer,jdbcType=VARCHAR},
+            </if>
+            <if test="processTime != null" >
+                PROCESS_TIME = #{processTime,jdbcType=VARCHAR},
+            </if>
+            <if test="processType != null" >
+                PROCESS_TYPE = #{processType,jdbcType=VARCHAR},
+            </if>
+            <if test="issuerId != null" >
+                ISSUER_ID = #{issuerId,jdbcType=VARCHAR},
+            </if>
+            <if test="audRoadId != null" >
+                AUD_ROAD_ID = #{audRoadId,jdbcType=VARCHAR},
+            </if>
+            <if test="result != null" >
+                RESULT = #{result,jdbcType=SMALLINT},
+            </if>
+            <if test="cardType != null" >
+                CARD_TYPE = #{cardType,jdbcType=SMALLINT},
+            </if>
+            <if test="cardId != null" >
+                CARD_ID = #{cardId,jdbcType=VARCHAR},
+            </if>
+            <if test="responsor != null" >
+                RESPONSOR = #{responsor,jdbcType=SMALLINT},
+            </if>
+            <if test="evidenceEnough != null" >
+                EVIDENCE_ENOUGH = #{evidenceEnough,jdbcType=SMALLINT},
+            </if>
+            <if test="comfirmedEscapeType != null" >
+                COMFIRMED_ESCAPE_TYPE = #{comfirmedEscapeType,jdbcType=VARCHAR},
+            </if>
+            <if test="audResultMemo != null" >
+                AUD_RESULT_MEMO = #{audResultMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="audIsLessFee != null" >
+                AUD_IS_LESS_FEE = #{audIsLessFee,jdbcType=SMALLINT},
+            </if>
+            <if test="tollIntervals != null" >
+                TOLL_INTERVALS = #{tollIntervals,jdbcType=VARCHAR},
+            </if>
+            <if test="audEvidenceId != null" >
+                AUD_EVIDENCE_ID = #{audEvidenceId,jdbcType=VARCHAR},
+            </if>
+            <if test="oweFeeDetailId != null" >
+                OWE_FEE_DETAIL_ID = #{oweFeeDetailId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where AUDIT_RESULT_ID = #{auditResultId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.sutong.auditMainResult.model.AuditMainResult" >
+        update AUDIT_MAIN_RESULT
+        set TOLL_PROVINCE_ID = #{tollProvinceId,jdbcType=VARCHAR},
+            ORDER_ID = #{orderId,jdbcType=VARCHAR},
+            PROCESSER = #{processer,jdbcType=VARCHAR},
+            PROCESS_TIME = #{processTime,jdbcType=VARCHAR},
+            PROCESS_TYPE = #{processType,jdbcType=VARCHAR},
+            ISSUER_ID = #{issuerId,jdbcType=VARCHAR},
+            AUD_ROAD_ID = #{audRoadId,jdbcType=VARCHAR},
+            RESULT = #{result,jdbcType=SMALLINT},
+            CARD_TYPE = #{cardType,jdbcType=SMALLINT},
+            CARD_ID = #{cardId,jdbcType=VARCHAR},
+            RESPONSOR = #{responsor,jdbcType=SMALLINT},
+            EVIDENCE_ENOUGH = #{evidenceEnough,jdbcType=SMALLINT},
+            COMFIRMED_ESCAPE_TYPE = #{comfirmedEscapeType,jdbcType=VARCHAR},
+            AUD_RESULT_MEMO = #{audResultMemo,jdbcType=VARCHAR},
+            AUD_IS_LESS_FEE = #{audIsLessFee,jdbcType=SMALLINT},
+            TOLL_INTERVALS = #{tollIntervals,jdbcType=VARCHAR},
+            AUD_EVIDENCE_ID = #{audEvidenceId,jdbcType=VARCHAR},
+            OWE_FEE_DETAIL_ID = #{oweFeeDetailId,jdbcType=VARCHAR}
+        where AUDIT_RESULT_ID = #{auditResultId,jdbcType=VARCHAR}
+    </update>
+</mapper>

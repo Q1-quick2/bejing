@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="bjstjh_common" />
+        <module name="bjstjh_console" />
+        <module name="ordermanage_api" />
+        <module name="ordermanage_mgr" />
+        <module name="vehpayfee_api" />
+        <module name="vehpayfee_mgr" />
+        <module name="vehpayfee_pay" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

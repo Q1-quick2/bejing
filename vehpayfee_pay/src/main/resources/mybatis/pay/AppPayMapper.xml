@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.pay.mapper.AppPayMapper" >
+
+    <!-- 查询补费金额（非历史） -->
+    <select id="doFindArrearageMoney" resultType="java.lang.Integer">
+        SELECT
+        OWEFEE AS money
+        FROM AUDIT_RUN_FEE_FLOW
+        WHERE ORDER_ID = #{orderId}
+    </select>
+
+    <!-- 保存支付平台APP支付预下单返回结果  -->
+    <insert id="doInsertAppPayPreOrderResult" parameterType="com.sutong.bjstjh.entity.pay.AppPayPreOrderResponseEntity">
+        INSERT INTO
+        AUDIT_APP_PAY_PRE_ORDER_RESULT
+        (CHARSET,VERSION,SIGN_TYPE,SERVICE,MERCHANT_ID,RETURN_CODE,
+        RETURN_MESSAGE,RESULT_CODE,RESULT_MSG,ORDER_NO,CREATE_TIME)
+        VALUES
+        (#{charset},#{version}, #{signType},#{service},#{merchantId},#{returnCode},
+        #{returnMessage},#{resultCode},#{resultMsg},#{orderNo},#{createTime})
+    </insert>
+
+
+    <!-- 单独保存一份流水号，用来防止流水号重复 -->
+    <insert id="doInsertPayBackFeeId" parameterType="java.lang.String">
+        INSERT INTO
+        AUDIT_PAY_BACK_FEE_ID_TABLE
+        (PAY_BACK_FEE_ID,FLOW_CREATE_TIME)
+        VALUES
+        (#{orderNo},#{flowCreateTime})
+    </insert>
+
+
+    <!-- 生成补费流水（非历史） -->
+    <insert id="doInsertRepairFeeWater" parameterType="com.sutong.bjstjh.entity.pay.PaybackFeeFlowEntity">
+        INSERT INTO
+        AUDIT_PAY_BACK_FEE_FLOW
+        (FLOW_ID,PAY_BACK_FEE_ID,ORDER_ID,ORDER_TYPE,VEHICLE_NUMBER,VEHICLE_COLOUR,
+		PAY_BACK_SUM,UID,TOKEN,USER_NAME,ID_NUMBER,TOLL_PROVINCE_ID,MESSAGE_ID,VEHICLE_ID,
+		PASS_ID,PAY_BACK_USER,PAY_BACK_USER_PHONE,TRANSACTION_TYPE,ETC_CARD_ID,PAY_BACK_TYPE,
+		OPERATOR,OPERATE_ORG,OPERATE_ROAD,OPERATE_STATION,OWE_FEE,PAY_BACK_FEE,FLOW_CREATE_TIME)
+		VALUES
+		(#{flowId},#{payBackFeeId},#{orderId},#{orderType},#{vehicleNumber},#{vehicleColour},
+        #{payBackSum},#{uid},#{token},#{userName},#{idNumber},#{tollProvinceId},#{messageId},#{vehicleId},
+        #{passId},#{payBackUser},#{payBackUserPhone},#{transactionType},#{etcCardId},#{payBackType},
+        #{operator},#{operateOrg},#{operateRoad},#{operateStation},#{oweFee},#{payBackFee},#{flowCreateTime})
+    </insert>
+
+
+    <!-- 查询补费总金额（历史） -->
+    <select id="doFindPastArrearageMoney" resultType="java.lang.String">
+        SELECT
+        OWE_FEE AS money
+        FROM AUDIT_PAST_ORDER
+        WHERE OBU_ID = #{obuId}
+    </select>
+
+
+    <!-- 查询通行费差额汇总表中的数据用来生成交易流水 -->
+    <select id="doFindPastOrder" resultType="com.sutong.bjstjh.entity.AuditPastOrderEntity">
+        SELECT
+        CUSTOMER_NAME AS customerName,
+        CUSTOMER_PHONE AS customerPhone,
+        TRANS_NUM AS transNum,
+        TRANS_ALL_MONEY AS transAllMoney
+        FROM AUDIT_PAST_ORDER
+        WHERE OBU_ID = #{obuId}
+    </select>
+
+
+    <!-- 生成补费流水（历史） -->
+    <insert id="doInsertPastPayBackFeeWater" parameterType="com.sutong.bjstjh.entity.pay.PaybackFeeFlowPastEntity">
+        INSERT INTO
+        AUDIT_PAY_BACK_FEE_FLOW_PAST
+        (FLOW_ID,PAY_BACK_FEE_ID,ORDER_TYPE,
+        PAY_BACK_SUM,UID,TOKEN,USER_NAME,ID_NUMBER,
+        PAY_BACK_USER,PAY_BACK_USER_PHONE,TRANSACTION_TYPE,PAY_BACK_TYPE,FLOW_CREATE_TIME,
+        CUSTOMER_NAME,CUSTOMER_PHONE,OBU_ID,TRANS_NUM,TRANS_ALL_MONEY,OWE_FEE)
+        VALUES
+        (#{flowId},#{payBackFeeId},#{orderType},
+        #{payBackSum},#{uid},#{token},#{userName},#{idNumber},
+        #{payBackUser},#{payBackUserPhone},#{transactionType},#{payBackType},#{flowCreateTime},
+        #{customerName},#{customerPhone},#{obuId},#{transNum},#{transAllMoney},#{oweFee})
+    </insert>
+
+
+    <!-- 更新通行费差额明细表中商户订单号和实缴金额 -->
+    <update id="doUpdateFlowAndFee" parameterType="java.lang.String">
+        UPDATE AUDIT_PAST_ORDER_INFO
+        SET
+        ORDER_STATUS = '1',
+        PAY_BACK_FEE_ID = #{orderNo},
+        PAY_BACK_FEE_REALITY = SUBTR_FEE
+        WHERE TRANS_OBU_ID = #{obuId}
+    </update>
+
+
+    <!-- 查询补费状态（非历史） -->
+    <select id="doFindOrderStatus" resultType="java.lang.String">
+        SELECT
+        PAYBACK_STATUS
+        FROM AUDIT_RUN_FEE_FLOW
+        WHERE ORDER_ID = #{orderId}
+    </select>
+
+
+    <!-- 查询补费状态（历史） -->
+    <select id="doFindOrderStatusPast" resultType="java.lang.String">
+        SELECT
+        ORDER_STATUS
+        FROM AUDIT_PAST_ORDER
+        WHERE OBU_ID = #{obuId}
+    </select>
+
+
+    <!-- 查询工单发起方省中心id、工单发起方省中心生成的文件id、通行标识、OBU号、欠费金额 -->
+    <select id="doFindDisposeAndPassInfo" resultType="com.sutong.bjstjh.entity.pay.PaybackFeeFlowVo">
+        SELECT
+        TOLL_PROVINCE_ID AS tollProvinceId,
+        MESSAGE_ID AS messageId,
+        PASSID AS passId,
+        OBU_ID AS obuId,
+        OWEFEE AS owefee
+        FROM AUDIT_RUN_FEE_FLOW
+        WHERE ORDER_ID = #{orderId}
+    </select>
+
+
+
+
+</mapper>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditDissentFlow.mapper.AuditDissentFlowMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.auditDissentFlow.model.AuditDissentFlow" >
+        <id column="DISSENT_ID" property="dissentId" jdbcType="VARCHAR" />
+        <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+        <result column="TOLL_PROVINCE_ID" property="tollProvinceId" jdbcType="VARCHAR" />
+        <result column="MESSAGE_ID" property="messageId" jdbcType="VARCHAR" />
+        <result column="INITIATOR_TYPE" property="initiatorType" jdbcType="VARCHAR" />
+        <result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
+        <result column="OPERATE_TIMES" property="operateTimes" jdbcType="TIMESTAMP" />
+        <result column="OPERATE_ORG" property="operateOrg" jdbcType="VARCHAR" />
+        <result column="OPERATE_ROAD" property="operateRoad" jdbcType="VARCHAR" />
+        <result column="CLIENT_NAME" property="clientName" jdbcType="VARCHAR" />
+        <result column="CLIENT_PHONE" property="clientPhone" jdbcType="VARCHAR" />
+        <result column="VEHICLE_ID" property="vehicleId" jdbcType="VARCHAR" />
+        <result column="CAR_COLOUR" property="carColour" jdbcType="VARCHAR" />
+        <result column="VEHICLE_TYPE" property="vehicleType" jdbcType="VARCHAR" />
+        <result column="VEHICLE_CLASS" property="vehicleClass" jdbcType="VARCHAR" />
+        <result column="DISSENT_EVIDENCE" property="dissentEvidence" jdbcType="VARCHAR" />
+        <result column="PASSIDS" property="passids" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        DISSENT_ID, ORDER_ID, TOLL_PROVINCE_ID, MESSAGE_ID, INITIATOR_TYPE, OPERATOR, OPERATE_TIMES, 
+        OPERATE_ORG, OPERATE_ROAD, CLIENT_NAME, CLIENT_PHONE, VEHICLE_ID, CAR_COLOUR, VEHICLE_TYPE, 
+        VEHICLE_CLASS, DISSENT_EVIDENCE, PASSIDS
+    </sql>
+
+    <!--查询异议申请流水分页-->
+    <select id="doFindAuditDissentFlowPage" resultMap="BaseResultMap" parameterType="com.sutong.auditDissentFlow.model.AuditDissentFlow" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_DISSENT_FLOW
+    </select>
+
+    <!--查询异议申请流水详情-->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select 
+        <include refid="Base_Column_List" />
+        from AUDIT_DISSENT_FLOW
+        where DISSENT_ID = #{dissentId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from AUDIT_DISSENT_FLOW
+        where DISSENT_ID = #{dissentId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.sutong.auditDissentFlow.model.AuditDissentFlow" >
+        insert into AUDIT_DISSENT_FLOW (DISSENT_ID, ORDER_ID, TOLL_PROVINCE_ID, 
+            MESSAGE_ID, INITIATOR_TYPE, OPERATOR, 
+            OPERATE_TIMES, OPERATE_ORG, OPERATE_ROAD, 
+            CLIENT_NAME, CLIENT_PHONE, VEHICLE_ID, 
+            CAR_COLOUR, VEHICLE_TYPE, VEHICLE_CLASS, 
+            DISSENT_EVIDENCE, PASSIDS)
+        values (#{dissentId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{tollProvinceId,jdbcType=VARCHAR}, 
+            #{messageId,jdbcType=VARCHAR}, #{initiatorType,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, 
+            #{operateTimes,jdbcType=TIMESTAMP}, #{operateOrg,jdbcType=VARCHAR}, #{operateRoad,jdbcType=VARCHAR}, 
+            #{clientName,jdbcType=VARCHAR}, #{clientPhone,jdbcType=VARCHAR}, #{vehicleId,jdbcType=VARCHAR}, 
+            #{carColour,jdbcType=VARCHAR}, #{vehicleType,jdbcType=VARCHAR}, #{vehicleClass,jdbcType=VARCHAR}, 
+            #{dissentEvidence,jdbcType=VARCHAR}, #{passids,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.sutong.auditDissentFlow.model.AuditDissentFlow" >
+        insert into AUDIT_DISSENT_FLOW
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="dissentId != null" >
+                DISSENT_ID,
+            </if>
+            <if test="orderId != null" >
+                ORDER_ID,
+            </if>
+            <if test="tollProvinceId != null" >
+                TOLL_PROVINCE_ID,
+            </if>
+            <if test="messageId != null" >
+                MESSAGE_ID,
+            </if>
+            <if test="initiatorType != null" >
+                INITIATOR_TYPE,
+            </if>
+            <if test="operator != null" >
+                OPERATOR,
+            </if>
+            <if test="operateTimes != null" >
+                OPERATE_TIMES,
+            </if>
+            <if test="operateOrg != null" >
+                OPERATE_ORG,
+            </if>
+            <if test="operateRoad != null" >
+                OPERATE_ROAD,
+            </if>
+            <if test="clientName != null" >
+                CLIENT_NAME,
+            </if>
+            <if test="clientPhone != null" >
+                CLIENT_PHONE,
+            </if>
+            <if test="vehicleId != null" >
+                VEHICLE_ID,
+            </if>
+            <if test="carColour != null" >
+                CAR_COLOUR,
+            </if>
+            <if test="vehicleType != null" >
+                VEHICLE_TYPE,
+            </if>
+            <if test="vehicleClass != null" >
+                VEHICLE_CLASS,
+            </if>
+            <if test="dissentEvidence != null" >
+                DISSENT_EVIDENCE,
+            </if>
+            <if test="passids != null" >
+                PASSIDS,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="dissentId != null" >
+                #{dissentId,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null" >
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="tollProvinceId != null" >
+                #{tollProvinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="messageId != null" >
+                #{messageId,jdbcType=VARCHAR},
+            </if>
+            <if test="initiatorType != null" >
+                #{initiatorType,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null" >
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="operateTimes != null" >
+                #{operateTimes,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operateOrg != null" >
+                #{operateOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="operateRoad != null" >
+                #{operateRoad,jdbcType=VARCHAR},
+            </if>
+            <if test="clientName != null" >
+                #{clientName,jdbcType=VARCHAR},
+            </if>
+            <if test="clientPhone != null" >
+                #{clientPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleId != null" >
+                #{vehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="carColour != null" >
+                #{carColour,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleType != null" >
+                #{vehicleType,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleClass != null" >
+                #{vehicleClass,jdbcType=VARCHAR},
+            </if>
+            <if test="dissentEvidence != null" >
+                #{dissentEvidence,jdbcType=VARCHAR},
+            </if>
+            <if test="passids != null" >
+                #{passids,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sutong.auditDissentFlow.model.AuditDissentFlow" >
+        update AUDIT_DISSENT_FLOW
+        <set >
+            <if test="orderId != null" >
+                ORDER_ID = #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="tollProvinceId != null" >
+                TOLL_PROVINCE_ID = #{tollProvinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="messageId != null" >
+                MESSAGE_ID = #{messageId,jdbcType=VARCHAR},
+            </if>
+            <if test="initiatorType != null" >
+                INITIATOR_TYPE = #{initiatorType,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null" >
+                OPERATOR = #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="operateTimes != null" >
+                OPERATE_TIMES = #{operateTimes,jdbcType=TIMESTAMP},
+            </if>
+            <if test="operateOrg != null" >
+                OPERATE_ORG = #{operateOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="operateRoad != null" >
+                OPERATE_ROAD = #{operateRoad,jdbcType=VARCHAR},
+            </if>
+            <if test="clientName != null" >
+                CLIENT_NAME = #{clientName,jdbcType=VARCHAR},
+            </if>
+            <if test="clientPhone != null" >
+                CLIENT_PHONE = #{clientPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleId != null" >
+                VEHICLE_ID = #{vehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="carColour != null" >
+                CAR_COLOUR = #{carColour,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleType != null" >
+                VEHICLE_TYPE = #{vehicleType,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleClass != null" >
+                VEHICLE_CLASS = #{vehicleClass,jdbcType=VARCHAR},
+            </if>
+            <if test="dissentEvidence != null" >
+                DISSENT_EVIDENCE = #{dissentEvidence,jdbcType=VARCHAR},
+            </if>
+            <if test="passids != null" >
+                PASSIDS = #{passids,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where DISSENT_ID = #{dissentId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.sutong.auditDissentFlow.model.AuditDissentFlow" >
+        update AUDIT_DISSENT_FLOW
+        set ORDER_ID = #{orderId,jdbcType=VARCHAR},
+            TOLL_PROVINCE_ID = #{tollProvinceId,jdbcType=VARCHAR},
+            MESSAGE_ID = #{messageId,jdbcType=VARCHAR},
+            INITIATOR_TYPE = #{initiatorType,jdbcType=VARCHAR},
+            OPERATOR = #{operator,jdbcType=VARCHAR},
+            OPERATE_TIMES = #{operateTimes,jdbcType=TIMESTAMP},
+            OPERATE_ORG = #{operateOrg,jdbcType=VARCHAR},
+            OPERATE_ROAD = #{operateRoad,jdbcType=VARCHAR},
+            CLIENT_NAME = #{clientName,jdbcType=VARCHAR},
+            CLIENT_PHONE = #{clientPhone,jdbcType=VARCHAR},
+            VEHICLE_ID = #{vehicleId,jdbcType=VARCHAR},
+            CAR_COLOUR = #{carColour,jdbcType=VARCHAR},
+            VEHICLE_TYPE = #{vehicleType,jdbcType=VARCHAR},
+            VEHICLE_CLASS = #{vehicleClass,jdbcType=VARCHAR},
+            DISSENT_EVIDENCE = #{dissentEvidence,jdbcType=VARCHAR},
+            PASSIDS = #{passids,jdbcType=VARCHAR}
+        where DISSENT_ID = #{dissentId,jdbcType=VARCHAR}
+    </update>
+</mapper>

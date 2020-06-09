@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditCheckResults.mapper.AuditCheckResultsMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.bjstjh.entity.AuditCheckResults">
+        <id column="CHECK_RESULTS_ID" property="checkResultsId" jdbcType="VARCHAR"/>
+        <result column="OBUNO_RESULTS" property="obuNoResults" jdbcType="INTEGER"/>
+        <result column="VEH_RESULTS" property="vehResults" jdbcType="INTEGER"/>
+        <result column="ETCNO_RESULTS" property="etcNoResults" jdbcType="INTEGER"/>
+        <result column="VEHTYPE_RESULTS" property="vehTypeResults" jdbcType="INTEGER"/>
+        <result column="VEH_CLASS_RESULTS" property="vehClassResults" jdbcType="INTEGER"/>
+        <result column="ISSUER_DUTY" property="issuerDuty" jdbcType="INTEGER"/>
+        <result column="RESPONSOR" property="responsor" jdbcType="INTEGER"/>
+        <result column="EVIDENCEENOUGH" property="evidenceEnough" jdbcType="INTEGER"/>
+        <result column="CHECK_RESULT" property="checkResult" jdbcType="VARCHAR"/>
+        <result column="IMG_ADDRESS" property="imgAddress" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR"/>
+        <result column="MINISTRY_WORKORDER_FOREIGN_ID" property="ministryWorkOrderForeignId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--    稽核结论对比结果新增插入-->
+    <insert id="doInsertAuditCheckResults" parameterType="com.sutong.bjstjh.entity.AuditCheckResults">
+        insert into AUDIT_CHECK_RESULTS(CHECK_RESULTS_ID,OBUNO_RESULTS,VEH_RESULTS,ETCNO_RESULTS,VEHTYPE_RESULTS,VEH_CLASS_RESULTS,ISSUER_DUTY,RESPONSOR,EVIDENCEENOUGH,CHECK_RESULT,IMG_ADDRESS,CREATE_TIME,MINISTRY_WORKORDER_FOREIGN_ID)
+        values(#{checkResultsId,jdbcType=VARCHAR},#{obuNoResults,jdbcType=INTEGER},#{vehResults,jdbcType=INTEGER},#{etcNoResults,jdbcType=INTEGER},#{vehTypeResults,jdbcType=INTEGER},#{vehClassResults,jdbcType=INTEGER},#{issuerDuty,jdbcType=INTEGER},#{responsor,jdbcType=INTEGER},#{evidenceEnough,jdbcType=INTEGER},#{checkResult,jdbcType=VARCHAR},#{imgAddress,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},#{ministryWorkOrderForeignId,jdbcType=VARCHAR})
+    </insert>
+
+<!--    稽核结论对比结果查询-->
+
+    <select id="doFindAuditCheckResults" parameterType="String" resultMap="BaseResultMap">
+        select CHECK_RESULTS_ID,OBUNO_RESULTS,VEH_RESULTS,ETCNO_RESULTS,VEHTYPE_RESULTS,VEH_CLASS_RESULTS,ISSUER_DUTY,RESPONSOR,EVIDENCEENOUGH,CHECK_RESULT,IMG_ADDRESS,CREATE_TIME,MINISTRY_WORKORDER_FOREIGN_ID from AUDIT_CHECK_RESULTS where MINISTRY_WORKORDER_FOREIGN_ID = #{ministryWorkOrderForeignId}
+    </select>
+
+<!--    稽核结论对比结果删除-->
+    <delete id="doDeleteAuditCheckResultsById" parameterType="String">
+
+        delete from AUDIT_CHECK_RESULTS where MINISTRY_WORKORDER_FOREIGN_ID = #{ministryWorkOrderForeignId}
+    </delete>
+</mapper>

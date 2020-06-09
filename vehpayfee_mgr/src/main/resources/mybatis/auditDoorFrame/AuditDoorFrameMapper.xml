@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditDoorFrame.mapper.AuditDoorFrameMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.auditDoorFrame.model.AuditDoorFrame" >
+        <id column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+        <result column="BILLING_TRANSACTION_NO" property="billingTransactionNo" jdbcType="VARCHAR" />
+        <result column="TOLL_PROVINCE_ID" property="tollProvinceId" jdbcType="VARCHAR" />
+        <result column="ROAD_ID" property="roadId" jdbcType="VARCHAR" />
+        <result column="COLLECTING_UNIT" property="collectingUnit" jdbcType="VARCHAR" />
+        <result column="ACTUAL_VEHICLE_ID" property="actualVehicleId" jdbcType="VARCHAR" />
+        <result column="ACTUAL_VEHICLE_COLOUR" property="actualVehicleColour" jdbcType="VARCHAR" />
+        <result column="DISCERN_VEHICLE_ID" property="discernVehicleId" jdbcType="VARCHAR" />
+        <result column="DISCERNE_COLOUR" property="discerneColour" jdbcType="VARCHAR" />
+        <result column="TRANSACTION_TIME" property="transactionTime" jdbcType="TIMESTAMP" />
+        <result column="CHARGING_VEHICLE" property="chargingVehicle" jdbcType="VARCHAR" />
+        <result column="CONFIRMEDESCAPE_TYPE" property="confirmedescapeType" jdbcType="VARCHAR" />
+        <result column="PASS_CODE" property="passCode" jdbcType="VARCHAR" />
+        <result column="PASS_ID" property="passId" jdbcType="VARCHAR" />
+        <result column="TRANSACTION_ID" property="transactionId" jdbcType="VARCHAR" />
+        <result column="MEDIA_TYPE" property="mediaType" jdbcType="VARCHAR" />
+        <result column="OBU_ID" property="obuId" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        ORDER_ID, BILLING_TRANSACTION_NO, TOLL_PROVINCE_ID, ROAD_ID, COLLECTING_UNIT, ACTUAL_VEHICLE_ID, 
+        ACTUAL_VEHICLE_COLOUR, DISCERN_VEHICLE_ID, DISCERNE_COLOUR, TRANSACTION_TIME, CHARGING_VEHICLE, 
+        CONFIRMEDESCAPE_TYPE, PASS_CODE, PASS_ID, TRANSACTION_ID, MEDIA_TYPE, OBU_ID
+    </sql>
+
+    <!--查询门架数据分页-->
+    <select id="doFindAuditDoorFramePage" resultMap="BaseResultMap" parameterType="com.sutong.auditDoorFrame.model.AuditDoorFrame" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_DOOR_FRAME
+        <where>
+            <if test="tollProvinceId !=null and tollProvinceId !='' ">
+                and AUDIT_DOOR_FRAME.TOLL_PROVINCE_ID =#{tollProvinceId}
+            </if>
+            <if test="roadId !=null and roadId !='' ">
+                and AUDIT_DOOR_FRAME.ROAD_ID =#{roadId}
+            </if>
+            <if test="startTimeDate !=null ">
+                and TO_CHAR(AUDIT_DOOR_FRAME.TRANSACTION_TIME,'YYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(#{startTimeDate},'YYY-MM-DD')
+            </if>
+            <if test="endTimeDate !=null ">
+                and TO_CHAR(AUDIT_DOOR_FRAME.TRANSACTION_TIME,'YYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(#{endTimeDate},'YYY-MM-DD')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select 
+        <include refid="Base_Column_List" />
+        from AUDIT_DOOR_FRAME
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from AUDIT_DOOR_FRAME
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.sutong.auditDoorFrame.model.AuditDoorFrame" >
+        insert into AUDIT_DOOR_FRAME (ORDER_ID, BILLING_TRANSACTION_NO, TOLL_PROVINCE_ID, 
+            ROAD_ID, COLLECTING_UNIT, ACTUAL_VEHICLE_ID, 
+            ACTUAL_VEHICLE_COLOUR, DISCERN_VEHICLE_ID, 
+            DISCERNE_COLOUR, TRANSACTION_TIME, CHARGING_VEHICLE, 
+            CONFIRMEDESCAPE_TYPE, PASS_CODE, PASS_ID, 
+            TRANSACTION_ID, MEDIA_TYPE, OBU_ID
+            )
+        values (#{orderId,jdbcType=VARCHAR}, #{billingTransactionNo,jdbcType=VARCHAR}, #{tollProvinceId,jdbcType=VARCHAR}, 
+            #{roadId,jdbcType=VARCHAR}, #{collectingUnit,jdbcType=VARCHAR}, #{actualVehicleId,jdbcType=VARCHAR}, 
+            #{actualVehicleColour,jdbcType=VARCHAR}, #{discernVehicleId,jdbcType=VARCHAR}, 
+            #{discerneColour,jdbcType=VARCHAR}, #{transactionTime,jdbcType=TIMESTAMP}, #{chargingVehicle,jdbcType=VARCHAR},
+            #{confirmedescapeType,jdbcType=VARCHAR}, #{passCode,jdbcType=VARCHAR}, #{passId,jdbcType=VARCHAR}, 
+            #{transactionId,jdbcType=VARCHAR}, #{mediaType,jdbcType=VARCHAR}, #{obuId,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.sutong.auditDoorFrame.model.AuditDoorFrame" >
+        insert into AUDIT_DOOR_FRAME
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="orderId != null" >
+                ORDER_ID,
+            </if>
+            <if test="billingTransactionNo != null" >
+                BILLING_TRANSACTION_NO,
+            </if>
+            <if test="tollProvinceId != null" >
+                TOLL_PROVINCE_ID,
+            </if>
+            <if test="roadId != null" >
+                ROAD_ID,
+            </if>
+            <if test="collectingUnit != null" >
+                COLLECTING_UNIT,
+            </if>
+            <if test="actualVehicleId != null" >
+                ACTUAL_VEHICLE_ID,
+            </if>
+            <if test="actualVehicleColour != null" >
+                ACTUAL_VEHICLE_COLOUR,
+            </if>
+            <if test="discernVehicleId != null" >
+                DISCERN_VEHICLE_ID,
+            </if>
+            <if test="discerneColour != null" >
+                DISCERNE_COLOUR,
+            </if>
+            <if test="transactionTime != null" >
+                TRANSACTION_TIME,
+            </if>
+            <if test="chargingVehicle != null" >
+                CHARGING_VEHICLE,
+            </if>
+            <if test="confirmedescapeType != null" >
+                CONFIRMEDESCAPE_TYPE,
+            </if>
+            <if test="passCode != null" >
+                PASS_CODE,
+            </if>
+            <if test="passId != null" >
+                PASS_ID,
+            </if>
+            <if test="transactionId != null" >
+                TRANSACTION_ID,
+            </if>
+            <if test="mediaType != null" >
+                MEDIA_TYPE,
+            </if>
+            <if test="obuId != null" >
+                OBU_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="orderId != null" >
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="billingTransactionNo != null" >
+                #{billingTransactionNo,jdbcType=VARCHAR},
+            </if>
+            <if test="tollProvinceId != null" >
+                #{tollProvinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="roadId != null" >
+                #{roadId,jdbcType=VARCHAR},
+            </if>
+            <if test="collectingUnit != null" >
+                #{collectingUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="actualVehicleId != null" >
+                #{actualVehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="actualVehicleColour != null" >
+                #{actualVehicleColour,jdbcType=VARCHAR},
+            </if>
+            <if test="discernVehicleId != null" >
+                #{discernVehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="discerneColour != null" >
+                #{discerneColour,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionTime != null" >
+                #{transactionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="chargingVehicle != null" >
+                #{chargingVehicle,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmedescapeType != null" >
+                #{confirmedescapeType,jdbcType=VARCHAR},
+            </if>
+            <if test="passCode != null" >
+                #{passCode,jdbcType=VARCHAR},
+            </if>
+            <if test="passId != null" >
+                #{passId,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionId != null" >
+                #{transactionId,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaType != null" >
+                #{mediaType,jdbcType=VARCHAR},
+            </if>
+            <if test="obuId != null" >
+                #{obuId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sutong.auditDoorFrame.model.AuditDoorFrame" >
+        update AUDIT_DOOR_FRAME
+        <set >
+            <if test="billingTransactionNo != null" >
+                BILLING_TRANSACTION_NO = #{billingTransactionNo,jdbcType=VARCHAR},
+            </if>
+            <if test="tollProvinceId != null" >
+                TOLL_PROVINCE_ID = #{tollProvinceId,jdbcType=VARCHAR},
+            </if>
+            <if test="roadId != null" >
+                ROAD_ID = #{roadId,jdbcType=VARCHAR},
+            </if>
+            <if test="collectingUnit != null" >
+                COLLECTING_UNIT = #{collectingUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="actualVehicleId != null" >
+                ACTUAL_VEHICLE_ID = #{actualVehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="actualVehicleColour != null" >
+                ACTUAL_VEHICLE_COLOUR = #{actualVehicleColour,jdbcType=VARCHAR},
+            </if>
+            <if test="discernVehicleId != null" >
+                DISCERN_VEHICLE_ID = #{discernVehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="discerneColour != null" >
+                DISCERNE_COLOUR = #{discerneColour,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionTime != null" >
+                TRANSACTION_TIME = #{transactionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="chargingVehicle != null" >
+                CHARGING_VEHICLE = #{chargingVehicle,jdbcType=VARCHAR},
+            </if>
+            <if test="confirmedescapeType != null" >
+                CONFIRMEDESCAPE_TYPE = #{confirmedescapeType,jdbcType=VARCHAR},
+            </if>
+            <if test="passCode != null" >
+                PASS_CODE = #{passCode,jdbcType=VARCHAR},
+            </if>
+            <if test="passId != null" >
+                PASS_ID = #{passId,jdbcType=VARCHAR},
+            </if>
+            <if test="transactionId != null" >
+                TRANSACTION_ID = #{transactionId,jdbcType=VARCHAR},
+            </if>
+            <if test="mediaType != null" >
+                MEDIA_TYPE = #{mediaType,jdbcType=VARCHAR},
+            </if>
+            <if test="obuId != null" >
+                OBU_ID = #{obuId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.sutong.auditDoorFrame.model.AuditDoorFrame" >
+        update AUDIT_DOOR_FRAME
+        set BILLING_TRANSACTION_NO = #{billingTransactionNo,jdbcType=VARCHAR},
+            TOLL_PROVINCE_ID = #{tollProvinceId,jdbcType=VARCHAR},
+            ROAD_ID = #{roadId,jdbcType=VARCHAR},
+            COLLECTING_UNIT = #{collectingUnit,jdbcType=VARCHAR},
+            ACTUAL_VEHICLE_ID = #{actualVehicleId,jdbcType=VARCHAR},
+            ACTUAL_VEHICLE_COLOUR = #{actualVehicleColour,jdbcType=VARCHAR},
+            DISCERN_VEHICLE_ID = #{discernVehicleId,jdbcType=VARCHAR},
+            DISCERNE_COLOUR = #{discerneColour,jdbcType=VARCHAR},
+            TRANSACTION_TIME = #{transactionTime,jdbcType=TIMESTAMP},
+            CHARGING_VEHICLE = #{chargingVehicle,jdbcType=VARCHAR},
+            CONFIRMEDESCAPE_TYPE = #{confirmedescapeType,jdbcType=VARCHAR},
+            PASS_CODE = #{passCode,jdbcType=VARCHAR},
+            PASS_ID = #{passId,jdbcType=VARCHAR},
+            TRANSACTION_ID = #{transactionId,jdbcType=VARCHAR},
+            MEDIA_TYPE = #{mediaType,jdbcType=VARCHAR},
+            OBU_ID = #{obuId,jdbcType=VARCHAR}
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.pay.mapper.AppAuditInvoiceInformationMapper" >
+
+    <resultMap id="AppAuditInvoiceInformationMap" type="com.sutong.bjstjh.entity.AppAuditInvoiceInformationModel">
+    <id column="INVOICE_ID" jdbcType="VARCHAR" property="invoiceId"></id>
+    <id column="INVOICE_PAST_ID" jdbcType="VARCHAR" property="invoicePastId"></id>
+
+    <result column="ORDER_ID" jdbcType="VARCHAR" property="orderId"></result>
+    <result column="OBU_ID" jdbcType="VARCHAR" property="obuId"></result>
+    <result column="BUYER_NAME" jdbcType="VARCHAR" property="buyerName"></result>
+    <result column="BUYER_RATEPAYING_NUMBER" jdbcType="VARCHAR" property="buyerRatepayingNumber"></result>
+    <result column="BUYER_PHONE" jdbcType="VARCHAR" property="buyerPhone"></result>
+    <result column="BUYER_BANK_NUMBER" jdbcType="VARCHAR" property="buyerBankNumber"></result>
+    <result column="BUYER_PAYBACK_TOTAL" jdbcType="VARCHAR" property="buyerPaybackTotal"></result>
+    <result column="SELLER_PHONE" jdbcType="VARCHAR" property="sellerPhone"></result>
+    <result column="SELLER_RATEPAYING_NUMBER" jdbcType="VARCHAR" property="sellerRatepayingNumber"></result>
+    <result column="SELLER_BANK_NUMBER" jdbcType="VARCHAR" property="sellerBankNumber"></result>
+    <result column="PAYEE" jdbcType="VARCHAR" property="payee"></result>
+    <result column="REVIER" jdbcType="VARCHAR" property="revier"></result>
+    <result column="DRAWER" jdbcType="VARCHAR" property="drawer"></result>
+    <result column="OPEN_INVOICE_TIME" jdbcType="VARCHAR" property="openInvoiceTime"></result>
+
+    <result column="PURCHASERS_ADDRESS" jdbcType="VARCHAR" property="purchasersAddress"></result>
+    <result column="INVOICE_TYPE" jdbcType="VARCHAR" property="invoiceType"></result>
+    <result column="ORDER_NUMBER" jdbcType="VARCHAR" property="orderNumber"></result>
+    <result column="COMMODITY_ORDER_NO" jdbcType="VARCHAR" property="commodityOrderNo"></result>
+    <result column="FEE_TRANS_TIME" jdbcType="VARCHAR" property="feeTransTime"></result>
+    <result column="PERSONAL_MAIL_BOX" jdbcType="VARCHAR" property="personalMailBox"></result>
+    <result column="PERSONAL_PHONE" jdbcType="VARCHAR" property="personalPhone"></result>
+    <result column="PERSONAL_NAME" jdbcType="VARCHAR" property="personalName"></result>
+    <result column="PERSONAL_DETAILED_ADRESS" jdbcType="VARCHAR" property="personalDetailedAdress"></result>
+    <result column="INVOICE_VEHICLE_ID" jdbcType="VARCHAR" property="invoiceVehicleId"></result>
+
+    <result column="TRANS_ID" jdbcType="VARCHAR" property="transId"></result>
+    <result column="FLOW_ID" jdbcType="VARCHAR" property="flowId"></result>
+    <result column="CHANGE_NUMBERS" jdbcType="VARCHAR" property="changeNumbers"></result>
+    <result column="INVOICE_CODE" jdbcType="VARCHAR" property="invoiceCode"></result>
+    <result column="INVOICE_NUMBER" jdbcType="VARCHAR" property="invoiceNumber"></result>
+    <result column="INVALID_EFFECTIVE" jdbcType="VARCHAR" property="invalidEffective"></result>
+
+</resultMap>
+
+    <sql id="appauditInvoiceInformationSQL" >
+        INVOICE_ID,ORDER_ID, BUYER_NAME, BUYER_RATEPAYING_NUMBER, BUYER_PHONE, BUYER_BANK_NUMBER, BUYER_PAYBACK_TOTAL,
+         SELLER_PHONE, SELLER_RATEPAYING_NUMBER, SELLER_BANK_NUMBER, PAYEE, REVIER, DRAWER, OPEN_INVOICE_TIME,
+         INVOICE_TYPE, ORDER_NUMBER, COMMODITY_ORDER_NO, FEE_TRANS_TIME, PERSONAL_MAIL_BOX, PERSONAL_PHONE,
+         PERSONAL_NAME, PERSONAL_DETAILED_ADRESS, INVOICE_VEHICLE_ID,PURCHASERS_ADDRESS, TRANS_ID, FLOW_ID,
+         CHANGE_NUMBERS,INVOICE_CODE,INVOICE_NUMBER,INVALID_EFFECTIVE
+    </sql>
+    <sql id="appauditInvoiceInformationPastSQL" >
+        INVOICE_PAST_ID,OBU_ID, BUYER_NAME, BUYER_RATEPAYING_NUMBER, BUYER_PHONE, BUYER_BANK_NUMBER, BUYER_PAYBACK_TOTAL,
+        SELLER_PHONE, SELLER_RATEPAYING_NUMBER, SELLER_BANK_NUMBER, PAYEE, REVIER, DRAWER, OPEN_INVOICE_TIME,
+        INVOICE_TYPE, ORDER_NUMBER, COMMODITY_ORDER_NO, FEE_TRANS_TIME, PERSONAL_MAIL_BOX, PERSONAL_PHONE,
+        PERSONAL_NAME, PERSONAL_DETAILED_ADRESS, INVOICE_VEHICLE_ID,PURCHASERS_ADDRESS, TRANS_ID, FLOW_ID,
+        CHANGE_NUMBERS,INVOICE_CODE,INVOICE_NUMBER,INVALID_EFFECTIVE
+    </sql>
+
+<!-- 非历史补费流水发票 -->
+    <!-- 条件查询 -->
+    <select id="getAppAuditInvoiceInformationList" resultMap="AppAuditInvoiceInformationMap"
+            parameterType="com.sutong.bjstjh.entity.AppAuditInvoiceInformationModel">
+          SELECT <include refid="appauditInvoiceInformationSQL" /> FROM MERCHANT.AUDIT_INVOICE_INFORMATION
+          <where>
+              <if test="openInvoiceTime != null and openInvoiceTime != '' ">
+                  AND OPEN_INVOICE_TIME = #{openInvoiceTime}
+              </if>
+              <if test="invoicebegintime != null and invoicebegintime != '' ">
+                  AND OPEN_INVOICE_TIME <![CDATA[ >= ]]> #{invoicebegintime}
+              </if>
+              <if test="invoiceendtime != null and invoiceendtime != '' ">
+                  AND OPEN_INVOICE_TIME <![CDATA[ <= ]]> #{invoiceendtime}
+              </if>
+              <if test="orderId != null and orderId != '' ">
+                  AND ORDER_ID = #{orderId}
+              </if>
+              <if test="transId != null and transId != '' ">
+                  AND TRANS_ID = #{transId}
+              </if>
+              <if test="flowId != null and flowId != '' ">
+                  AND FLOW_ID = #{flowId}
+              </if>
+              <if test="invalidEffective != null and invalidEffective != '' ">
+                  AND INVALID_EFFECTIVE = #{invalidEffective}
+              </if>
+              <if test="conditional_query != null and conditional_query != '' ">
+                  AND INVOICE_CODE IS NULL AND INVOICE_NUMBER IS NULL
+              </if>
+          </where>
+        ORDER BY OPEN_INVOICE_TIME
+    </select>
+    <!-- 根据主键查询 -->
+    <select id="getAppAuditInvoiceInformationModel" resultMap="AppAuditInvoiceInformationMap"
+            parameterType="com.sutong.bjstjh.entity.AppAuditInvoiceInformationModel">
+          SELECT <include refid="appauditInvoiceInformationSQL" /> FROM MERCHANT.AUDIT_INVOICE_INFORMATION
+        WHERE INVOICE_ID = #{invoiceId}
+    </select>
+    <!-- 插入发票信息数据 -->
+    <insert id="insertAppAuditInvoiceInformation"
+            parameterType="com.sutong.bjstjh.entity.AppAuditInvoiceInformationModel">
+          INSERT INTO MERCHANT.AUDIT_INVOICE_INFORMATION(INVOICE_ID,ORDER_ID,BUYER_NAME,BUYER_RATEPAYING_NUMBER,
+        BUYER_PHONE,BUYER_BANK_NUMBER,BUYER_PAYBACK_TOTAL,SELLER_PHONE,SELLER_RATEPAYING_NUMBER,
+        SELLER_BANK_NUMBER,PAYEE,REVIER,DRAWER,OPEN_INVOICE_TIME,INVOICE_TYPE,ORDER_NUMBER,
+        COMMODITY_ORDER_NO,FEE_TRANS_TIME,PERSONAL_MAIL_BOX,PERSONAL_PHONE,PERSONAL_NAME,
+        PERSONAL_DETAILED_ADRESS,INVOICE_VEHICLE_ID,PURCHASERS_ADDRESS,TRANS_ID,FLOW_ID,CHANGE_NUMBERS,INVOICE_CODE,INVOICE_NUMBER,INVALID_EFFECTIVE)
+        VALUES (#{invoiceId},#{orderId},#{buyerName},#{buyerRatepayingNumber},#{buyerPhone},#{buyerBankNumber},
+        #{buyerPaybackTotal},#{sellerPhone},#{sellerRatepayingNumber},#{sellerBankNumber},#{payee},
+        #{revier},#{drawer},#{openInvoiceTime},#{invoiceType},#{orderNumber},#{commodityOrderNo},
+        #{feeTransTime},#{personalMailBox},#{personalPhone},#{personalName},#{personalDetailedAdress},
+        #{invoiceVehicleId},#{purchasersAddress},#{transId},#{flowId},#{changeNumbers},#{invoiceCode},#{invoiceNumber},#{invalidEffective})
+    </insert>
+
+    <!-- 修改发票信息数据 -->
+    <update id="updateAppAuditInvoiceInformation" parameterType="com.sutong.bjstjh.entity.AppAuditInvoiceInformationModel">
+        UPDATE MERCHANT.AUDIT_INVOICE_INFORMATION
+        <set>
+            <if test="orderId != null and orderId != '' ">
+                ORDER_ID = #{orderId},
+            </if>
+
+            <if test="buyerName != null and buyerName != '' ">
+                BUYER_NAME = #{buyerName},
+            </if>
+            <if test="buyerRatepayingNumber != null and buyerRatepayingNumber != '' ">
+                BUYER_RATEPAYING_NUMBER = #{buyerRatepayingNumber},
+            </if>
+            <if test="buyerPhone != null and buyerPhone != '' ">
+                BUYER_PHONE = #{buyerPhone},
+            </if>
+            <if test="buyerBankNumber != null and buyerBankNumber != '' ">
+                BUYER_BANK_NUMBER = #{buyerBankNumber},
+            </if>
+            <if test="buyerPaybackTotal != null and buyerPaybackTotal != '' ">
+                BUYER_PAYBACK_TOTAL = #{buyerPaybackTotal},
+            </if>
+            <if test="sellerPhone != null and sellerPhone != '' ">
+                SELLER_PHONE = #{sellerPhone},
+            </if>
+            <if test="sellerRatepayingNumber != null and sellerRatepayingNumber != '' ">
+                SELLER_RATEPAYING_NUMBER = #{sellerRatepayingNumber},
+            </if>
+            <if test="sellerBankNumber != null and sellerBankNumber != '' ">
+                SELLER_BANK_NUMBER = #{sellerBankNumber},
+            </if>
+            <if test="payee != null and payee != '' ">
+                PAYEE = #{payee},
+            </if>
+            <if test="revier != null and revier != '' ">
+                REVIER = #{revier},
+            </if>
+            <if test="drawer != null and drawer != '' ">
+                DRAWER = #{drawer},
+            </if>
+            <if test="openInvoiceTime != null and openInvoiceTime != '' ">
+                OPEN_INVOICE_TIME = #{openInvoiceTime},
+            </if>
+            <if test="invoiceType != null and invoiceType != '' ">
+                INVOICE_TYPE = #{invoiceType},
+            </if>
+            <if test="orderNumber != null and orderNumber != '' ">
+                ORDER_NUMBER = #{orderNumber},
+            </if>
+            <if test="commodityOrderNo != null and commodityOrderNo != '' ">
+                COMMODITY_ORDER_NO = #{commodityOrderNo},
+            </if>
+            <if test="feeTransTime != null and feeTransTime != '' ">
+                FEE_TRANS_TIME = #{feeTransTime},
+            </if>
+            <if test="personalMailBox != null and personalMailBox != '' ">
+                PERSONAL_MAIL_BOX = #{personalMailBox},
+            </if>
+            <if test="personalPhone != null and personalPhone != '' ">
+                PERSONAL_PHONE = #{personalPhone},
+            </if>
+            <if test="personalName != null and personalName != '' ">
+                PERSONAL_NAME = #{personalName},
+            </if>
+            <if test="personalDetailedAdress != null and personalDetailedAdress != '' ">
+                PERSONAL_DETAILED_ADRESS = #{personalDetailedAdress},
+            </if>
+            <if test="invoiceVehicleId != null and invoiceVehicleId != '' ">
+                INVOICE_VEHICLE_ID = #{invoiceVehicleId},
+            </if>
+            <if test="purchasersAddress != null and purchasersAddress != '' ">
+                PURCHASERS_ADDRESS = #{purchasersAddress},
+            </if>
+            <if test="transId != null and transId != '' ">
+                TRANS_ID = #{transId},
+            </if>
+            <if test="flowId != null and flowId != '' ">
+                FLOW_ID = #{flowId},
+            </if>
+            <if test="changeNumbers != null and changeNumbers != '' ">
+                CHANGE_NUMBERS = #{changeNumbers},
+            </if>
+            <if test="invoiceCode != null and invoiceCode != '' ">
+                INVOICE_CODE = #{invoiceCode},
+            </if>
+            <if test="invoiceNumber != null and invoiceNumber != '' ">
+                INVOICE_NUMBER = #{invoiceNumber},
+            </if>
+            <if test="invalidEffective != null and invalidEffective != '' ">
+                INVALID_EFFECTIVE = #{invalidEffective},
+            </if>
+        </set>
+        WHERE INVOICE_ID = #{invoiceId}
+    </update>
+    <!-- 删除发票信息数据 -->
+    <delete id="deteleAppAuditInvoiceInformation" parameterType="com.sutong.bjstjh.entity.AppAuditInvoiceInformationModel">
+        DELETE FROM MERCHANT.AUDIT_INVOICE_INFORMATION WHERE ORDER_ID = #{orderId}
+    </delete>
+
+
+
+
+
+
+
+    <!-- 历史补费流水发票 -->
+    <!-- 条件查询 -->
+    <select id="getAppAuditInvoiceInformationPastList" resultMap="AppAuditInvoiceInformationMap"
+            parameterType="com.sutong.bjstjh.entity.AppAuditInvoiceInformationModel">
+        SELECT <include refid="appauditInvoiceInformationPastSQL" /> FROM MERCHANT.AUDIT_INVOICE_INFORMATION_PAST
+        <where>
+            <if test="openInvoiceTime != null and openInvoiceTime != '' ">
+                AND OPEN_INVOICE_TIME = #{openInvoiceTime}
+            </if>
+            <if test="invoicebegintime != null and invoicebegintime != '' ">
+                AND OPEN_INVOICE_TIME <![CDATA[ >= ]]> #{invoicebegintime}
+            </if>
+            <if test="invoiceendtime != null and invoiceendtime != '' ">
+                AND OPEN_INVOICE_TIME <![CDATA[ <= ]]> #{invoiceendtime}
+            </if>
+            <if test="feeTransTime != null and feeTransTime != '' ">
+                AND FEE_TRANS_TIME = #{feeTransTime}
+            </if>
+            <if test="obuId != null and obuId != '' ">
+                AND OBU_ID = #{obuId}
+            </if>
+            <if test="transId != null and transId != '' ">
+                AND TRANS_ID = #{transId}
+            </if>
+            <if test="flowId != null and flowId != '' ">
+                AND FLOW_ID = #{flowId}
+            </if>
+            <if test="invalidEffective != null and invalidEffective != '' ">
+                AND INVALID_EFFECTIVE = #{invalidEffective}
+            </if>
+            <if test="conditional_query != null and conditional_query != '' ">
+                AND INVOICE_CODE IS NULL AND INVOICE_NUMBER IS NULL
+            </if>
+        </where>
+        ORDER BY OPEN_INVOICE_TIME
+    </select>
+    <!-- 主键查询 -->
+    <select id="getAppAuditInvoiceInformationPastModel" resultMap="AppAuditInvoiceInformationMap"
+            parameterType="com.sutong.bjstjh.entity.AppAuditInvoiceInformationModel">
+        SELECT <include refid="appauditInvoiceInformationPastSQL" /> FROM MERCHANT.AUDIT_INVOICE_INFORMATION_PAST
+        WHERE INVOICE_PAST_ID = #{invoicePastId}
+    </select>
+    <!-- 插入发票信息数据 -->
+    <insert id="insertAppAuditInvoiceInformationPast"
+            parameterType="com.sutong.bjstjh.entity.AppAuditInvoiceInformationModel">
+        INSERT INTO MERCHANT.AUDIT_INVOICE_INFORMATION_PAST(INVOICE_PAST_ID,OBU_ID,BUYER_NAME,BUYER_RATEPAYING_NUMBER,
+        BUYER_PHONE,BUYER_BANK_NUMBER,BUYER_PAYBACK_TOTAL,SELLER_PHONE,SELLER_RATEPAYING_NUMBER,
+        SELLER_BANK_NUMBER,PAYEE,REVIER,DRAWER,OPEN_INVOICE_TIME,INVOICE_TYPE,ORDER_NUMBER,
+        COMMODITY_ORDER_NO,FEE_TRANS_TIME,PERSONAL_MAIL_BOX,PERSONAL_PHONE,PERSONAL_NAME,
+        PERSONAL_DETAILED_ADRESS,INVOICE_VEHICLE_ID,PURCHASERS_ADDRESS,TRANS_ID,FLOW_ID,CHANGE_NUMBERS,INVOICE_CODE,INVOICE_NUMBER,INVALID_EFFECTIVE)
+        VALUES (#{invoicePastId},#{obuId},#{buyerName},#{buyerRatepayingNumber},#{buyerPhone},#{buyerBankNumber},
+        #{buyerPaybackTotal},#{sellerPhone},#{sellerRatepayingNumber},#{sellerBankNumber},#{payee},
+        #{revier},#{drawer},#{openInvoiceTime},#{invoiceType},#{orderNumber},#{commodityOrderNo},
+        #{feeTransTime},#{personalMailBox},#{personalPhone},#{personalName},#{personalDetailedAdress},
+        #{invoiceVehicleId},#{purchasersAddress},#{transId},#{flowId},#{changeNumbers},#{invoiceCode},#{invoiceNumber},#{invalidEffective})
+    </insert>
+    <!-- 修改发票信息数据 -->
+    <update id="updateAppAuditInvoiceInformationPast" parameterType="com.sutong.bjstjh.entity.AppAuditInvoiceInformationModel">
+        UPDATE MERCHANT.AUDIT_INVOICE_INFORMATION_PAST
+        <set>
+            <if test="obuId != null and obuId != '' ">
+                OBU_ID = #{obuId},
+            </if>
+            <if test="buyerName != null and buyerName != '' ">
+                BUYER_NAME = #{buyerName},
+            </if>
+            <if test="buyerRatepayingNumber != null and buyerRatepayingNumber != '' ">
+                BUYER_RATEPAYING_NUMBER = #{buyerRatepayingNumber},
+            </if>
+            <if test="buyerPhone != null and buyerPhone != '' ">
+                BUYER_PHONE = #{buyerPhone},
+            </if>
+            <if test="buyerBankNumber != null and buyerBankNumber != '' ">
+                BUYER_BANK_NUMBER = #{buyerBankNumber},
+            </if>
+            <if test="buyerPaybackTotal != null and buyerPaybackTotal != '' ">
+                BUYER_PAYBACK_TOTAL = #{buyerPaybackTotal},
+            </if>
+            <if test="sellerPhone != null and sellerPhone != '' ">
+                SELLER_PHONE = #{sellerPhone},
+            </if>
+            <if test="sellerRatepayingNumber != null and sellerRatepayingNumber != '' ">
+                SELLER_RATEPAYING_NUMBER = #{sellerRatepayingNumber},
+            </if>
+            <if test="sellerBankNumber != null and sellerBankNumber != '' ">
+                SELLER_BANK_NUMBER = #{sellerBankNumber},
+            </if>
+            <if test="payee != null and payee != '' ">
+                PAYEE = #{payee},
+            </if>
+            <if test="revier != null and revier != '' ">
+                REVIER = #{revier},
+            </if>
+            <if test="drawer != null and drawer != '' ">
+                DRAWER = #{drawer},
+            </if>
+            <if test="openInvoiceTime != null and openInvoiceTime != '' ">
+                OPEN_INVOICE_TIME = #{openInvoiceTime},
+            </if>
+            <if test="invoiceType != null and invoiceType != '' ">
+                INVOICE_TYPE = #{invoiceType},
+            </if>
+            <if test="orderNumber != null and orderNumber != '' ">
+                ORDER_NUMBER = #{orderNumber},
+            </if>
+            <if test="commodityOrderNo != null and commodityOrderNo != '' ">
+                COMMODITY_ORDER_NO = #{commodityOrderNo},
+            </if>
+            <if test="feeTransTime != null and feeTransTime != '' ">
+                FEE_TRANS_TIME = #{feeTransTime},
+            </if>
+            <if test="personalMailBox != null and personalMailBox != '' ">
+                PERSONAL_MAIL_BOX = #{personalMailBox},
+            </if>
+            <if test="personalPhone != null and personalPhone != '' ">
+                PERSONAL_PHONE = #{personalPhone},
+            </if>
+            <if test="personalName != null and personalName != '' ">
+                PERSONAL_NAME = #{personalName},
+            </if>
+            <if test="personalDetailedAdress != null and personalDetailedAdress != '' ">
+                PERSONAL_DETAILED_ADRESS = #{personalDetailedAdress},
+            </if>
+            <if test="invoiceVehicleId != null and invoiceVehicleId != '' ">
+                INVOICE_VEHICLE_ID = #{invoiceVehicleId},
+            </if>
+            <if test="purchasersAddress != null and purchasersAddress != '' ">
+                PURCHASERS_ADDRESS = #{purchasersAddress},
+            </if>
+            <if test="transId != null and transId != '' ">
+                TRANS_ID = #{transId},
+            </if>
+            <if test="flowId != null and flowId != '' ">
+                FLOW_ID = #{flowId},
+            </if>
+            <if test="changeNumbers != null and changeNumbers != '' ">
+                CHANGE_NUMBERS = #{changeNumbers},
+            </if>
+            <if test="invoiceCode != null and invoiceCode != '' ">
+                INVOICE_CODE = #{invoiceCode},
+            </if>
+            <if test="invoiceNumber != null and invoiceNumber != '' ">
+                INVOICE_NUMBER = #{invoiceNumber},
+            </if>
+            <if test="invalidEffective != null and invalidEffective != '' ">
+                INVALID_EFFECTIVE = #{invalidEffective},
+            </if>
+        </set>
+        WHERE INVOICE_PAST_ID = #{invoicePastId}
+    </update>
+    <!-- 删除发票信息数据 -->
+    <delete id="deleteAppAuditInvoiceInformationPast" parameterType="com.sutong.bjstjh.entity.AppAuditInvoiceInformationModel">
+        DELETE FROM MERCHANT.AUDIT_INVOICE_INFORMATION_PAST WHERE INVOICE_PAST_ID = #{invoicePastId}
+    </delete>
+</mapper>

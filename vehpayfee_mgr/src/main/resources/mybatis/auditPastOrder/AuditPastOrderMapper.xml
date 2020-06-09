@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditPastOrder.mapper.AuditPastOrderMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.auditPastOrder.model.AuditPastOrder" >
+        <id column="PAST_ORDER_ID" property="pastOrderId" jdbcType="VARCHAR" />
+        <result column="CUSTOMER_NAME" property="customerName" jdbcType="VARCHAR" />
+        <result column="CUSTOMER_PHONE" property="customerPhone" jdbcType="VARCHAR" />
+        <result column="OBU_ID" property="obuId" jdbcType="VARCHAR" />
+        <result column="TRANS_NUM" property="transNum" jdbcType="VARCHAR" />
+        <result column="TRANS_ALL_MONEY" property="transAllMoney" jdbcType="VARCHAR" />
+        <result column="OWE_FEE" property="oweFee" jdbcType="VARCHAR" />
+        <result column="ORDER_STATUS" property="orderStatus" jdbcType="VARCHAR" />
+        <result column="TRANS_TIME" property="transTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        PAST_ORDER_ID, CUSTOMER_NAME, CUSTOMER_PHONE, OBU_ID, TRANS_NUM, TRANS_ALL_MONEY,
+        OWE_FEE, ORDER_STATUS, TRANS_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_PAST_ORDER
+        where PAST_ORDER_ID = #{pastOrderId,jdbcType=VARCHAR}
+    </select>
+
+    <!--查询通行费差额汇总单分页-->
+    <select id="doFindAuditPastOrderPage" resultMap="BaseResultMap" parameterType="com.sutong.auditPastOrder.model.AuditPastOrder" >
+        select
+        <include refid="Base_Column_List" />
+        from AUDIT_PAST_ORDER
+        <where>
+            <if test="pastOrderId !=null and pastOrderId !='' ">
+                and AUDIT_PAST_ORDER.PAST_ORDER_ID = #{pastOrderId}
+            </if>
+            <if test="obuId !=null and obuId !='' ">
+                and AUDIT_PAST_ORDER.OBU_ID = #{obuId}
+            </if>
+            <if test="startTimeDate !=null ">
+                and TO_CHAR(AUDIT_PAST_ORDER.TRANS_TIME,'YYY-MM-DD') <![CDATA[ >= ]]> TO_CHAR(#{startTimeDate},'YYY-MM-DD')
+            </if>
+            <if test="endTimeDate !=null ">
+                and TO_CHAR(AUDIT_PAST_ORDER.TRANS_TIME,'YYY-MM-DD') <![CDATA[ <= ]]> TO_CHAR(#{endTimeDate},'YYY-MM-DD')
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from AUDIT_PAST_ORDER
+        where PAST_ORDER_ID = #{pastOrderId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.sutong.auditPastOrder.model.AuditPastOrder" >
+        insert into AUDIT_PAST_ORDER (PAST_ORDER_ID, CUSTOMER_NAME, CUSTOMER_PHONE,
+            OBU_ID, TRANS_NUM, TRANS_ALL_MONEY,
+            OWE_FEE, ORDER_STATUS, TRANS_TIME
+            )
+        values (#{pastOrderId,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, #{customerPhone,jdbcType=VARCHAR},
+            #{obuId,jdbcType=VARCHAR}, #{transNum,jdbcType=VARCHAR}, #{transAllMoney,jdbcType=VARCHAR},
+            #{oweFee,jdbcType=VARCHAR}, #{orderStatus,jdbcType=VARCHAR}, #{transTime,jdbcType=VARCHAR}
+            )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.sutong.auditPastOrder.model.AuditPastOrder" >
+        insert into AUDIT_PAST_ORDER
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="pastOrderId != null" >
+                PAST_ORDER_ID,
+            </if>
+            <if test="customerName != null" >
+                CUSTOMER_NAME,
+            </if>
+            <if test="customerPhone != null" >
+                CUSTOMER_PHONE,
+            </if>
+            <if test="obuId != null" >
+                OBU_ID,
+            </if>
+            <if test="transNum != null" >
+                TRANS_NUM,
+            </if>
+            <if test="transAllMoney != null" >
+                TRANS_ALL_MONEY,
+            </if>
+            <if test="oweFee != null" >
+                OWE_FEE,
+            </if>
+            <if test="orderStatus != null" >
+                ORDER_STATUS,
+            </if>
+            <if test="transTime != null" >
+                TRANS_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="pastOrderId != null" >
+                #{pastOrderId,jdbcType=VARCHAR},
+            </if>
+            <if test="customerName != null" >
+                #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="customerPhone != null" >
+                #{customerPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="obuId != null" >
+                #{obuId,jdbcType=VARCHAR},
+            </if>
+            <if test="transNum != null" >
+                #{transNum,jdbcType=VARCHAR},
+            </if>
+            <if test="transAllMoney != null" >
+                #{transAllMoney,jdbcType=VARCHAR},
+            </if>
+            <if test="oweFee != null" >
+                #{oweFee,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null" >
+                #{orderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="transTime != null" >
+                #{transTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sutong.auditPastOrder.model.AuditPastOrder" >
+        update AUDIT_PAST_ORDER
+        <set >
+            <if test="customerName != null" >
+                CUSTOMER_NAME = #{customerName,jdbcType=VARCHAR},
+            </if>
+            <if test="customerPhone != null" >
+                CUSTOMER_PHONE = #{customerPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="obuId != null" >
+                OBU_ID = #{obuId,jdbcType=VARCHAR},
+            </if>
+            <if test="transNum != null" >
+                TRANS_NUM = #{transNum,jdbcType=VARCHAR},
+            </if>
+            <if test="transAllMoney != null" >
+                TRANS_ALL_MONEY = #{transAllMoney,jdbcType=VARCHAR},
+            </if>
+            <if test="oweFee != null" >
+                OWE_FEE = #{oweFee,jdbcType=VARCHAR},
+            </if>
+            <if test="orderStatus != null" >
+                ORDER_STATUS = #{orderStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="transTime != null" >
+                TRANS_TIME = #{transTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where PAST_ORDER_ID = #{pastOrderId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.sutong.auditPastOrder.model.AuditPastOrder" >
+        update AUDIT_PAST_ORDER
+        set CUSTOMER_NAME = #{customerName,jdbcType=VARCHAR},
+            CUSTOMER_PHONE = #{customerPhone,jdbcType=VARCHAR},
+            OBU_ID = #{obuId,jdbcType=VARCHAR},
+            TRANS_NUM = #{transNum,jdbcType=VARCHAR},
+            TRANS_ALL_MONEY = #{transAllMoney,jdbcType=VARCHAR},
+            OWE_FEE = #{oweFee,jdbcType=VARCHAR},
+            ORDER_STATUS = #{orderStatus,jdbcType=VARCHAR},
+            TRANS_TIME = #{transTime,jdbcType=VARCHAR}
+        where PAST_ORDER_ID = #{pastOrderId,jdbcType=VARCHAR}
+    </update>
+</mapper>

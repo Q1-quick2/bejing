@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.auditRoadData.mapper.AuditRoadDataMapper" >
+
+    <resultMap id="BaseResultMap" type="com.sutong.auditRoadData.model.AuditRoadData" >
+        <id column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+        <result column="VEHICLE_ID" property="vehicleId" jdbcType="VARCHAR" />
+        <result column="CAR_TYPE" property="carType" jdbcType="VARCHAR" />
+        <result column="CAR_MODEL" property="carModel" jdbcType="VARCHAR" />
+        <result column="PASSID" property="passid" jdbcType="VARCHAR" />
+        <result column="MEDIATYPE" property="mediatype" jdbcType="VARCHAR" />
+        <result column="OBUID" property="obuid" jdbcType="VARCHAR" />
+        <result column="CARDID" property="cardid" jdbcType="VARCHAR" />
+        <result column="ESCAPETYPE" property="escapetype" jdbcType="VARCHAR" />
+        <result column="ENTIME" property="entime" jdbcType="VARCHAR" />
+        <result column="ENLANEID" property="enlaneid" jdbcType="VARCHAR" />
+        <result column="ENSTATION" property="enstation" jdbcType="VARCHAR" />
+        <result column="EXTIME" property="extime" jdbcType="VARCHAR" />
+        <result column="EXLANEID" property="exlaneid" jdbcType="VARCHAR" />
+        <result column="EXSTATION" property="exstation" jdbcType="VARCHAR" />
+        <result column="ROADSECTION" property="roadsection" jdbcType="VARCHAR" />
+        <result column="PRODUCTION_COST" property="productionCost" jdbcType="VARCHAR" />
+        <result column="AUDIT_ROAD_RESULT" property="auditRoadResult" jdbcType="VARCHAR" />
+        <result column="CUSTOMER_VIOLATION_TIME" property="customerViolationTime" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        ORDER_ID, VEHICLE_ID, CAR_TYPE, CAR_MODEL, PASSID, MEDIATYPE, OBUID, CARDID, ESCAPETYPE, 
+        ENTIME, ENLANEID, ENSTATION, EXTIME, EXLANEID, EXSTATION, ROADSECTION, PRODUCTION_COST, 
+        AUDIT_ROAD_RESULT, CUSTOMER_VIOLATION_TIME
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select 
+        <include refid="Base_Column_List" />
+        from AUDIT_ROAD_DATA
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from AUDIT_ROAD_DATA
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.sutong.auditRoadData.model.AuditRoadData" >
+        insert into AUDIT_ROAD_DATA (ORDER_ID, VEHICLE_ID, CAR_TYPE, 
+            CAR_MODEL, PASSID, MEDIATYPE, 
+            OBUID, CARDID, ESCAPETYPE, 
+            ENTIME, ENLANEID, ENSTATION, 
+            EXTIME, EXLANEID, EXSTATION, 
+            ROADSECTION, PRODUCTION_COST, AUDIT_ROAD_RESULT, 
+            CUSTOMER_VIOLATION_TIME)
+        values (#{orderId,jdbcType=VARCHAR}, #{vehicleId,jdbcType=VARCHAR}, #{carType,jdbcType=VARCHAR}, 
+            #{carModel,jdbcType=VARCHAR}, #{passid,jdbcType=VARCHAR}, #{mediatype,jdbcType=VARCHAR}, 
+            #{obuid,jdbcType=VARCHAR}, #{cardid,jdbcType=VARCHAR}, #{escapetype,jdbcType=VARCHAR}, 
+            #{entime,jdbcType=VARCHAR}, #{enlaneid,jdbcType=VARCHAR}, #{enstation,jdbcType=VARCHAR}, 
+            #{extime,jdbcType=VARCHAR}, #{exlaneid,jdbcType=VARCHAR}, #{exstation,jdbcType=VARCHAR}, 
+            #{roadsection,jdbcType=VARCHAR}, #{productionCost,jdbcType=VARCHAR}, #{auditRoadResult,jdbcType=VARCHAR}, 
+            #{customerViolationTime,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.sutong.auditRoadData.model.AuditRoadData" >
+        insert into AUDIT_ROAD_DATA
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="orderId != null" >
+                ORDER_ID,
+            </if>
+            <if test="vehicleId != null" >
+                VEHICLE_ID,
+            </if>
+            <if test="carType != null" >
+                CAR_TYPE,
+            </if>
+            <if test="carModel != null" >
+                CAR_MODEL,
+            </if>
+            <if test="passid != null" >
+                PASSID,
+            </if>
+            <if test="mediatype != null" >
+                MEDIATYPE,
+            </if>
+            <if test="obuid != null" >
+                OBUID,
+            </if>
+            <if test="cardid != null" >
+                CARDID,
+            </if>
+            <if test="escapetype != null" >
+                ESCAPETYPE,
+            </if>
+            <if test="entime != null" >
+                ENTIME,
+            </if>
+            <if test="enlaneid != null" >
+                ENLANEID,
+            </if>
+            <if test="enstation != null" >
+                ENSTATION,
+            </if>
+            <if test="extime != null" >
+                EXTIME,
+            </if>
+            <if test="exlaneid != null" >
+                EXLANEID,
+            </if>
+            <if test="exstation != null" >
+                EXSTATION,
+            </if>
+            <if test="roadsection != null" >
+                ROADSECTION,
+            </if>
+            <if test="productionCost != null" >
+                PRODUCTION_COST,
+            </if>
+            <if test="auditRoadResult != null" >
+                AUDIT_ROAD_RESULT,
+            </if>
+            <if test="customerViolationTime != null" >
+                CUSTOMER_VIOLATION_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="orderId != null" >
+                #{orderId,jdbcType=VARCHAR},
+            </if>
+            <if test="vehicleId != null" >
+                #{vehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="carType != null" >
+                #{carType,jdbcType=VARCHAR},
+            </if>
+            <if test="carModel != null" >
+                #{carModel,jdbcType=VARCHAR},
+            </if>
+            <if test="passid != null" >
+                #{passid,jdbcType=VARCHAR},
+            </if>
+            <if test="mediatype != null" >
+                #{mediatype,jdbcType=VARCHAR},
+            </if>
+            <if test="obuid != null" >
+                #{obuid,jdbcType=VARCHAR},
+            </if>
+            <if test="cardid != null" >
+                #{cardid,jdbcType=VARCHAR},
+            </if>
+            <if test="escapetype != null" >
+                #{escapetype,jdbcType=VARCHAR},
+            </if>
+            <if test="entime != null" >
+                #{entime,jdbcType=VARCHAR},
+            </if>
+            <if test="enlaneid != null" >
+                #{enlaneid,jdbcType=VARCHAR},
+            </if>
+            <if test="enstation != null" >
+                #{enstation,jdbcType=VARCHAR},
+            </if>
+            <if test="extime != null" >
+                #{extime,jdbcType=VARCHAR},
+            </if>
+            <if test="exlaneid != null" >
+                #{exlaneid,jdbcType=VARCHAR},
+            </if>
+            <if test="exstation != null" >
+                #{exstation,jdbcType=VARCHAR},
+            </if>
+            <if test="roadsection != null" >
+                #{roadsection,jdbcType=VARCHAR},
+            </if>
+            <if test="productionCost != null" >
+                #{productionCost,jdbcType=VARCHAR},
+            </if>
+            <if test="auditRoadResult != null" >
+                #{auditRoadResult,jdbcType=VARCHAR},
+            </if>
+            <if test="customerViolationTime != null" >
+                #{customerViolationTime,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sutong.auditRoadData.model.AuditRoadData" >
+        update AUDIT_ROAD_DATA
+        <set >
+            <if test="vehicleId != null" >
+                VEHICLE_ID = #{vehicleId,jdbcType=VARCHAR},
+            </if>
+            <if test="carType != null" >
+                CAR_TYPE = #{carType,jdbcType=VARCHAR},
+            </if>
+            <if test="carModel != null" >
+                CAR_MODEL = #{carModel,jdbcType=VARCHAR},
+            </if>
+            <if test="passid != null" >
+                PASSID = #{passid,jdbcType=VARCHAR},
+            </if>
+            <if test="mediatype != null" >
+                MEDIATYPE = #{mediatype,jdbcType=VARCHAR},
+            </if>
+            <if test="obuid != null" >
+                OBUID = #{obuid,jdbcType=VARCHAR},
+            </if>
+            <if test="cardid != null" >
+                CARDID = #{cardid,jdbcType=VARCHAR},
+            </if>
+            <if test="escapetype != null" >
+                ESCAPETYPE = #{escapetype,jdbcType=VARCHAR},
+            </if>
+            <if test="entime != null" >
+                ENTIME = #{entime,jdbcType=VARCHAR},
+            </if>
+            <if test="enlaneid != null" >
+                ENLANEID = #{enlaneid,jdbcType=VARCHAR},
+            </if>
+            <if test="enstation != null" >
+                ENSTATION = #{enstation,jdbcType=VARCHAR},
+            </if>
+            <if test="extime != null" >
+                EXTIME = #{extime,jdbcType=VARCHAR},
+            </if>
+            <if test="exlaneid != null" >
+                EXLANEID = #{exlaneid,jdbcType=VARCHAR},
+            </if>
+            <if test="exstation != null" >
+                EXSTATION = #{exstation,jdbcType=VARCHAR},
+            </if>
+            <if test="roadsection != null" >
+                ROADSECTION = #{roadsection,jdbcType=VARCHAR},
+            </if>
+            <if test="productionCost != null" >
+                PRODUCTION_COST = #{productionCost,jdbcType=VARCHAR},
+            </if>
+            <if test="auditRoadResult != null" >
+                AUDIT_ROAD_RESULT = #{auditRoadResult,jdbcType=VARCHAR},
+            </if>
+            <if test="customerViolationTime != null" >
+                CUSTOMER_VIOLATION_TIME = #{customerViolationTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.sutong.auditRoadData.model.AuditRoadData" >
+        update AUDIT_ROAD_DATA
+        set VEHICLE_ID = #{vehicleId,jdbcType=VARCHAR},
+            CAR_TYPE = #{carType,jdbcType=VARCHAR},
+            CAR_MODEL = #{carModel,jdbcType=VARCHAR},
+            PASSID = #{passid,jdbcType=VARCHAR},
+            MEDIATYPE = #{mediatype,jdbcType=VARCHAR},
+            OBUID = #{obuid,jdbcType=VARCHAR},
+            CARDID = #{cardid,jdbcType=VARCHAR},
+            ESCAPETYPE = #{escapetype,jdbcType=VARCHAR},
+            ENTIME = #{entime,jdbcType=VARCHAR},
+            ENLANEID = #{enlaneid,jdbcType=VARCHAR},
+            ENSTATION = #{enstation,jdbcType=VARCHAR},
+            EXTIME = #{extime,jdbcType=VARCHAR},
+            EXLANEID = #{exlaneid,jdbcType=VARCHAR},
+            EXSTATION = #{exstation,jdbcType=VARCHAR},
+            ROADSECTION = #{roadsection,jdbcType=VARCHAR},
+            PRODUCTION_COST = #{productionCost,jdbcType=VARCHAR},
+            AUDIT_ROAD_RESULT = #{auditRoadResult,jdbcType=VARCHAR},
+            CUSTOMER_VIOLATION_TIME = #{customerViolationTime,jdbcType=VARCHAR}
+        where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+    </update>
+</mapper>

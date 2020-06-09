@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sutong.invoice.mapper.InvoiceExportMapper" >
+    <resultMap id="HistoryInvoice" type="com.sutong.invoice.model.HistoryInvoiceModel">
+        <result column="OBU_ID" jdbcType="VARCHAR" property="obuId" />
+        <result column="BUYER_NAME" jdbcType="VARCHAR" property="buyerName" />
+        <result column="BUYER_RATEPAYING_NUMBER" jdbcType="VARCHAR" property="buyerRatepayingNumber" />
+        <result column="BUYER_PHONE" jdbcType="VARCHAR" property="buyerPhone" />
+        <result column="BUYER_BANK_NUMBER" jdbcType="VARCHAR" property="buyerBankNumber" />
+        <result column="BUYER_PAYBACK_TOTAL" jdbcType="VARCHAR" property="buyerPaybackTotal" />
+        <result column="SELLER_PHONE" jdbcType="VARCHAR" property="sellerPhone" />
+        <result column="SELLER_RATEPAYING_NUMBER" jdbcType="VARCHAR" property="sellerRatepayingNumber" />
+        <result column="SELLER_BANK_NUMBER" jdbcType="VARCHAR" property="sellerBankNumber" />
+        <result column="PAYEE" jdbcType="VARCHAR" property="payee" />
+        <result column="REVIER" jdbcType="VARCHAR" property="revier" />
+        <result column="DRAWER" jdbcType="VARCHAR" property="drawer" />
+        <result column="OPEN_INVOICE_TIME" jdbcType="VARCHAR" property="openInvoiceTime" />
+        <result column="INVOICE_TYPE" jdbcType="VARCHAR" property="invoiceType" />
+        <result column="ORDER_NUMBER" jdbcType="VARCHAR" property="orderNumber" />
+        <result column="COMMODITY_ORDER_NO" jdbcType="VARCHAR" property="commodityOrderNo" />
+        <result column="FEE_TRANS_TIME" jdbcType="VARCHAR" property="feeTransTime" />
+        <result column="PERSONAL_MAIL_BOX" jdbcType="VARCHAR" property="personalMailBox" />
+        <result column="PERSONAL_PHONE" jdbcType="VARCHAR" property="personalPhone" />
+        <result column="PERSONAL_NAME" jdbcType="VARCHAR" property="personalName" />
+        <result column="PERSONAL_DETAILED_ADRESS" jdbcType="VARCHAR" property="personalDetailedAdress" />
+        <result column="INVOICE_VEHICLE_ID" jdbcType="VARCHAR" property="invoiceVehicleId" />
+    </resultMap>
+
+    <resultMap id="Invoice" type="com.sutong.invoice.model.InvoiceModel">
+        <result column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+        <result column="BUYER_NAME" jdbcType="VARCHAR" property="buyerName" />
+        <result column="BUYER_RATEPAYING_NUMBER" jdbcType="VARCHAR" property="buyerRatepayingNumber" />
+        <result column="BUYER_PHONE" jdbcType="VARCHAR" property="buyerPhone" />
+        <result column="BUYER_BANK_NUMBER" jdbcType="VARCHAR" property="buyerBankNumber" />
+        <result column="BUYER_PAYBACK_TOTAL" jdbcType="VARCHAR" property="buyerPaybackTotal" />
+        <result column="SELLER_PHONE" jdbcType="VARCHAR" property="sellerPhone" />
+        <result column="SELLER_RATEPAYING_NUMBER" jdbcType="VARCHAR" property="sellerRatepayingNumber" />
+        <result column="SELLER_BANK_NUMBER" jdbcType="VARCHAR" property="sellerBankNumber" />
+        <result column="PAYEE" jdbcType="VARCHAR" property="payee" />
+        <result column="REVIER" jdbcType="VARCHAR" property="revier" />
+        <result column="DRAWER" jdbcType="VARCHAR" property="drawer" />
+        <result column="OPEN_INVOICE_TIME" jdbcType="VARCHAR" property="openInvoiceTime" />
+        <result column="INVOICE_TYPE" jdbcType="VARCHAR" property="invoiceType" />
+        <result column="ORDER_NUMBER" jdbcType="VARCHAR" property="orderNumber" />
+        <result column="COMMODITY_ORDER_NO" jdbcType="VARCHAR" property="commodityOrderNo" />
+        <result column="FEE_TRANS_TIME" jdbcType="VARCHAR" property="feeTransTime" />
+        <result column="INVOICE_VEHICLE_ID" jdbcType="VARCHAR" property="invoiceVehicleId" />
+    </resultMap>
+
+    <!-- 查询历史发票列表分页-->
+    <select id="doFindHistoryInvoiceList" parameterType="com.sutong.invoice.model.HistoryInvoiceModel" resultMap="HistoryInvoice">
+        select OBU_ID,PAYEE,REVIER,DRAWER,OPEN_INVOICE_TIME,INVOICE_TYPE,ORDER_NUMBER,COMMODITY_ORDER_NO,FEE_TRANS_TIME
+        from AUDIT_INVOICE_INFORMATION_PAST
+        <where>
+            <if test="obuId !=null and obuId !='' ">
+                and OBU_ID = #{obuId}
+            </if>
+            <if test="beginTime !=null and beginTime !='' and endTime !=null and endTime !=''">
+                and OPEN_INVOICE_TIME begin #{beginTime} and  #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询发票列表分页-->
+    <select id="doFindInvoiceList" parameterType="com.sutong.invoice.model.InvoiceModel" resultMap="Invoice">
+        select ORDER_ID,INVOICE_VEHICLE_ID,PAYEE,REVIER,DRAWER,OPEN_INVOICE_TIME,INVOICE_TYPE,ORDER_NUMBER,COMMODITY_ORDER_NO,FEE_TRANS_TIME
+        from AUDIT_INVOICE_INFORMATION
+        <where>
+            <if test="carNum !=null and carNum !='' ">
+                and  INVOICE_VEHICLE_ID like '%'||#{carNum}||'%'
+            </if>
+            <if test="carNumColor !=null and carNumColor !='' ">
+                and  INVOICE_VEHICLE_ID like '%'||#{carNumColor}||'%'
+            </if>
+            <if test="beginTime !=null and beginTime !='' and endTime !=null and endTime !=''">
+                and OPEN_INVOICE_TIME begin #{beginTime} and  #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <!-- 历史发票导出查询-->
+    <select id="doFindHistoryInvoice" parameterType="java.util.List" resultMap="HistoryInvoice">
+        select * from AUDIT_INVOICE_INFORMATION_PAST
+        where OBU_ID in
+        <foreach collection="array" index="index" item="obuId" open="(" separator="," close=")">
+            #{obuId}
+        </foreach>
+    </select>
+
+    <!-- 发票导出查询-->
+    <select id="doFindInvoice" parameterType="java.util.List" resultMap="Invoice">
+        select * from AUDIT_INVOICE_INFORMATION
+        where ORDER_ID in
+        <foreach collection="array" index="index" item="orderId" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </select>
+
+</mapper>
+
+
+
+
+

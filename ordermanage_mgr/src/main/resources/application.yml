@@ -1,0 +1,4 @@
+spring:
+    # 环境 dev:开发环境|pro:生产环境
+    profiles:
+        active: pro #激活配置文件
